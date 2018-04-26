@@ -1,0 +1,77 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "campus",
+            "otherEntityName": "campus",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "schedule",
+            "otherEntityName": "schedule",
+            "otherEntityRelationshipName": "field"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "booking",
+            "otherEntityName": "booking",
+            "otherEntityRelationshipName": "field"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "comment",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "numPlayers",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "typeField",
+            "fieldType": "TypeField",
+            "fieldValues": "GRASS,CONCRET",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "typeSport",
+            "fieldType": "TypeSport",
+            "fieldValues": "FUTBOL,VOLLEYBALL,BASKETBALL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "StateField",
+            "fieldValues": "MAINTENANCE,AVAILABLE,LOCKED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180425010834",
+    "entityTableName": "field",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

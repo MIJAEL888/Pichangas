@@ -1,0 +1,138 @@
+
+entity Client{
+	name String required,
+    surName String,
+    typeId TypeId required,
+    numberId String required minlength(8),
+    email String required,
+    mobile String required,
+    address String,
+    contactName String
+    status Boolean,
+    dateSuscription LocalDate,
+    comment String
+}
+
+entity Campus{
+	name String required,
+    description String,
+    comment String,
+    openTime Integer required min(0) max(23),
+    closeTime Integer required min(0) max(23),
+    aditional String,
+    addresss String required,
+    reference String,
+    latitude Double,
+    longitude Double,
+    codPostal String,
+    status Boolean,
+    rating String
+}
+entity Field {
+	name String required,
+    description String,
+    comment String,
+    //cost Float,
+    numPlayers Integer required,
+    typeField TypeField required,
+    typeSport TypeSport required,
+    state StateField required
+}
+
+entity Department {
+	name String required,
+    code String
+}
+entity District {
+	name String required,
+    code String
+}
+entity Province {
+	name String required,
+    code String
+}
+
+entity Schedule {
+	dayOfWeek Integer min(0) max(23),
+    nameDayOfWeek String,
+    enumDayOfWeek DaysOfWeek,
+    startHour Integer min(0) max(23),
+  	endHour Integer min(0) max(23),
+    cost Float,
+    price Float,
+    rate Float
+}
+entity Booking {
+	state StateBook,
+    dateReg LocalDate,
+    date LocalDate,
+    startHour Integer min(0) max(23),
+  	endHour Integer min(0) max(23),
+}
+entity ClientFinal {
+	name String required,
+    surName String required,
+    mobile String required,
+    email String required,
+    numDocument String,
+}
+entity UserApp {
+	username String required,
+    password String required,
+    dateReg LocalDate,
+    faccebookId String,
+    googleId String
+}
+
+enum StateField{
+	MAINTENANCE, AVAILABLE, LOCKED
+}
+enum StateBook{
+	FREE, BOOKED, CONFIRMED, LOCKED
+}
+enum TypeId {
+	DNI, RUC
+}
+enum TypeField {
+	GRASS, CONCRET
+}
+enum TypeSport {
+	FUTBOL, VOLLEYBALL, BASKETBALL
+}
+enum DaysOfWeek{
+	SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+
+relationship ManyToMany {
+	Campus{userapp} to UserApp{campus}
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Department{province} to Province,
+    Province{district} to District,
+    District{campus} to Campus
+    Client{campus} to Campus,
+    Campus{field} to Field,
+    Field{schedule} to Schedule,
+    Field{booking} to Booking,
+    Schedule{booking} to Booking,
+    ClientFinal{booking} to Booking
+}
+
+// defining multiple oneToOne relationships
+relationship OneToOne {
+	ClientFinal{userApp} to UserApp{clientFinal}
+}
+
+// Set pagination options
+paginate Department, Province, District with infinite-scroll
+paginate ClientFinal, UserApp, Field, Client with pagination
+
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+// angularSuffix * with mySuffix

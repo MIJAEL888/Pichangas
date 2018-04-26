@@ -1,0 +1,60 @@
+
+<div *ngIf="booking">
+    <h2><span>Booking</span> {{booking.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>State</span></dt>
+        <dd>
+            <span>{{booking.state}}</span>
+        </dd>
+        <dt><span>Date Reg</span></dt>
+        <dd>
+            <span>{{booking.dateReg | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+            <span>{{booking.date | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Start Hour</span></dt>
+        <dd>
+            <span>{{booking.startHour}}</span>
+        </dd>
+        <dt><span>End Hour</span></dt>
+        <dd>
+            <span>{{booking.endHour}}</span>
+        </dd>
+        <dt><span>Field</span></dt>
+        <dd>
+            <div *ngIf="booking.fieldId">
+                <a [routerLink]="['/field', booking.fieldId]">{{booking.fieldId}}</a>
+            </div>
+        </dd>
+        <dt><span>Schedule</span></dt>
+        <dd>
+            <div *ngIf="booking.scheduleId">
+                <a [routerLink]="['/schedule', booking.scheduleId]">{{booking.scheduleId}}</a>
+            </div>
+        </dd>
+        <dt><span>Client Final</span></dt>
+        <dd>
+            <div *ngIf="booking.clientFinalId">
+                <a [routerLink]="['/client-final', booking.clientFinalId]">{{booking.clientFinalId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'booking/'+ booking.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

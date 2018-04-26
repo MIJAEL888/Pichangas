@@ -1,0 +1,76 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "field",
+            "otherEntityName": "field",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "booking",
+            "otherEntityName": "booking",
+            "otherEntityRelationshipName": "schedule"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "dayOfWeek",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 23
+        },
+        {
+            "fieldName": "nameDayOfWeek",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "enumDayOfWeek",
+            "fieldType": "DaysOfWeek",
+            "fieldValues": "SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY"
+        },
+        {
+            "fieldName": "startHour",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 23
+        },
+        {
+            "fieldName": "endHour",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 23
+        },
+        {
+            "fieldName": "cost",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "rate",
+            "fieldType": "Float"
+        }
+    ],
+    "changelogDate": "20180425010838",
+    "entityTableName": "schedule",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}
