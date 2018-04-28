@@ -87,7 +87,7 @@ public class CampusResource {
     public List<CampusDTO> getAllCampuses() {
         log.debug("REST request to get all Campuses");
         return campusService.findAll();
-        }
+    }
 
     /**
      * GET  /campuses/:id : get the "id" campus.

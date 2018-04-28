@@ -203,7 +203,7 @@ public class CampusResourceIntTest {
         // set the field null
         campus.setName(null);
 
-        // Create the Campus, which fails.
+        // create the campus, which fails.
         CampusDTO campusDTO = campusMapper.toDto(campus);
 
         restCampusMockMvc.perform(post("/api/campuses")

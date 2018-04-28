@@ -11,13 +11,12 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {ClientMapper.class, UserAppMapper.class, DistrictMapper.class})
 public interface CampusMapper extends EntityMapper<CampusDTO, Campus> {
 
-    @Mapping(source = "client.id", target = "clientId")
-    @Mapping(source = "district.id", target = "districtId")
+    @Mapping(source = "client", target = "clientDto")
+    @Mapping(source = "district", target = "districtDto")
     CampusDTO toDto(Campus campus);
 
-    @Mapping(source = "clientId", target = "client")
-    @Mapping(target = "fields", ignore = true)
-    @Mapping(source = "districtId", target = "district")
+    @Mapping(source = "clientDto", target = "client")
+    @Mapping(source = "districtDto", target = "district")
     Campus toEntity(CampusDTO campusDTO);
 
     default Campus fromId(Long id) {

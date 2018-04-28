@@ -48,11 +48,11 @@ public class CampusDTO implements Serializable {
 
     private String rating;
 
-    private Long clientId;
+    private ClientDTO clientDto;
 
     private Set<UserAppDTO> userapps = new HashSet<>();
 
-    private Long districtId;
+    private DistrictDTO districtDto;
 
     public Long getId() {
         return id;
@@ -166,28 +166,28 @@ public class CampusDTO implements Serializable {
         this.rating = rating;
     }
 
-    public Long getClientId() {
-        return clientId;
+    public ClientDTO getClientDto() {
+        return clientDto;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setClientDto(ClientDTO clientDto) {
+        this.clientDto = clientDto;
+    }
+
+    public DistrictDTO getDistrictDto() {
+        return districtDto;
+    }
+
+    public void setDistrictDto(DistrictDTO districtDto) {
+        this.districtDto = districtDto;
     }
 
     public Set<UserAppDTO> getUserapps() {
         return userapps;
     }
 
-    public void setUserapps(Set<UserAppDTO> userApps) {
-        this.userapps = userApps;
-    }
-
-    public Long getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(Long districtId) {
-        this.districtId = districtId;
+    public void setUserapps(Set<UserAppDTO> userapps) {
+        this.userapps = userapps;
     }
 
     @Override
