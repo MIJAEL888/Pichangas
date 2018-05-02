@@ -11,10 +11,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {UserAppMapper.class})
 public interface ClientFinalMapper extends EntityMapper<ClientFinalDTO, ClientFinal> {
 
-    @Mapping(source = "userApp.id", target = "userAppId")
+    @Mapping(source = "userApp", target = "userAppDto")
     ClientFinalDTO toDto(ClientFinal clientFinal);
 
-    @Mapping(source = "userAppId", target = "userApp")
+    @Mapping(source = "userAppDto", target = "userApp")
     @Mapping(target = "bookings", ignore = true)
     ClientFinal toEntity(ClientFinalDTO clientFinalDTO);
 

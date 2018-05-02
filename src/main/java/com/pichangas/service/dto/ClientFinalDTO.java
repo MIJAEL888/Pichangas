@@ -28,7 +28,7 @@ public class ClientFinalDTO implements Serializable {
 
     private String numDocument;
 
-    private Long userAppId;
+    private UserAppDTO userAppDto;
 
     public Long getId() {
         return id;
@@ -78,12 +78,12 @@ public class ClientFinalDTO implements Serializable {
         this.numDocument = numDocument;
     }
 
-    public Long getUserAppId() {
-        return userAppId;
+    public UserAppDTO getUserAppDto() {
+        return userAppDto;
     }
 
-    public void setUserAppId(Long userAppId) {
-        this.userAppId = userAppId;
+    public void setUserAppDto(UserAppDTO userAppDto) {
+        this.userAppDto = userAppDto;
     }
 
     @Override

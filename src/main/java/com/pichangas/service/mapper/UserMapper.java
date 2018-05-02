@@ -4,6 +4,7 @@ import com.pichangas.domain.Authority;
 import com.pichangas.domain.User;
 import com.pichangas.service.dto.UserDTO;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,8 +19,13 @@ import java.util.stream.Collectors;
 @Service
 public class UserMapper {
 
+    @Autowired
+    private ClientMapper clientMapper;
+
     public UserDTO userToUserDTO(User user) {
-        return new UserDTO(user);
+        UserDTO userDTO = new UserDTO(user);
+        userDTO.setClientDto(clientMapper.toDto(user.getClient()));
+        return userDTO;
     }
 
     public List<UserDTO> usersToUserDTOs(List<User> users) {
@@ -42,6 +48,7 @@ public class UserMapper {
             user.setImageUrl(userDTO.getImageUrl());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
+            user.setClient(clientMapper.toEntity(userDTO.getClientDto()));
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             if (authorities != null) {
                 user.setAuthorities(authorities);

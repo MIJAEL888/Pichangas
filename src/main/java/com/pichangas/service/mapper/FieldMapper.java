@@ -11,10 +11,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {CampusMapper.class})
 public interface FieldMapper extends EntityMapper<FieldDTO, Field> {
 
-    @Mapping(source = "campus.id", target = "campusId")
+    @Mapping(source = "campus", target = "campusDto")
     FieldDTO toDto(Field field);
 
-    @Mapping(source = "campusId", target = "campus")
+    @Mapping(source = "campusDto", target = "campus")
     @Mapping(target = "schedules", ignore = true)
     @Mapping(target = "bookings", ignore = true)
     Field toEntity(FieldDTO fieldDTO);

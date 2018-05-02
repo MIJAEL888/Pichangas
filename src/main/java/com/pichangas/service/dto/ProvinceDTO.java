@@ -1,6 +1,8 @@
 package com.pichangas.service.dto;
 
 
+import com.pichangas.domain.Department;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -19,7 +21,7 @@ public class ProvinceDTO implements Serializable {
 
     private String code;
 
-    private Long departmentId;
+    private DepartmentDTO departmentDto;
 
     public Long getId() {
         return id;
@@ -45,12 +47,12 @@ public class ProvinceDTO implements Serializable {
         this.code = code;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public DepartmentDTO getDepartmentDto() {
+        return departmentDto;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentDto(DepartmentDTO departmentDto) {
+        this.departmentDto = departmentDto;
     }
 
     @Override

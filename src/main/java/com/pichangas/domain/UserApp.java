@@ -42,11 +42,9 @@ public class UserApp implements Serializable {
     private String googleId;
 
     @OneToOne(mappedBy = "userApp")
-    @JsonIgnore
     private ClientFinal clientFinal;
 
     @ManyToMany(mappedBy = "userapps")
-    @JsonIgnore
     private Set<Campus> campuses = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

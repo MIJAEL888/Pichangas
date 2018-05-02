@@ -27,6 +27,8 @@ public class UserAppDTO implements Serializable {
 
     private String googleId;
 
+    private ClientFinalDTO clientFinalDto;
+
     public Long getId() {
         return id;
     }
@@ -73,6 +75,14 @@ public class UserAppDTO implements Serializable {
 
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
+    }
+
+    public ClientFinalDTO getClientFinalDto() {
+        return clientFinalDto;
+    }
+
+    public void setClientFinalDto(ClientFinalDTO clientFinalDto) {
+        this.clientFinalDto = clientFinalDto;
     }
 
     @Override

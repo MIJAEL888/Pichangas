@@ -36,7 +36,7 @@ public class FieldDTO implements Serializable {
     @NotNull
     private StateField state;
 
-    private Long campusId;
+    private CampusDTO campusDto;
 
     public Long getId() {
         return id;
@@ -102,12 +102,12 @@ public class FieldDTO implements Serializable {
         this.state = state;
     }
 
-    public Long getCampusId() {
-        return campusId;
+    public CampusDTO getCampusDto() {
+        return campusDto;
     }
 
-    public void setCampusId(Long campusId) {
-        this.campusId = campusId;
+    public void setCampusDto(CampusDTO campusDto) {
+        this.campusDto = campusDto;
     }
 
     @Override

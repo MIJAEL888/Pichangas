@@ -11,10 +11,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {DepartmentMapper.class})
 public interface ProvinceMapper extends EntityMapper<ProvinceDTO, Province> {
 
-    @Mapping(source = "department.id", target = "departmentId")
+    @Mapping(source = "department", target = "departmentDto")
     ProvinceDTO toDto(Province province);
 
-    @Mapping(source = "departmentId", target = "department")
+    @Mapping(source = "departmentDto", target = "department")
     @Mapping(target = "districts", ignore = true)
     Province toEntity(ProvinceDTO provinceDTO);
 

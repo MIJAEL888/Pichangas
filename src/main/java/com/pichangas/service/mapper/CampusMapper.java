@@ -17,6 +17,7 @@ public interface CampusMapper extends EntityMapper<CampusDTO, Campus> {
 
     @Mapping(source = "clientDto", target = "client")
     @Mapping(source = "districtDto", target = "district")
+    @Mapping(target = "fields", ignore = true)
     Campus toEntity(CampusDTO campusDTO);
 
     default Campus fromId(Long id) {

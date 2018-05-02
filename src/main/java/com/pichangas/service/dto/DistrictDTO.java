@@ -19,7 +19,7 @@ public class DistrictDTO implements Serializable {
 
     private String code;
 
-    private Long provinceId;
+    private ProvinceDTO provinceDto;
 
     public Long getId() {
         return id;
@@ -45,12 +45,12 @@ public class DistrictDTO implements Serializable {
         this.code = code;
     }
 
-    public Long getProvinceId() {
-        return provinceId;
+    public ProvinceDTO getProvinceDto() {
+        return provinceDto;
     }
 
-    public void setProvinceId(Long provinceId) {
-        this.provinceId = provinceId;
+    public void setProvinceDto(ProvinceDTO provinceDto) {
+        this.provinceDto = provinceDto;
     }
 
     @Override

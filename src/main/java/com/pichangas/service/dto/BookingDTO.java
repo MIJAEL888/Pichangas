@@ -30,11 +30,11 @@ public class BookingDTO implements Serializable {
     @Max(value = 23)
     private Integer endHour;
 
-    private Long fieldId;
+    private FieldDTO fieldDto;
 
-    private Long scheduleId;
+    private ScheduleDTO scheduleDto;
 
-    private Long clientFinalId;
+    private ClientFinalDTO clientFinalDto;
 
     public Long getId() {
         return id;
@@ -84,28 +84,28 @@ public class BookingDTO implements Serializable {
         this.endHour = endHour;
     }
 
-    public Long getFieldId() {
-        return fieldId;
+    public FieldDTO getFieldDto() {
+        return fieldDto;
     }
 
-    public void setFieldId(Long fieldId) {
-        this.fieldId = fieldId;
+    public void setFieldDto(FieldDTO fieldDto) {
+        this.fieldDto = fieldDto;
     }
 
-    public Long getScheduleId() {
-        return scheduleId;
+    public ScheduleDTO getScheduleDto() {
+        return scheduleDto;
     }
 
-    public void setScheduleId(Long scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setScheduleDto(ScheduleDTO scheduleDto) {
+        this.scheduleDto = scheduleDto;
     }
 
-    public Long getClientFinalId() {
-        return clientFinalId;
+    public ClientFinalDTO getClientFinalDto() {
+        return clientFinalDto;
     }
 
-    public void setClientFinalId(Long clientFinalId) {
-        this.clientFinalId = clientFinalId;
+    public void setClientFinalDto(ClientFinalDTO clientFinalDto) {
+        this.clientFinalDto = clientFinalDto;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.pichangas.config.Constants;
 import com.pichangas.domain.Authority;
 import com.pichangas.domain.User;
 
+import com.pichangas.service.mapper.ClientMapper;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -52,6 +53,8 @@ public class UserDTO {
     private Instant lastModifiedDate;
 
     private Set<String> authorities;
+
+    private ClientDTO clientDto;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -177,6 +180,14 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public ClientDTO getClientDto() {
+        return clientDto;
+    }
+
+    public void setClientDto(ClientDTO clientDto) {
+        this.clientDto = clientDto;
     }
 
     @Override

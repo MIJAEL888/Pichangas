@@ -11,11 +11,11 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {ProvinceMapper.class})
 public interface DistrictMapper extends EntityMapper<DistrictDTO, District> {
 
-    @Mapping(source = "province.id", target = "provinceId")
+    @Mapping(source = "province", target = "provinceDto")
     DistrictDTO toDto(District district);
 
     @Mapping(target = "campuses", ignore = true)
-    @Mapping(source = "provinceId", target = "province")
+    @Mapping(source = "provinceDto", target = "province")
     District toEntity(DistrictDTO districtDTO);
 
     default District fromId(Long id) {

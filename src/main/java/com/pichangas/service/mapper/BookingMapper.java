@@ -11,14 +11,14 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {FieldMapper.class, ScheduleMapper.class, ClientFinalMapper.class})
 public interface BookingMapper extends EntityMapper<BookingDTO, Booking> {
 
-    @Mapping(source = "field.id", target = "fieldId")
-    @Mapping(source = "schedule.id", target = "scheduleId")
-    @Mapping(source = "clientFinal.id", target = "clientFinalId")
+    @Mapping(source = "field", target = "fieldDto")
+    @Mapping(source = "schedule", target = "scheduleDto")
+    @Mapping(source = "clientFinal", target = "clientFinalDto")
     BookingDTO toDto(Booking booking);
 
-    @Mapping(source = "fieldId", target = "field")
-    @Mapping(source = "scheduleId", target = "schedule")
-    @Mapping(source = "clientFinalId", target = "clientFinal")
+    @Mapping(source = "fieldDto", target = "field")
+    @Mapping(source = "scheduleDto", target = "schedule")
+    @Mapping(source = "clientFinalDto", target = "clientFinal")
     Booking toEntity(BookingDTO bookingDTO);
 
     default Booking fromId(Long id) {
