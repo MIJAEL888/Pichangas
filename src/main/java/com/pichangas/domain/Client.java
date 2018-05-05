@@ -268,6 +268,24 @@ public class Client implements Serializable {
         return Objects.hashCode(getId());
     }
 
+    public Client() {
+    }
+
+    public Client(String name, String surName, TypeId typeId, String numberId, String email, String mobile,
+                  String address, String contactName, Boolean status, LocalDate dateSuscription, String comment) {
+        this.name = name;
+        this.surName = surName;
+        this.typeId = typeId;
+        this.numberId = numberId;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.contactName = contactName;
+        this.status = status;
+        this.dateSuscription = dateSuscription;
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         return "Client{" +

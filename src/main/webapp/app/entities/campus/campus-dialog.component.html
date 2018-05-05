@@ -128,9 +128,9 @@
 
         <div class="form-group">
             <label class="form-control-label" for="field_client">Client</label>
-            <select class="form-control" id="field_client" name="client" [(ngModel)]="campus.clientId" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="clientOption.id" *ngFor="let clientOption of clients; trackBy: trackClientById">{{clientOption.id}}</option>
+            <select class="form-control" id="field_client" name="client" [(ngModel)]="campus.clientDto.id" >
+                <option [ngValue]="null">-- Seleccione --</option>
+                <option [ngValue]="clientOption.id" *ngFor="let clientOption of clients; trackBy: trackClientById">{{clientOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
@@ -142,8 +142,8 @@
         <div class="form-group">
             <label class="form-control-label" for="field_district">District</label>
             <select class="form-control" id="field_district" name="district" [(ngModel)]="campus.districtId" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="districtOption.id" *ngFor="let districtOption of districts; trackBy: trackDistrictById">{{districtOption.id}}</option>
+                <option [ngValue]="null">-- Seleccione --</option>
+                <option [ngValue]="districtOption.id" *ngFor="let districtOption of districts; trackBy: trackDistrictById">{{districtOption.name}}</option>
             </select>
         </div>
     </div>

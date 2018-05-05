@@ -17,17 +17,17 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="surName"><span>Sur Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="typeId"><span>Type Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="numberId"><span>Number Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="email"><span>Email</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="mobile"><span>Mobile</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="address"><span>Address</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="contactName"><span>Contact Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="name"><span>Nombre</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="surName"><span>Apellido</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="typeId"><span>Doc.</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="numberId"><span>Number Doc.</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="email"><span>Correo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="mobile"><span>Celular</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="address"><span>Direccion</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="contactName"><span>Contact Name</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="dateSuscription"><span>Date Suscription</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="comment"><span>Comment</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="dateSuscription"><span>Date Suscription</span> <span class="fa fa-sort"></span></th>-->
+            <!--<th jhiSortBy="comment"><span>Comment</span> <span class="fa fa-sort"></span></th>-->
             <th></th>
             </tr>
             </thead>
@@ -41,10 +41,10 @@
                 <td>{{client.email}}</td>
                 <td>{{client.mobile}}</td>
                 <td>{{client.address}}</td>
-                <td>{{client.contactName}}</td>
+                <!--<td>{{client.contactName}}</td>-->
                 <td>{{client.status}}</td>
-                <td>{{client.dateSuscription | date:'mediumDate'}}</td>
-                <td>{{client.comment}}</td>
+                <!--<td>{{client.dateSuscription | date:'mediumDate'}}</td>-->
+                <!--<td>{{client.comment}}</td>-->
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

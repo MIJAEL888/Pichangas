@@ -1,4 +1,5 @@
 import { BaseEntity } from './../../shared';
+import {Client} from "../client";
 
 export class Campus implements BaseEntity {
     constructor(
@@ -16,7 +17,7 @@ export class Campus implements BaseEntity {
         public codPostal?: string,
         public status?: boolean,
         public rating?: string,
-        public clientId?: number,
+        public clientDto?: Client,
         public fields?: BaseEntity[],
         public userapps?: BaseEntity[],
         public districtId?: number,

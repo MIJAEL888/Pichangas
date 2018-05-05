@@ -111,6 +111,16 @@ public class District implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+
+    public District() {
+    }
+
+    public District(String name, String code, Province province) {
+        this.name = name;
+        this.code = code;
+        this.province = province;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

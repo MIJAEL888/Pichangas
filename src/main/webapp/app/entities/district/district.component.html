@@ -17,9 +17,10 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="code"><span>Code</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="provinceId"><span>Province</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="name"><span>Nombre</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="code"><span>Codigo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="provinceId"><span>Provincia</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="departmentId"><span>Departamento</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -29,8 +30,13 @@
                 <td>{{district.name}}</td>
                 <td>{{district.code}}</td>
                 <td>
-                    <div *ngIf="district.provinceId">
-                        <a [routerLink]="['../province', district.provinceId  ]" >{{district.provinceId}}</a>
+                    <div *ngIf="district.provinceDto">
+                        <a [routerLink]="['../province', district.provinceDto.id  ]" >{{district.provinceDto.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="district.provinceDto.departmentDto">
+                        <a [routerLink]="['../department', district.provinceDto.departmentDto.id  ]" >{{district.provinceDto.departmentDto.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

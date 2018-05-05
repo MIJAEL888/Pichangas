@@ -98,6 +98,18 @@ public class ClientResource {
     }
 
     /**
+     * GET  /clients : get all the clients.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of clients in body
+     */
+    @GetMapping("/clients/all")
+    @Timed
+    public List<ClientDTO> getAllClients() {
+        log.debug("REST request to get all Campuses");
+        return clientService.findAll();
+    }
+
+    /**
      * GET  /clients/:id : get the "id" client.
      *
      * @param id the id of the clientDTO to retrieve

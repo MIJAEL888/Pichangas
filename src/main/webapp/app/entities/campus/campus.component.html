@@ -17,21 +17,21 @@
             <thead>
             <tr>
             <th><span>ID</span></th>
-            <th><span>Name</span></th>
-            <th><span>Description</span></th>
-            <th><span>Comment</span></th>
+            <th><span>Nombre</span></th>
+            <!--<th><span>Description</span></th>-->
+            <!--<th><span>Comment</span></th>-->
             <th><span>Open Time</span></th>
             <th><span>Close Time</span></th>
-            <th><span>Aditional</span></th>
+            <!--<th><span>Aditional</span></th>-->
             <th><span>Addresss</span></th>
-            <th><span>Reference</span></th>
+            <!--<th><span>Reference</span></th>-->
             <th><span>Latitude</span></th>
             <th><span>Longitude</span></th>
-            <th><span>Cod Postal</span></th>
+            <!--<th><span>Cod Postal</span></th>-->
             <th><span>Status</span></th>
-            <th><span>Rating</span></th>
+            <!--<th><span>Rating</span></th>-->
             <th><span>Client</span></th>
-            <th><span>Userapp</span></th>
+            <!--<th><span>Userapp</span></th>-->
             <th><span>District</span></th>
             <th></th>
             </tr>
@@ -40,28 +40,28 @@
             <tr *ngFor="let campus of campuses ;trackBy: trackId">
                 <td><a [routerLink]="['../campus', campus.id ]">{{campus.id}}</a></td>
                 <td>{{campus.name}}</td>
-                <td>{{campus.description}}</td>
-                <td>{{campus.comment}}</td>
+                <!--<td>{{campus.description}}</td>-->
+                <!--<td>{{campus.comment}}</td>-->
                 <td>{{campus.openTime}}</td>
                 <td>{{campus.closeTime}}</td>
-                <td>{{campus.aditional}}</td>
+                <!--<td>{{campus.aditional}}</td>-->
                 <td>{{campus.addresss}}</td>
-                <td>{{campus.reference}}</td>
+                <!--<td>{{campus.reference}}</td>-->
                 <td>{{campus.latitude}}</td>
                 <td>{{campus.longitude}}</td>
-                <td>{{campus.codPostal}}</td>
+                <!--<td>{{campus.codPostal}}</td>-->
                 <td>{{campus.status}}</td>
-                <td>{{campus.rating}}</td>
+                <!--<td>{{campus.rating}}</td>-->
                 <td>
-                    <div *ngIf="campus.clientId">
-                        <a [routerLink]="['../client', campus.clientId  ]" >{{campus.clientId}}</a>
+                    <div *ngIf="campus.clientDto">
+                        <a [routerLink]="['../client', campus.clientDto.id  ]" >{{campus.clientDto.name}}</a>
                     </div>
                 </td>
-                <td>
-                    <span *ngFor="let userapp of campus.userapps; let last = last">
-                            <a class="form-control-static" [routerLink]="['../user-app', userapp?.id ]">{{userapp.id}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
+                <!--<td>-->
+                    <!--<span *ngFor="let userapp of campus.userapps; let last = last">-->
+                            <!--<a class="form-control-static" [routerLink]="['../user-app', userapp?.id ]">{{userapp.id}}</a>{{last ? '' : ', '}}-->
+                        <!--</span>-->
+                <!--</td>-->
                 <td>
                     <div *ngIf="campus.districtId">
                         <a [routerLink]="['../district', campus.districtId  ]" >{{campus.districtId}}</a>

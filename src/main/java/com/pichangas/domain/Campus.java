@@ -341,6 +341,30 @@ public class Campus implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+
+    public Campus() {
+    }
+
+    public Campus(String name, String description, String comment, Integer openTime, Integer closeTime, String aditional,
+                  String addresss, String reference, Double latitude, Double longitude, String codPostal, Boolean status,
+                  String rating, Client client, District district) {
+        this.name = name;
+        this.description = description;
+        this.comment = comment;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.aditional = aditional;
+        this.addresss = addresss;
+        this.reference = reference;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.codPostal = codPostal;
+        this.status = status;
+        this.rating = rating;
+        this.client = client;
+        this.district = district;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

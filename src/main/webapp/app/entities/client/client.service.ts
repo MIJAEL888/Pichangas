@@ -44,6 +44,10 @@ export class ClientService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
+    getAll(): Observable<HttpResponse<Client[]>> {
+        return this.http.get<Client[]>(this.resourceUrl + "/all", { observe: 'response' })
+            .map((res: HttpResponse<Client[]>) => this.convertArrayResponse(res));
+    }
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Client = this.convertItemFromServer(res.body);
         return res.clone({body});

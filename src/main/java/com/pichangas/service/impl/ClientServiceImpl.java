@@ -12,6 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * Service Implementation for managing Client.
@@ -57,6 +61,17 @@ public class ClientServiceImpl implements ClientService {
         log.debug("Request to get all Clients");
         return clientRepository.findAll(pageable)
             .map(clientMapper::toDto);
+    }
+    /**
+     * Get all the clients.
+     *
+     * @return the list of entities
+     */
+    @Override
+    public List<ClientDTO> findAll() {
+        return clientRepository.findAll().stream()
+            .map(clientMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

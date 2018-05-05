@@ -42,7 +42,8 @@ export class CampusDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.clientService.query()
-            .subscribe((res: HttpResponse<Client[]>) => { this.clients = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<Client[]>) => { this.clients = res.body; },
+                (res: HttpErrorResponse) => this.onError(res.message));
         this.userAppService.query()
             .subscribe((res: HttpResponse<UserApp[]>) => { this.userapps = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.districtService.query()

@@ -95,6 +95,14 @@ public class Department implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+    public Department() {
+    }
+
+    public Department(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -1,4 +1,5 @@
 import { BaseEntity } from './../../shared';
+import {Province} from "../province";
 
 export class District implements BaseEntity {
     constructor(
@@ -6,7 +7,7 @@ export class District implements BaseEntity {
         public name?: string,
         public code?: string,
         public campuses?: BaseEntity[],
-        public provinceId?: number,
+        public provinceDto?: Province,
     ) {
     }
 }
