@@ -19,4 +19,5 @@ public interface CampusRepository extends JpaRepository<Campus, Long> {
     @Query("select campus from Campus campus left join fetch campus.userapps where campus.id =:id")
     Campus findOneWithEagerRelationships(@Param("id") Long id);
 
+    List<Campus> findAllByClient_Id(Long id);
 }

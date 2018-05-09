@@ -8,6 +8,7 @@ import com.pichangas.service.dto.CampusDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,6 +88,18 @@ public class CampusResource {
     public List<CampusDTO> getAllCampuses() {
         log.debug("REST request to get all Campuses");
         return campusService.findAll();
+    }
+
+    /**
+     * GET  /campuses/client/:id : get all the campuses.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of campuses in body
+     */
+    @GetMapping("/campuses/client/{id}")
+    @Timed
+    public ResponseEntity<List<CampusDTO>> getAllCampusesByClient(@PathVariable Long id) {
+        log.debug("REST request to get all Campuses");
+        return new ResponseEntity<>(campusService.findAllByClient(id), HttpStatus.OK);
     }
 
     /**

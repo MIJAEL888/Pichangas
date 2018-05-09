@@ -42,6 +42,11 @@ export class CampusService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
+    getAllByClient(id: number): Observable<HttpResponse<Campus[]>> {
+        return this.http.get<Campus[]>(`${this.resourceUrl}/client/${id}`, { observe: 'response'})
+            .map((res: HttpResponse<Campus[]>) => this.convertArrayResponse(res));
+    }
+
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Campus = this.convertItemFromServer(res.body);
         return res.clone({body});

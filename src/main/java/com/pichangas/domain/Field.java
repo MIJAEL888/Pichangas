@@ -233,6 +233,22 @@ public class Field implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+
+    public Field() {
+    }
+
+    public Field(String name, String description, String comment, Integer numPlayers, TypeField typeField, TypeSport typeSport,
+                 StateField state, Campus campus) {
+        this.name = name;
+        this.description = description;
+        this.comment = comment;
+        this.numPlayers = numPlayers;
+        this.typeField = typeField;
+        this.typeSport = typeSport;
+        this.state = state;
+        this.campus = campus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

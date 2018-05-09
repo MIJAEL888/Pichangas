@@ -12,6 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * Service Implementation for managing Field.
@@ -57,6 +61,20 @@ public class FieldServiceImpl implements FieldService {
         log.debug("Request to get all Fields");
         return fieldRepository.findAll(pageable)
             .map(fieldMapper::toDto);
+    }
+
+    /**
+     * Get all the fields.
+     *
+     * @param id campus id
+     * @return the list of entities
+     */
+    @Override
+    public List<FieldDTO> findAll(Long id) {
+        log.debug("Request to get all Fields by campus");
+        return fieldRepository.findAllByCampus_Id(id).stream()
+            .map(fieldMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

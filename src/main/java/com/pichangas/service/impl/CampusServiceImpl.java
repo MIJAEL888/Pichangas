@@ -61,6 +61,19 @@ public class CampusServiceImpl implements CampusService {
     }
 
     /**
+     * Get all the campuses by id client.
+     *
+     * @return the list of entities
+     */
+    @Override
+    public List<CampusDTO> findAllByClient(Long id) {
+        log.debug("Request to get all Campuses by client");
+        return campusRepository.findAllByClient_Id(id).stream()
+            .map(campusMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
      * Get one campus by id.
      *
      * @param id the id of the entity

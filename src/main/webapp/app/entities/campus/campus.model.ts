@@ -1,4 +1,4 @@
-import { BaseEntity } from './../../shared';
+import { BaseEntity } from "./../../shared";
 import {Client} from "../client";
 
 export class Campus implements BaseEntity {

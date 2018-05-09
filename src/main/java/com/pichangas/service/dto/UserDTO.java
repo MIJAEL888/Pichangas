@@ -8,6 +8,7 @@ import com.pichangas.domain.User;
 import com.pichangas.service.mapper.ClientMapper;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.*;
 import java.time.Instant;

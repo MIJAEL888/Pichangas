@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-md-3">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+            <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
+                <label class="form-control-label" for="field_client">Client</label>
+                <select class="form-control" id="field_client" name="client" [(ngModel)]="homeModel.clientId" (ngModelChange)="onChangeClient($event)">
+                    <option [ngValue]="null"></option>
+                    <option *ngFor="let clientOption of clients" [ngValue]="clientOption.id">{{clientOption.name}}</option>
+                </select>
+            </div>
+            <div *jhiHasAnyAuthority="'ROLE_USER'">
+                <div *ngIf="homeModel.clientId" class="form-group"  >
+                    <label class="form-control-label" for="field_campus">Campus</label>
+                    <select class="form-control" id="field_campus" name="campus" [(ngModel)]="homeModel.campusId" (ngModelChange)="onChangeCampus($event)">
+                        <option [ngValue]="null"></option>
+                        <option *ngFor="let campusOption of campuses" [ngValue]="campusOption.id">{{campusOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group" *ngIf="homeModel.campusId && homeModel.clientId">
+                    <label class="form-control-label" for="field_field">Field</label>
+                    <select class="form-control" id="field_field" name="field" [(ngModel)]="homeModel.fieldId" >
+                        <option [ngValue]="null"></option>
+                        <option *ngFor="let fieldOption of fields; trackBy: trackFieldById" [ngValue]="fieldOption.id">{{fieldOption.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-9">
+        <div *ngIf="homeModel.fieldId" class="dx-viewport" >
+            <dx-scheduler
+                [dataSource]="appointmentsData"
+                [views]='["day", "week", "month"]'
+                currentView="week"
+                [currentDate]="currentDate"
+                [startDayHour]="9"
+                [cellDuration]="60"
+                [showAllDayPanel]="false"
+                [height]="600">
+            </dx-scheduler>
+        </div>
+    </div>
+</div>
+
+

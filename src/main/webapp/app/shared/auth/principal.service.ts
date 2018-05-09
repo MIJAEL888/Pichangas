@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AccountService } from './account.service';
+import {Account} from "..";
 
 @Injectable()
 export class Principal {
-    private userIdentity: any;
+    private userIdentity: Account;
     private authenticated = false;
     private authenticationState = new Subject<any>();
 
     constructor(
-        private account: AccountService
+        private accountService: AccountService
     ) {}
 
     authenticate(identity) {
@@ -61,7 +62,7 @@ export class Principal {
         }
 
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
-        return this.account.get().toPromise().then((response) => {
+        return this.accountService.get().toPromise().then((response) => {
             const account = response.body;
             if (account) {
                 this.userIdentity = account;
@@ -73,6 +74,7 @@ export class Principal {
             this.authenticationState.next(this.userIdentity);
             return this.userIdentity;
         }).catch((err) => {
+            console.error(err);
             this.userIdentity = null;
             this.authenticated = false;
             this.authenticationState.next(this.userIdentity);

@@ -1,42 +1,30 @@
-<div class="row">
-    <!--<div class="col-md-3">-->
+
+<div [ngSwitch]="isAuthenticated()">
+
+    <div *ngSwitchCase="true">
+        <!--<div class="col-md-3">-->
         <!--<span class="hipster img-fluid rounded"></span>-->
-    <!--</div>-->
-    <div class="col-md-12">
-        <h3>Bienvenido a pichangas.pe</h3>
-
-        <div [ngSwitch]="isAuthenticated()">
-            <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-
-                <div class="form-group">
-                    <label class="form-control-label" for="field_campus">Campus</label>
-                    <select class="form-control" id="field_campus" name="campus" [(ngModel)]="homeModel.campusId" >
-                        <option [ngValue]="null"></option>
-                        <option *ngFor="let campusOption of campuses" [ngValue]="campusOption.id">{{campusOption.name}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_client">Client</label>
-                    <select class="form-control" id="field_client" name="client" [(ngModel)]="homeModel.clientId" >
-                        <option [ngValue]="null">-- Seleccione --</option>
-                        <option *ngFor="let clientOption of clients" [ngValue]="clientOption.id">{{clientOption.name}}</option>
-                    </select>
-                </div>
-
-            </form>
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span *ngIf="account"
-                   > You are logged in as user "{{account.login}}". </span>
-            </div>
-
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span>If you want to </span>
-                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
-            </div>
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span>You don't have an account yet?</span>
-                <a class="alert-link" routerLink="register">Register a new account</a>
+        <!--</div>-->
+        <div class="row">
+            <div class="col-md-12">
+                <h3>{{account.login}} bienvenido a pichangas.pe</h3>
             </div>
         </div>
+        <jhi-home-calendar></jhi-home-calendar>
     </div>
+    <div class="alert alert-success" *ngSwitchCase="false">
+        <span> Pichangas.pe </span>
+        <span>You don't have an account yet?</span>
+        <a class="alert-link" routerLink="register">Register a new account</a>
+    </div>
+
+
+    <!--<div class="alert alert-warning" *ngSwitchCase="false">-->
+        <!--<span>If you want to </span>-->
+        <!--<a class="alert-link" (click)="login()">sign in</a><span>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>-->
+    <!--</div>-->
+    <!--<div class="alert alert-warning" *ngSwitchCase="false">-->
+        <!--<span>You don't have an account yet?</span>-->
+        <!--<a class="alert-link" routerLink="register">Register a new account</a>-->
+    <!--</div>-->
 </div>

@@ -1,6 +1,5 @@
 package com.pichangas.service;
 
-import com.pichangas.config.CacheConfiguration;
 import com.pichangas.domain.Authority;
 import com.pichangas.domain.User;
 import com.pichangas.repository.AuthorityRepository;
@@ -9,9 +8,11 @@ import com.pichangas.config.Constants;
 import com.pichangas.repository.UserRepository;
 import com.pichangas.security.AuthoritiesConstants;
 import com.pichangas.security.SecurityUtils;
+import com.pichangas.service.mapper.UserMapper;
 import com.pichangas.service.util.RandomUtil;
 import com.pichangas.service.dto.UserDTO;
 
+import com.pichangas.web.rest.errors.InternalServerErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -48,14 +49,19 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, PersistentTokenRepository persistentTokenRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService,
+                       PersistentTokenRepository persistentTokenRepository, AuthorityRepository authorityRepository,
+                       CacheManager cacheManager, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialService = socialService;
         this.persistentTokenRepository = persistentTokenRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -248,8 +254,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+    public UserDTO getUserWithAuthorities() {
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin)
+            .map(userMapper::userToUserDTO).orElseThrow(() -> new InternalServerErrorException("User could not be found"));
     }
 
     /**

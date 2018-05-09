@@ -4,6 +4,8 @@ import com.pichangas.service.dto.FieldDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing Field.
  */
@@ -24,6 +26,14 @@ public interface FieldService {
      * @return the list of entities
      */
     Page<FieldDTO> findAll(Pageable pageable);
+
+    /**
+     * Get all the fields.
+     *
+     * @param id campus id
+     * @return the list of entities
+     */
+    List<FieldDTO> findAll(Long id);
 
     /**
      * Get the "id" field.

@@ -42,6 +42,11 @@ export class FieldService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
+    getByCampus(id: number): Observable<HttpResponse<Field[]>>{
+        return this.http.get<Field[]>(`${this.resourceUrl}/campus/${id}`, { observe: 'response' })
+            .map((res: HttpResponse<Field[]>) => this.convertArrayResponse(res));
+    }
+
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Field = this.convertItemFromServer(res.body);
         return res.clone({body});

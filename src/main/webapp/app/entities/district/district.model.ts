@@ -1,4 +1,4 @@
-import { BaseEntity } from './../../shared';
+import { BaseEntity } from "./../../shared";
 import {Province} from "../province";
 
 export class District implements BaseEntity {

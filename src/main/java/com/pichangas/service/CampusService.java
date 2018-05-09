@@ -24,6 +24,13 @@ public interface CampusService {
     List<CampusDTO> findAll();
 
     /**
+     * Get all the campuses by client.
+     *
+     * @return the list of entities
+     */
+    List<CampusDTO> findAllByClient(Long id);
+
+    /**
      * Get the "id" campus.
      *
      * @param id the id of the entity

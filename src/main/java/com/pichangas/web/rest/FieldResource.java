@@ -98,6 +98,19 @@ public class FieldResource {
     }
 
     /**
+     * GET  /fields : get all the fields.
+     *
+     * @param id the campus id
+     * @return the ResponseEntity with status 200 (OK) and the list of fields in body
+     */
+    @GetMapping("/fields/campus/{id}")
+    @Timed
+    public ResponseEntity<List<FieldDTO>> getAllFields(@PathVariable Long id) {
+        log.debug("REST request to get a page of Fields");
+        return new ResponseEntity<>(fieldService.findAll(id), HttpStatus.OK);
+    }
+
+    /**
      * GET  /fields/:id : get the "id" field.
      *
      * @param id the id of the fieldDTO to retrieve
