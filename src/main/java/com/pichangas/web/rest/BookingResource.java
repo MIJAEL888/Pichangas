@@ -87,7 +87,19 @@ public class BookingResource {
     public List<BookingDTO> getAllBookings() {
         log.debug("REST request to get all Bookings");
         return bookingService.findAll();
-        }
+    }
+
+    /**
+     * GET  /bookings : get all the bookings.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of bookings in body
+     */
+    @GetMapping("/bookings/field/{id}")
+    @Timed
+    public List<BookingDTO> getAllBookingsByField(@PathVariable Long id) {
+        log.debug("REST request to get all Bookings");
+        return bookingService.findAllByField(id);
+    }
 
     /**
      * GET  /bookings/:id : get the "id" booking.

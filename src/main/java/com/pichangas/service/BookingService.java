@@ -24,6 +24,14 @@ public interface BookingService {
     List<BookingDTO> findAll();
 
     /**
+     * Get all the bookings.
+     *
+     * @param id the id of the Field
+     * @return the list of entities
+     */
+    List<BookingDTO> findAllByField(Long id);
+
+    /**
      * Get the "id" booking.
      *
      * @param id the id of the entity

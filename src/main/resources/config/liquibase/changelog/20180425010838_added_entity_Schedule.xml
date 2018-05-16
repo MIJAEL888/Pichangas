@@ -54,12 +54,30 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="text" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="start_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="all_day" type="bit">
+                <constraints nullable="true" />
+            </column>
+
             <column name="field_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="schedule" columnName="start_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="schedule" columnName="end_date" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

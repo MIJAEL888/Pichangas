@@ -53,12 +53,28 @@
             ],
             "fieldValidateRulesMin": 0,
             "fieldValidateRulesMax": 23
+        },
+        {
+            "fieldName": "text",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "startDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "endDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "allDay",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180425010839",
-    "entityTableName": "booking",
     "dto": "mapstruct",
-    "pagination": "no",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "booking",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
 }

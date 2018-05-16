@@ -2,6 +2,7 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import { Schedule } from './schedule.model';
 import { ScheduleService } from './schedule.service';
 
@@ -10,6 +11,7 @@ export class SchedulePopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
+        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private scheduleService: ScheduleService
@@ -29,6 +31,10 @@ export class SchedulePopupService {
                 this.scheduleService.find(id)
                     .subscribe((scheduleResponse: HttpResponse<Schedule>) => {
                         const schedule: Schedule = scheduleResponse.body;
+                        schedule.startDate = this.datePipe
+                            .transform(schedule.startDate, 'yyyy-MM-ddTHH:mm:ss');
+                        schedule.endDate = this.datePipe
+                            .transform(schedule.endDate, 'yyyy-MM-ddTHH:mm:ss');
                         this.ngbModalRef = this.scheduleModalRef(component, schedule);
                         resolve(this.ngbModalRef);
                     });

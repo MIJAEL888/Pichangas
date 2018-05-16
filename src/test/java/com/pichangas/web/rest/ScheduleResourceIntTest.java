@@ -24,8 +24,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
 
+import static com.pichangas.web.rest.TestUtil.sameInstant;
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -65,6 +70,18 @@ public class ScheduleResourceIntTest {
 
     private static final Float DEFAULT_RATE = 1F;
     private static final Float UPDATED_RATE = 2F;
+
+    private static final String DEFAULT_TEXT = "AAAAAAAAAA";
+    private static final String UPDATED_TEXT = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_START_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_START_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final ZonedDateTime DEFAULT_END_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_END_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Boolean DEFAULT_ALL_DAY = false;
+    private static final Boolean UPDATED_ALL_DAY = true;
 
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -117,7 +134,11 @@ public class ScheduleResourceIntTest {
             .endHour(DEFAULT_END_HOUR)
             .cost(DEFAULT_COST)
             .price(DEFAULT_PRICE)
-            .rate(DEFAULT_RATE);
+            .rate(DEFAULT_RATE)
+            .text(DEFAULT_TEXT)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE)
+            .allDay(DEFAULT_ALL_DAY);
         return schedule;
     }
 
@@ -150,6 +171,10 @@ public class ScheduleResourceIntTest {
         assertThat(testSchedule.getCost()).isEqualTo(DEFAULT_COST);
         assertThat(testSchedule.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testSchedule.getRate()).isEqualTo(DEFAULT_RATE);
+        assertThat(testSchedule.getText()).isEqualTo(DEFAULT_TEXT);
+        assertThat(testSchedule.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testSchedule.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testSchedule.isAllDay()).isEqualTo(DEFAULT_ALL_DAY);
     }
 
     @Test
@@ -190,7 +215,11 @@ public class ScheduleResourceIntTest {
             .andExpect(jsonPath("$.[*].endHour").value(hasItem(DEFAULT_END_HOUR)))
             .andExpect(jsonPath("$.[*].cost").value(hasItem(DEFAULT_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.doubleValue())));
+            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.doubleValue())))
+            .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_DATE))))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_DATE))))
+            .andExpect(jsonPath("$.[*].allDay").value(hasItem(DEFAULT_ALL_DAY.booleanValue())));
     }
 
     @Test
@@ -211,7 +240,11 @@ public class ScheduleResourceIntTest {
             .andExpect(jsonPath("$.endHour").value(DEFAULT_END_HOUR))
             .andExpect(jsonPath("$.cost").value(DEFAULT_COST.doubleValue()))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
-            .andExpect(jsonPath("$.rate").value(DEFAULT_RATE.doubleValue()));
+            .andExpect(jsonPath("$.rate").value(DEFAULT_RATE.doubleValue()))
+            .andExpect(jsonPath("$.text").value(DEFAULT_TEXT.toString()))
+            .andExpect(jsonPath("$.startDate").value(sameInstant(DEFAULT_START_DATE)))
+            .andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_DATE)))
+            .andExpect(jsonPath("$.allDay").value(DEFAULT_ALL_DAY.booleanValue()));
     }
 
     @Test
@@ -241,7 +274,11 @@ public class ScheduleResourceIntTest {
             .endHour(UPDATED_END_HOUR)
             .cost(UPDATED_COST)
             .price(UPDATED_PRICE)
-            .rate(UPDATED_RATE);
+            .rate(UPDATED_RATE)
+            .text(UPDATED_TEXT)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
+            .allDay(UPDATED_ALL_DAY);
         ScheduleDTO scheduleDTO = scheduleMapper.toDto(updatedSchedule);
 
         restScheduleMockMvc.perform(put("/api/schedules")
@@ -261,6 +298,10 @@ public class ScheduleResourceIntTest {
         assertThat(testSchedule.getCost()).isEqualTo(UPDATED_COST);
         assertThat(testSchedule.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testSchedule.getRate()).isEqualTo(UPDATED_RATE);
+        assertThat(testSchedule.getText()).isEqualTo(UPDATED_TEXT);
+        assertThat(testSchedule.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testSchedule.getEndDate()).isEqualTo(UPDATED_END_DATE);
+        assertThat(testSchedule.isAllDay()).isEqualTo(UPDATED_ALL_DAY);
     }
 
     @Test

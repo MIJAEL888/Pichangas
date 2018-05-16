@@ -36,6 +36,22 @@
         <dd>
             <span>{{schedule.rate}}</span>
         </dd>
+        <dt><span>Text</span></dt>
+        <dd>
+            <span>{{schedule.text}}</span>
+        </dd>
+        <dt><span>Start Date</span></dt>
+        <dd>
+            <span>{{schedule.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>End Date</span></dt>
+        <dd>
+            <span>{{schedule.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>All Day</span></dt>
+        <dd>
+            <span>{{schedule.allDay}}</span>
+        </dd>
         <dt><span>Field</span></dt>
         <dd>
             <div *ngIf="schedule.fieldId">

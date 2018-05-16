@@ -24,6 +24,22 @@
         <dd>
             <span>{{booking.endHour}}</span>
         </dd>
+        <dt><span>Text</span></dt>
+        <dd>
+            <span>{{booking.text}}</span>
+        </dd>
+        <dt><span>Start Date</span></dt>
+        <dd>
+            <span>{{booking.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>End Date</span></dt>
+        <dd>
+            <span>{{booking.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>All Day</span></dt>
+        <dd>
+            <span>{{booking.allDay}}</span>
+        </dd>
         <dt><span>Field</span></dt>
         <dd>
             <div *ngIf="booking.fieldId">

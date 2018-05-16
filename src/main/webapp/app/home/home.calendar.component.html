@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group" *ngIf="homeModel.campusId && homeModel.clientId">
                     <label class="form-control-label" for="field_field">Field</label>
-                    <select class="form-control" id="field_field" name="field" [(ngModel)]="homeModel.fieldId" >
+                    <select class="form-control" id="field_field" name="field" [(ngModel)]="homeModel.fieldId" (ngModelChange)="onChangeField($event)">
                         <option [ngValue]="null"></option>
                         <option *ngFor="let fieldOption of fields; trackBy: trackFieldById" [ngValue]="fieldOption.id">{{fieldOption.name}}</option>
                     </select>
@@ -30,14 +30,30 @@
     <div class="col-md-9">
         <div *ngIf="homeModel.fieldId" class="dx-viewport" >
             <dx-scheduler
-                [dataSource]="appointmentsData"
+                id="scheduler"
+                [(dataSource)]="bookings"
                 [views]='["day", "week", "month"]'
                 currentView="week"
                 [currentDate]="currentDate"
-                [startDayHour]="9"
+                [startDayHour]="8"
                 [cellDuration]="60"
                 [showAllDayPanel]="false"
-                [height]="600">
+                [height]="600"
+                [maxAppointmentsPerCell]="1"
+                (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
+                (onAppointmentAdded)="onAppointmentAdded($event)"
+                (onAppointmentAdding)="onAppointmentAdding($event)">
+                <dxo-editing
+                             [allowAdding]="true"
+                             [allowUpdating]="true"
+                             [allowDeleting]="true"
+                             [allowResizing]="false"
+                             [allowDragging]="false">
+                </dxo-editing>
+                <!--<dxi-resource-->
+                    <!--fieldExpr="fieldId"-->
+                    <!--[dataSource]="homeModel.fieldId">-->
+                <!--</dxi-resource>-->
             </dx-scheduler>
         </div>
     </div>

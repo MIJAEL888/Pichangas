@@ -1,6 +1,7 @@
 package com.pichangas.service.dto;
 
 
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -36,6 +37,14 @@ public class ScheduleDTO implements Serializable {
     private Float price;
 
     private Float rate;
+
+    private String text;
+
+    private ZonedDateTime startDate;
+
+    private ZonedDateTime endDate;
+
+    private Boolean allDay;
 
     private Long fieldId;
 
@@ -111,6 +120,38 @@ public class ScheduleDTO implements Serializable {
         this.rate = rate;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean isAllDay() {
+        return allDay;
+    }
+
+    public void setAllDay(Boolean allDay) {
+        this.allDay = allDay;
+    }
+
     public Long getFieldId() {
         return fieldId;
     }
@@ -152,6 +193,10 @@ public class ScheduleDTO implements Serializable {
             ", cost=" + getCost() +
             ", price=" + getPrice() +
             ", rate=" + getRate() +
+            ", text='" + getText() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", allDay='" + isAllDay() + "'" +
             "}";
     }
 }

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {FORMAT_DATE_TIME, SERVER_API_URL} from '../../app.constants';
 
 import { JhiDateUtils } from 'ng-jhipster';
 
 import { Booking } from './booking.model';
 import { createRequestOption } from '../../shared';
+import {DatePipe} from "@angular/common";
 
 export type EntityResponseType = HttpResponse<Booking>;
 
@@ -15,7 +16,9 @@ export class BookingService {
 
     private resourceUrl =  SERVER_API_URL + 'api/bookings';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient,
+                private dateUtils: JhiDateUtils,
+                private datePipe: DatePipe) { }
 
     create(booking: Booking): Observable<EntityResponseType> {
         const copy = this.convert(booking);
@@ -44,6 +47,11 @@ export class BookingService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
+    getByField (id: number): Observable<HttpResponse<Booking[]>> {
+        return this.http.get<Booking[]>(`${this.resourceUrl}/field/${id}`, { observe: 'response' })
+            .map((res: HttpResponse<Booking[]>) => this.convertArrayResponse(res));
+    }
+
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Booking = this.convertItemFromServer(res.body);
         return res.clone({body});
@@ -67,6 +75,10 @@ export class BookingService {
             .convertLocalDateFromServer(booking.dateReg);
         copy.date = this.dateUtils
             .convertLocalDateFromServer(booking.date);
+        copy.startDate = this.dateUtils
+            .toDate(booking.startDate);
+        copy.endDate = this.dateUtils
+            .toDate(booking.endDate);
         return copy;
     }
 
@@ -79,6 +91,10 @@ export class BookingService {
             .convertLocalDateToServer(booking.dateReg);
         copy.date = this.dateUtils
             .convertLocalDateToServer(booking.date);
+
+        copy.startDate = this.dateUtils.toDate(this.datePipe.transform(booking.startDate, FORMAT_DATE_TIME));
+
+        copy.endDate = this.dateUtils.toDate(this.datePipe.transform(booking.startDate, FORMAT_DATE_TIME));
         return copy;
     }
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -55,6 +56,18 @@ public class Schedule implements Serializable {
 
     @Column(name = "rate")
     private Float rate;
+
+    @Column(name = "text")
+    private String text;
+
+    @Column(name = "start_date")
+    private ZonedDateTime startDate;
+
+    @Column(name = "end_date")
+    private ZonedDateTime endDate;
+
+    @Column(name = "all_day")
+    private Boolean allDay;
 
     @ManyToOne
     private Field field;
@@ -176,6 +189,58 @@ public class Schedule implements Serializable {
         this.rate = rate;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public Schedule text(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public Schedule startDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Schedule endDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean isAllDay() {
+        return allDay;
+    }
+
+    public Schedule allDay(Boolean allDay) {
+        this.allDay = allDay;
+        return this;
+    }
+
+    public void setAllDay(Boolean allDay) {
+        this.allDay = allDay;
+    }
+
     public Field getField() {
         return field;
     }
@@ -247,6 +312,10 @@ public class Schedule implements Serializable {
             ", cost=" + getCost() +
             ", price=" + getPrice() +
             ", rate=" + getRate() +
+            ", text='" + getText() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", allDay='" + isAllDay() + "'" +
             "}";
     }
 }

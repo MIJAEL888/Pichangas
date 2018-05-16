@@ -25,9 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
+import static com.pichangas.web.rest.TestUtil.sameInstant;
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -58,6 +62,18 @@ public class BookingResourceIntTest {
 
     private static final Integer DEFAULT_END_HOUR = 0;
     private static final Integer UPDATED_END_HOUR = 1;
+
+    private static final String DEFAULT_TEXT = "AAAAAAAAAA";
+    private static final String UPDATED_TEXT = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_START_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_START_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final ZonedDateTime DEFAULT_END_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_END_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Boolean DEFAULT_ALL_DAY = false;
+    private static final Boolean UPDATED_ALL_DAY = true;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -107,7 +123,11 @@ public class BookingResourceIntTest {
             .dateReg(DEFAULT_DATE_REG)
             .date(DEFAULT_DATE)
             .startHour(DEFAULT_START_HOUR)
-            .endHour(DEFAULT_END_HOUR);
+            .endHour(DEFAULT_END_HOUR)
+            .text(DEFAULT_TEXT)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE)
+            .allDay(DEFAULT_ALL_DAY);
         return booking;
     }
 
@@ -137,6 +157,10 @@ public class BookingResourceIntTest {
         assertThat(testBooking.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testBooking.getStartHour()).isEqualTo(DEFAULT_START_HOUR);
         assertThat(testBooking.getEndHour()).isEqualTo(DEFAULT_END_HOUR);
+        assertThat(testBooking.getText()).isEqualTo(DEFAULT_TEXT);
+        assertThat(testBooking.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testBooking.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testBooking.isAllDay()).isEqualTo(DEFAULT_ALL_DAY);
     }
 
     @Test
@@ -174,7 +198,11 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].dateReg").value(hasItem(DEFAULT_DATE_REG.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].startHour").value(hasItem(DEFAULT_START_HOUR)))
-            .andExpect(jsonPath("$.[*].endHour").value(hasItem(DEFAULT_END_HOUR)));
+            .andExpect(jsonPath("$.[*].endHour").value(hasItem(DEFAULT_END_HOUR)))
+            .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_DATE))))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_DATE))))
+            .andExpect(jsonPath("$.[*].allDay").value(hasItem(DEFAULT_ALL_DAY.booleanValue())));
     }
 
     @Test
@@ -192,7 +220,11 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.dateReg").value(DEFAULT_DATE_REG.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.startHour").value(DEFAULT_START_HOUR))
-            .andExpect(jsonPath("$.endHour").value(DEFAULT_END_HOUR));
+            .andExpect(jsonPath("$.endHour").value(DEFAULT_END_HOUR))
+            .andExpect(jsonPath("$.text").value(DEFAULT_TEXT.toString()))
+            .andExpect(jsonPath("$.startDate").value(sameInstant(DEFAULT_START_DATE)))
+            .andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_DATE)))
+            .andExpect(jsonPath("$.allDay").value(DEFAULT_ALL_DAY.booleanValue()));
     }
 
     @Test
@@ -219,7 +251,11 @@ public class BookingResourceIntTest {
             .dateReg(UPDATED_DATE_REG)
             .date(UPDATED_DATE)
             .startHour(UPDATED_START_HOUR)
-            .endHour(UPDATED_END_HOUR);
+            .endHour(UPDATED_END_HOUR)
+            .text(UPDATED_TEXT)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
+            .allDay(UPDATED_ALL_DAY);
         BookingDTO bookingDTO = bookingMapper.toDto(updatedBooking);
 
         restBookingMockMvc.perform(put("/api/bookings")
@@ -236,6 +272,10 @@ public class BookingResourceIntTest {
         assertThat(testBooking.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testBooking.getStartHour()).isEqualTo(UPDATED_START_HOUR);
         assertThat(testBooking.getEndHour()).isEqualTo(UPDATED_END_HOUR);
+        assertThat(testBooking.getText()).isEqualTo(UPDATED_TEXT);
+        assertThat(testBooking.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testBooking.getEndDate()).isEqualTo(UPDATED_END_DATE);
+        assertThat(testBooking.isAllDay()).isEqualTo(UPDATED_ALL_DAY);
     }
 
     @Test

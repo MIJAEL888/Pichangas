@@ -22,6 +22,10 @@
             <th><span>Date</span></th>
             <th><span>Start Hour</span></th>
             <th><span>End Hour</span></th>
+            <th><span>Text</span></th>
+            <th><span>Start Date</span></th>
+            <th><span>End Date</span></th>
+            <th><span>All Day</span></th>
             <th><span>Field</span></th>
             <th><span>Schedule</span></th>
             <th><span>Client Final</span></th>
@@ -36,6 +40,10 @@
                 <td>{{booking.date | date:'mediumDate'}}</td>
                 <td>{{booking.startHour}}</td>
                 <td>{{booking.endHour}}</td>
+                <td>{{booking.text}}</td>
+                <td>{{booking.startDate | date:'medium'}}</td>
+                <td>{{booking.endDate | date:'medium'}}</td>
+                <td>{{booking.allDay}}</td>
                 <td>
                     <div *ngIf="booking.fieldId">
                         <a [routerLink]="['../field', booking.fieldId  ]" >{{booking.fieldId}}</a>

@@ -138,7 +138,7 @@ public class AccountResourceIntTest {
         user.setImageUrl("http://placehold.it/50x50");
         user.setLangKey("en");
         user.setAuthorities(authorities);
-        when(mockUserService.getUserWithAuthorities()).thenReturn(Optional.of(user));
+        when(mockUserService.getUserWithAuthorities());
 
         restUserMockMvc.perform(get("/api/account")
             .accept(MediaType.APPLICATION_JSON))
@@ -155,7 +155,7 @@ public class AccountResourceIntTest {
 
     @Test
     public void testGetUnknownAccount() throws Exception {
-        when(mockUserService.getUserWithAuthorities()).thenReturn(Optional.empty());
+        when(mockUserService.getUserWithAuthorities());
 
         restUserMockMvc.perform(get("/api/account")
             .accept(MediaType.APPLICATION_JSON))

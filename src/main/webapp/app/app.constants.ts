@@ -8,3 +8,5 @@ export const SERVER_API_URL = process.env.SERVER_API_URL;
 export const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 export const ROLE_USER = "ROLE_USER";
 export const ROLE_ADMIN = "ROLE_ADMIN";
+export const FORMAT_DATE_TIME = "yyyy-MM-dd hh:mm";
+export const FORMAT_DATE = "yyyy-MM-dd";

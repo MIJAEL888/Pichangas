@@ -1,4 +1,4 @@
-import { BaseEntity } from "./../../shared";
+import { BaseEntity } from './../../shared';
 
 export const enum DaysOfWeek {
     'SUNDAY',
@@ -21,8 +21,13 @@ export class Schedule implements BaseEntity {
         public cost?: number,
         public price?: number,
         public rate?: number,
+        public text?: string,
+        public startDate?: any,
+        public endDate?: any,
+        public allDay?: boolean,
         public fieldId?: number,
         public bookings?: BaseEntity[],
     ) {
+        this.allDay = false;
     }
 }

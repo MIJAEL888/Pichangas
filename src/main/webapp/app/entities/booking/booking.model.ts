@@ -1,4 +1,4 @@
-import { BaseEntity } from "./../../shared";
+import { BaseEntity } from './../../shared';
 
 export const enum StateBook {
     'FREE',
@@ -15,9 +15,14 @@ export class Booking implements BaseEntity {
         public date?: any,
         public startHour?: number,
         public endHour?: number,
+        public text?: string,
+        public startDate?: any,
+        public endDate?: any,
+        public allDay?: boolean,
         public fieldId?: number,
         public scheduleId?: number,
         public clientFinalId?: number,
     ) {
+        this.allDay = false;
     }
 }

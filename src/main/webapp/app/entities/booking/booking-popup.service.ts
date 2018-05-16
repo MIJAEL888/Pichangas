@@ -2,6 +2,7 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import { Booking } from './booking.model';
 import { BookingService } from './booking.service';
 
@@ -10,6 +11,7 @@ export class BookingPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
+        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private bookingService: BookingService
@@ -43,6 +45,10 @@ export class BookingPopupService {
                                 day: booking.date.getDate()
                             };
                         }
+                        booking.startDate = this.datePipe
+                            .transform(booking.startDate, 'yyyy-MM-ddTHH:mm:ss');
+                        booking.endDate = this.datePipe
+                            .transform(booking.endDate, 'yyyy-MM-ddTHH:mm:ss');
                         this.ngbModalRef = this.bookingModalRef(component, booking);
                         resolve(this.ngbModalRef);
                     });

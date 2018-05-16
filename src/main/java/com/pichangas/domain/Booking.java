@@ -6,6 +6,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import com.pichangas.domain.enumeration.StateBook;
@@ -42,6 +43,18 @@ public class Booking implements Serializable {
     @Max(value = 23)
     @Column(name = "end_hour")
     private Integer endHour;
+
+    @Column(name = "text")
+    private String text;
+
+    @Column(name = "start_date")
+    private ZonedDateTime startDate;
+
+    @Column(name = "end_date")
+    private ZonedDateTime endDate;
+
+    @Column(name = "all_day")
+    private Boolean allDay;
 
     @ManyToOne
     private Field field;
@@ -126,6 +139,58 @@ public class Booking implements Serializable {
         this.endHour = endHour;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public Booking text(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public Booking startDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Booking endDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean isAllDay() {
+        return allDay;
+    }
+
+    public Booking allDay(Boolean allDay) {
+        this.allDay = allDay;
+        return this;
+    }
+
+    public void setAllDay(Boolean allDay) {
+        this.allDay = allDay;
+    }
+
     public Field getField() {
         return field;
     }
@@ -195,6 +260,10 @@ public class Booking implements Serializable {
             ", date='" + getDate() + "'" +
             ", startHour=" + getStartHour() +
             ", endHour=" + getEndHour() +
+            ", text='" + getText() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", allDay='" + isAllDay() + "'" +
             "}";
     }
 }

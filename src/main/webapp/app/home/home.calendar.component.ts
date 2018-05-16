@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Client, ClientService} from "../entities/client";
 import {Campus, CampusService} from "../entities/campus";
 import {HomeModel} from "./home.model";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {JhiAlertService} from "ng-jhipster";
 import {Field, FieldService} from "../entities/field";
-import {Appointment, HomeService} from "./home.service";
 import {Account, AccountService, Principal} from "../shared";
 import {ROLE_ADMIN, ROLE_USER} from "../app.constants";
+import {Booking, BookingService} from "../entities/booking";
+import {DxSchedulerComponent} from "devextreme-angular";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'jhi-home-calendar',
@@ -15,13 +17,15 @@ import {ROLE_ADMIN, ROLE_USER} from "../app.constants";
   styles: []
 })
 export class HomeCalendarComponent implements OnInit {
+    @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
+
     currentAccount: Account;
     homeModel: HomeModel;
     clients:  Client[];
     campuses: Campus[];
     fields: Field[];
-    appointmentsData: Appointment[];
-    currentDate: Date = new Date(2017, 4, 25);
+    bookings: Booking[];
+    currentDate: Date = new Date();
 
     constructor(
         private principal: Principal,
@@ -30,7 +34,8 @@ export class HomeCalendarComponent implements OnInit {
         private campusService: CampusService,
         private fieldService: FieldService,
         private jhiAlertService: JhiAlertService,
-        private homeService: HomeService
+        private bookingService: BookingService,
+        private datePipe: DatePipe
     ) {
     }
 
@@ -39,33 +44,98 @@ export class HomeCalendarComponent implements OnInit {
         this.homeModel = new HomeModel();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
-            this.homeModel.clientId =  this.currentAccount.clientDto.id;
 
-            if (this.principal.hasAnyAuthority([ROLE_ADMIN]))
+            if (this.principal.hasAnyAuthority([ROLE_ADMIN])){
                 this.clientsService.getAll().subscribe((res: HttpResponse<Client[]>) => { this.clients = res.body; },
                     (res: HttpErrorResponse) => this.onError(res.message));
-            if (this.principal.hasAnyAuthority([ROLE_USER]) && this.currentAccount){
+            }else{
+                this.homeModel.clientId =  this.currentAccount.clientDto.id;
                 this.listCapmus(this.currentAccount.clientDto.id)
             }
         });
-        this.appointmentsData = this.homeService.getAppointments();
+        //this.scheduler.min = ;
     }
 
-    onChangeClient(clientId: number){
-        console.log(clientId);
+    onChangeClient(clientId?: number){
        this.listCapmus(clientId);
     }
 
-    onChangeCampus(campusId: number){
-        console.log(campusId);
-        if (campusId)
-        this.fieldService.getByCampus(campusId).subscribe((res: HttpResponse<Client[]>) => { this.fields = res.body; },
-            (res: HttpErrorResponse) => this.onError(res.message));
+    onChangeCampus(campusId?: number){
+        if (campusId){
+            this.fieldService.getByCampus(campusId).subscribe((res: HttpResponse<Client[]>) => { this.fields = res.body; },
+                (res: HttpErrorResponse) => this.onError(res.message));
+        }
         else {
             this.fields = null;
             this.homeModel.fieldId = null;
         }
     }
+
+    onChangeField(fieldId?: number){
+        console.log("field id : "+ fieldId);
+        if(fieldId){
+            this.bookingService.getByField(fieldId).subscribe(
+                (res: HttpResponse<Booking[]>) => {
+                    this.bookings = res.body;
+                    this.scheduler.instance.repaint();
+                    //this.scheduler.instance.addAppointment()
+                },
+                (res: HttpErrorResponse) => this.onError(res.message));
+
+        }
+    }
+
+    onAppointmentFormCreated (e) {
+        var form = e.form;
+        form.itemOption("startDate", {
+            //helpText: "Select a date between May 11 and 27",
+            editorOptions: {
+                //min: new Date(),
+                type: 'time',
+                // value: 'yyyy-MM-ddTHH:mm:ss'
+            }
+        });
+        form.itemOption("endDate", {
+            //helpText: "Select a date between May 11 and 27",
+            editorOptions: {
+                //min: new Date(),
+                type: 'time',
+                // value: 'yyyy-MM-ddTHH:mm:ss'
+            }
+        });
+        // By default, fields that show timezones are hidden
+        // To show them, use the code below
+        // form.option("items", [{
+        //     label: {
+        //         text: "Moviesdfasdf"
+        //     },
+        //     dataField: "startDate"
+        // }]);
+        // form.itemOption("startDate", {  label: {
+        //                  text: "Moviesdfasdf"
+        //              }});
+        form.itemOption("allDay", { visible: false });
+        form.itemOption("recurrenceRule", { visible: false });
+    }
+
+    onAppointmentAdded(e){
+        console.log("Added Data : " +e);
+        console.log("List of booking : " + this.bookings);
+    }
+    onAppointmentAdding(e){
+        e.appointmentData.fieldId = this.homeModel.fieldId;
+        e.appointmentData.startHour = 12;
+        e.appointmentData.endHour = 13;
+        console.log(this.datePipe.transform(e.appointmentData.startDate, 'yyyy-MM-dd'));
+        this.bookingService.create(e.appointmentData).subscribe(
+            (res: HttpResponse<Booking>) => {e.appointmentData = res.body;},
+            (res: HttpErrorResponse) => {this.onError(res.message); e.cancel = true}
+        );
+        console.log("Added Data : " +e);
+        console.log("List of booking : " + this.bookings);
+    }
+
+
     private listCapmus(clientId: number){
         if (clientId)
             this.campusService.getAllByClient(clientId).subscribe((res: HttpResponse<Client[]>) => { this.campuses = res.body; },

@@ -2,6 +2,7 @@ package com.pichangas.service.dto;
 
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -30,11 +31,19 @@ public class BookingDTO implements Serializable {
     @Max(value = 23)
     private Integer endHour;
 
-    private FieldDTO fieldDto;
+    private String text;
 
-    private ScheduleDTO scheduleDto;
+    private ZonedDateTime startDate;
 
-    private ClientFinalDTO clientFinalDto;
+    private ZonedDateTime endDate;
+
+    private Boolean allDay;
+
+    private Long fieldId;
+
+    private Long scheduleId;
+
+    private Long clientFinalId;
 
     public Long getId() {
         return id;
@@ -84,28 +93,60 @@ public class BookingDTO implements Serializable {
         this.endHour = endHour;
     }
 
-    public FieldDTO getFieldDto() {
-        return fieldDto;
+    public String getText() {
+        return text;
     }
 
-    public void setFieldDto(FieldDTO fieldDto) {
-        this.fieldDto = fieldDto;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public ScheduleDTO getScheduleDto() {
-        return scheduleDto;
+    public ZonedDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setScheduleDto(ScheduleDTO scheduleDto) {
-        this.scheduleDto = scheduleDto;
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public ClientFinalDTO getClientFinalDto() {
-        return clientFinalDto;
+    public ZonedDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setClientFinalDto(ClientFinalDTO clientFinalDto) {
-        this.clientFinalDto = clientFinalDto;
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean isAllDay() {
+        return allDay;
+    }
+
+    public void setAllDay(Boolean allDay) {
+        this.allDay = allDay;
+    }
+
+    public Long getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(Long fieldId) {
+        this.fieldId = fieldId;
+    }
+
+    public Long getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(Long scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public Long getClientFinalId() {
+        return clientFinalId;
+    }
+
+    public void setClientFinalId(Long clientFinalId) {
+        this.clientFinalId = clientFinalId;
     }
 
     @Override
@@ -138,6 +179,10 @@ public class BookingDTO implements Serializable {
             ", date='" + getDate() + "'" +
             ", startHour=" + getStartHour() +
             ", endHour=" + getEndHour() +
+            ", text='" + getText() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", allDay='" + isAllDay() + "'" +
             "}";
     }
 }

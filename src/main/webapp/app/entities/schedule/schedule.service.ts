@@ -3,6 +3,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
+import { JhiDateUtils } from 'ng-jhipster';
+
 import { Schedule } from './schedule.model';
 import { createRequestOption } from '../../shared';
 
@@ -13,7 +15,7 @@ export class ScheduleService {
 
     private resourceUrl =  SERVER_API_URL + 'api/schedules';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
     create(schedule: Schedule): Observable<EntityResponseType> {
         const copy = this.convert(schedule);
@@ -61,6 +63,10 @@ export class ScheduleService {
      */
     private convertItemFromServer(schedule: Schedule): Schedule {
         const copy: Schedule = Object.assign({}, schedule);
+        copy.startDate = this.dateUtils
+            .convertDateTimeFromServer(schedule.startDate);
+        copy.endDate = this.dateUtils
+            .convertDateTimeFromServer(schedule.endDate);
         return copy;
     }
 
@@ -69,6 +75,10 @@ export class ScheduleService {
      */
     private convert(schedule: Schedule): Schedule {
         const copy: Schedule = Object.assign({}, schedule);
+
+        copy.startDate = this.dateUtils.toDate(schedule.startDate);
+
+        copy.endDate = this.dateUtils.toDate(schedule.endDate);
         return copy;
     }
 }

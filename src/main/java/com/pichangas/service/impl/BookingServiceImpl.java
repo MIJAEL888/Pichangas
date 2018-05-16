@@ -61,6 +61,19 @@ public class BookingServiceImpl implements BookingService {
     }
 
     /**
+     * Get all the bookings.
+     *
+     * @param id the id of the Field
+     * @return the list of entities
+     */
+    @Override
+    public List<BookingDTO> findAllByField(Long id) {
+        return  bookingRepository.findAllByField_id(id).stream()
+            .map(bookingMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
      * Get one booking by id.
      *
      * @param id the id of the entity

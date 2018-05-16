@@ -25,6 +25,10 @@
             <th><span>Cost</span></th>
             <th><span>Price</span></th>
             <th><span>Rate</span></th>
+            <th><span>Text</span></th>
+            <th><span>Start Date</span></th>
+            <th><span>End Date</span></th>
+            <th><span>All Day</span></th>
             <th><span>Field</span></th>
             <th></th>
             </tr>
@@ -40,6 +44,10 @@
                 <td>{{schedule.cost}}</td>
                 <td>{{schedule.price}}</td>
                 <td>{{schedule.rate}}</td>
+                <td>{{schedule.text}}</td>
+                <td>{{schedule.startDate | date:'medium'}}</td>
+                <td>{{schedule.endDate | date:'medium'}}</td>
+                <td>{{schedule.allDay}}</td>
                 <td>
                     <div *ngIf="schedule.fieldId">
                         <a [routerLink]="['../field', schedule.fieldId  ]" >{{schedule.fieldId}}</a>
