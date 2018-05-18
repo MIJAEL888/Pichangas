@@ -61,19 +61,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     /**
-     * Get all the bookings.
-     *
-     * @param id the id of the Field
-     * @return the list of entities
-     */
-    @Override
-    public List<BookingDTO> findAllByField(Long id) {
-        return  bookingRepository.findAllByField_id(id).stream()
-            .map(bookingMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    /**
      * Get one booking by id.
      *
      * @param id the id of the entity
@@ -85,6 +72,19 @@ public class BookingServiceImpl implements BookingService {
         log.debug("Request to get Booking : {}", id);
         Booking booking = bookingRepository.findOne(id);
         return bookingMapper.toDto(booking);
+    }
+
+    /**
+     * Get the "id" booking.
+     *
+     * @param idField the id of the entity Field
+     * @return the entity
+     */
+    @Override
+    public List<BookingDTO> findByField(Long idField) {
+        return bookingRepository.findAllByField_Id(idField).stream()
+            .map(bookingMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

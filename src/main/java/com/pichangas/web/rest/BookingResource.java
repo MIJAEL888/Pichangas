@@ -87,19 +87,7 @@ public class BookingResource {
     public List<BookingDTO> getAllBookings() {
         log.debug("REST request to get all Bookings");
         return bookingService.findAll();
-    }
-
-    /**
-     * GET  /bookings : get all the bookings.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of bookings in body
-     */
-    @GetMapping("/bookings/field/{id}")
-    @Timed
-    public List<BookingDTO> getAllBookingsByField(@PathVariable Long id) {
-        log.debug("REST request to get all Bookings");
-        return bookingService.findAllByField(id);
-    }
+        }
 
     /**
      * GET  /bookings/:id : get the "id" booking.
@@ -113,6 +101,18 @@ public class BookingResource {
         log.debug("REST request to get Booking : {}", id);
         BookingDTO bookingDTO = bookingService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bookingDTO));
+    }
+
+    /**
+     * GET  /bookings/field/:id : get the "id" booking.
+     *
+     * @param id the id of the bookingDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the bookingDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/bookings/field/{id}")
+    @Timed
+    public List<BookingDTO> getBookingByFiled(@PathVariable Long id) {
+        return bookingService.findByField(id);
     }
 
     /**

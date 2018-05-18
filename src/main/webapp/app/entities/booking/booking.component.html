@@ -26,6 +26,7 @@
             <th><span>Start Date</span></th>
             <th><span>End Date</span></th>
             <th><span>All Day</span></th>
+            <th><span>Description</span></th>
             <th><span>Field</span></th>
             <th><span>Schedule</span></th>
             <th><span>Client Final</span></th>
@@ -44,6 +45,7 @@
                 <td>{{booking.startDate | date:'medium'}}</td>
                 <td>{{booking.endDate | date:'medium'}}</td>
                 <td>{{booking.allDay}}</td>
+                <td>{{booking.description}}</td>
                 <td>
                     <div *ngIf="booking.fieldId">
                         <a [routerLink]="['../field', booking.fieldId  ]" >{{booking.fieldId}}</a>

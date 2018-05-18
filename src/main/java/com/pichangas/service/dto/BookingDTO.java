@@ -39,6 +39,8 @@ public class BookingDTO implements Serializable {
 
     private Boolean allDay;
 
+    private String description;
+
     private Long fieldId;
 
     private Long scheduleId;
@@ -125,6 +127,14 @@ public class BookingDTO implements Serializable {
         this.allDay = allDay;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Long getFieldId() {
         return fieldId;
     }
@@ -183,6 +193,7 @@ public class BookingDTO implements Serializable {
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", allDay='" + isAllDay() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

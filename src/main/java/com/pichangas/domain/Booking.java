@@ -56,6 +56,9 @@ public class Booking implements Serializable {
     @Column(name = "all_day")
     private Boolean allDay;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     private Field field;
 
@@ -191,6 +194,19 @@ public class Booking implements Serializable {
         this.allDay = allDay;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Booking description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Field getField() {
         return field;
     }
@@ -264,6 +280,7 @@ public class Booking implements Serializable {
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", allDay='" + isAllDay() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

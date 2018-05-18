@@ -24,20 +24,20 @@ public interface BookingService {
     List<BookingDTO> findAll();
 
     /**
-     * Get all the bookings.
-     *
-     * @param id the id of the Field
-     * @return the list of entities
-     */
-    List<BookingDTO> findAllByField(Long id);
-
-    /**
      * Get the "id" booking.
      *
      * @param id the id of the entity
      * @return the entity
      */
     BookingDTO findOne(Long id);
+
+    /**
+     * Get the "id" booking.
+     *
+     * @param idField the id of the entity Field
+     * @return the entity
+     */
+    List<BookingDTO> findByField(Long idField);
 
     /**
      * Delete the "id" booking.

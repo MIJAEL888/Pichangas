@@ -1,0 +1,7 @@
+MySql
+-----
+
+Instance: pichangasinstance
+
+User: userpichangas
+Password: 123Pichanga

@@ -47,7 +47,7 @@ export class BookingService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    getByField (id: number): Observable<HttpResponse<Booking[]>> {
+    getByField(id: number): Observable<HttpResponse<Booking[]>> {
         return this.http.get<Booking[]>(`${this.resourceUrl}/field/${id}`, { observe: 'response' })
             .map((res: HttpResponse<Booking[]>) => this.convertArrayResponse(res));
     }
@@ -76,9 +76,9 @@ export class BookingService {
         copy.date = this.dateUtils
             .convertLocalDateFromServer(booking.date);
         copy.startDate = this.dateUtils
-            .toDate(booking.startDate);
+            .convertDateTimeFromServer(booking.startDate);
         copy.endDate = this.dateUtils
-            .toDate(booking.endDate);
+            .convertDateTimeFromServer(booking.endDate);
         return copy;
     }
 

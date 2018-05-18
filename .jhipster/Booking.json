@@ -69,6 +69,10 @@
         {
             "fieldName": "allDay",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180425010839",

@@ -75,6 +75,9 @@ public class BookingResourceIntTest {
     private static final Boolean DEFAULT_ALL_DAY = false;
     private static final Boolean UPDATED_ALL_DAY = true;
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     @Autowired
     private BookingRepository bookingRepository;
 
@@ -127,7 +130,8 @@ public class BookingResourceIntTest {
             .text(DEFAULT_TEXT)
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
-            .allDay(DEFAULT_ALL_DAY);
+            .allDay(DEFAULT_ALL_DAY)
+            .description(DEFAULT_DESCRIPTION);
         return booking;
     }
 
@@ -161,6 +165,7 @@ public class BookingResourceIntTest {
         assertThat(testBooking.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testBooking.getEndDate()).isEqualTo(DEFAULT_END_DATE);
         assertThat(testBooking.isAllDay()).isEqualTo(DEFAULT_ALL_DAY);
+        assertThat(testBooking.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test
@@ -202,7 +207,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_DATE))))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_DATE))))
-            .andExpect(jsonPath("$.[*].allDay").value(hasItem(DEFAULT_ALL_DAY.booleanValue())));
+            .andExpect(jsonPath("$.[*].allDay").value(hasItem(DEFAULT_ALL_DAY.booleanValue())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test
@@ -224,7 +230,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT.toString()))
             .andExpect(jsonPath("$.startDate").value(sameInstant(DEFAULT_START_DATE)))
             .andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_DATE)))
-            .andExpect(jsonPath("$.allDay").value(DEFAULT_ALL_DAY.booleanValue()));
+            .andExpect(jsonPath("$.allDay").value(DEFAULT_ALL_DAY.booleanValue()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
     @Test
@@ -255,7 +262,8 @@ public class BookingResourceIntTest {
             .text(UPDATED_TEXT)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
-            .allDay(UPDATED_ALL_DAY);
+            .allDay(UPDATED_ALL_DAY)
+            .description(UPDATED_DESCRIPTION);
         BookingDTO bookingDTO = bookingMapper.toDto(updatedBooking);
 
         restBookingMockMvc.perform(put("/api/bookings")
@@ -276,6 +284,7 @@ public class BookingResourceIntTest {
         assertThat(testBooking.getStartDate()).isEqualTo(UPDATED_START_DATE);
         assertThat(testBooking.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testBooking.isAllDay()).isEqualTo(UPDATED_ALL_DAY);
+        assertThat(testBooking.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test

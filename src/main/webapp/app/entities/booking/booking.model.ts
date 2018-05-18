@@ -19,6 +19,7 @@ export class Booking implements BaseEntity {
         public startDate?: any,
         public endDate?: any,
         public allDay?: boolean,
+        public description?: string,
         public fieldId?: number,
         public scheduleId?: number,
         public clientFinalId?: number,
