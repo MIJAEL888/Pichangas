@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: springframeworkguru/circleci_build
+    build:
+        docker:
+            - image: springframeworkguru/circleci_build
 
     working_directory: ~/repo
 
@@ -11,46 +11,46 @@ jobs:
         TERM: dumb
 
     steps:
-      - setup_remote_docker
+        - setup_remote_docker
 
-      - checkout
+        - checkout
 
-      - restore_cache:
-          keys:
+        - restore_cache:
+            keys:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies-
 
-      - run: gradle dependencies
+        - run: gradle dependencies
 
-      - save_cache:
-          paths:
+        - save_cache:
+            paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+            key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      - run: ./gradlew clean test
+        - run: ./gradlew clean test
 
         - run:
-        name: Save test result
-        command: |
+            name: Save test result
+            command: |
             mkdir -p ~/junit
             find . -type f -regex ".*/buid/test.results/.*xml" -exec cp {} ~/junit/\;
-        when: always
+            when: always
 
-      - store_test_results:
-          path: ~/junit
+        - store_test_results:
+            path: ~/junit
 
-      - store_artifacts:
-          path: ~/junit
+        - store_artifacts:
+            path: ~/junit
 
-         - run:
-           name: install yarn
-           command: sudo npm install -g yarn
+        - run:
+            name: install yarn
+            command: sudo npm install -g yarn
 
-       - run:
-           name: Build Docker Image
-           command: ./gradlew bootRepackage -Pprod pushDockerLatest pushDockerVersionTag -x test
+        - run:
+            name: Build Docker Image
+            command: ./gradlew bootRepackage -Pprod pushDockerLatest pushDockerVersionTag -x test
 
-      - run:
+        - run:
             name: Build Docker Image
             command: ./gradelw bootRepackage -Pprod buildDocker
 
