@@ -1,14 +1,14 @@
 version: 2
 jobs:
-    build:
-        docker:
-            - image: springframeworkguru/circleci_build
+  build:
+    docker:
+      - image: springframeworkguru/circleci_build
 
     working_directory: ~/repo
 
     environment:
-        JVM_OPTS: -Xmx3200m
-        TERM: dumb
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
 
     steps:
         - setup_remote_docker
