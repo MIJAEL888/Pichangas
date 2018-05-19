@@ -31,7 +31,7 @@
 
         <div class="form-group">
             <label class="form-control-label" for="field_province">Province</label>
-            <select class="form-control" id="field_province" name="province" [(ngModel)]="district.provinceId" >
+            <select class="form-control" id="field_province" name="province" [(ngModel)]="district.provinceDto.id" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="provinceOption.id" *ngFor="let provinceOption of provinces; trackBy: trackProvinceById">{{provinceOption.id}}</option>
             </select>
