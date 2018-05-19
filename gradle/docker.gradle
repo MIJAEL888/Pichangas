@@ -36,11 +36,30 @@ task copyDockerFiles(type: Copy) {
     include "*"
     exclude "**/*.yml"
 }
+def rfbImageName = 'mijael888/pichangas'
 
 task buildDocker(type: DockerBuildImage, dependsOn: 'copyDockerFiles') {
     description = "Package application as Docker image"
     group = "Docker"
     inputDir = project.file("${project.buildDir}/docker")
-    tags = ["pichangas:latest".toString(), "pichangas:${project.version}".toString()]
+    tags = ["${rfbImageName}:latest".toString(), "${rfbImageName}:${project.version}".toString()]
 }
 
+
+/**
+ * Use to push latest tag to docker hub
+ *
+ * Note: at this time the plugin does not support pushing multiple tags
+ */
+task pushDockerLatest(type: DockerPushImage, dependsOn: 'buildDocker') {
+    imageName = rfbImageName
+    tag = "latest"
+}
+
+/**
+ * Use to push project version tag to docker hub
+ */
+task pushDockerVersionTag(type: DockerPushImage, dependsOn: 'buildDocker') {
+    imageName = rfbImageName
+    tag =  "${project.version}".toString()
+}
