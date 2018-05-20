@@ -27,9 +27,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/Pichangas?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password:
+        url: jdbc:mysql://pichangasinstance.cqwwzgdcitgs.us-east-2.rds.amazonaws.com:3306/pichangasdb?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: userpichangas
+        password: 123Pichanga
         hikari:
             data-source-properties:
                 cachePrepStmts: true
