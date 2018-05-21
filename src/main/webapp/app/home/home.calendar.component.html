@@ -3,7 +3,7 @@
         <form name="editForm" role="form" novalidate #editForm="ngForm">
 
             <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
-                <label class="form-control-label" for="field_client">Client</label>
+                <label class="form-control-label" for="field_client">Cliente</label>
                 <select class="form-control" id="field_client" name="client" [(ngModel)]="homeModel.clientId" (ngModelChange)="onChangeClient($event)">
                     <option [ngValue]="null"></option>
                     <option *ngFor="let clientOption of clients" [ngValue]="clientOption.id">{{clientOption.name}}</option>
@@ -11,14 +11,14 @@
             </div>
             <div *jhiHasAnyAuthority="'ROLE_USER'">
                 <div *ngIf="homeModel.clientId" class="form-group"  >
-                    <label class="form-control-label" for="field_campus">Campus</label>
+                    <label class="form-control-label" for="field_campus">Sede</label>
                     <select class="form-control" id="field_campus" name="campus" [(ngModel)]="homeModel.campusId" (ngModelChange)="onChangeCampus($event)">
                         <option [ngValue]="null"></option>
                         <option *ngFor="let campusOption of campuses" [ngValue]="campusOption.id">{{campusOption.name}}</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="homeModel.campusId && homeModel.clientId">
-                    <label class="form-control-label" for="field_field">Field</label>
+                    <label class="form-control-label" for="field_field">Campo</label>
                     <select class="form-control" id="field_field" name="field" [(ngModel)]="homeModel.fieldId" (ngModelChange)="onChangeField($event)">
                         <option [ngValue]="null"></option>
                         <option *ngFor="let fieldOption of fields; trackBy: trackFieldById" [ngValue]="fieldOption.id">{{fieldOption.name}}</option>
