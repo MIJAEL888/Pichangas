@@ -11,7 +11,7 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
         classpath "io.spring.gradle:propdeps-plugin:0.0.9.RELEASE"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.17"
-
+        classpath 'net.researchgate:gradle-release:2.6.0'
         //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
     }
 }
@@ -39,6 +39,8 @@ apply plugin: 'propdeps'
 apply plugin: 'com.moowork.node'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
+defaultTasks 'bootRun'
+apply plugin: 'net.researchgate.release'
 
 dependencyManagement {
   imports {
@@ -102,7 +104,7 @@ test {
     // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
     // ignoreFailures true
     reports.html.enabled = false
-    
+
     // set heap size for the test JVM(s)
     minHeapSize = "128m"
     maxHeapSize = "512m"
