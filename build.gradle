@@ -42,6 +42,10 @@ apply plugin: 'idea'
 defaultTasks 'bootRun'
 apply plugin: 'net.researchgate.release'
 
+release {
+    failOnUpdateNeeded = false
+}
+
 dependencyManagement {
   imports {
     mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
