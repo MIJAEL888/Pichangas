@@ -2,6 +2,6 @@ MySql
 -----
 
 Instance: pichangasinstance
-
+EndPoint: pichangasinstance.cqwwzgdcitgs.us-east-2.rds.amazonaws.com
 User: userpichangas
 Password: 123Pichanga

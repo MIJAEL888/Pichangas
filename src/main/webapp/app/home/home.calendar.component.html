@@ -42,7 +42,9 @@
                 [maxAppointmentsPerCell]="1"
                 (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
                 (onAppointmentAdded)="onAppointmentAdded($event)"
-                (onAppointmentAdding)="onAppointmentAdding($event)">
+                (onAppointmentAdding)="onAppointmentAdding($event)"
+                (onAppointmentDeleting)="onAppointmentDeleting($event)"
+                (onAppointmentUpdating)="onAppointmentUpdating($event)">
                 <dxo-editing
                              [allowAdding]="true"
                              [allowUpdating]="true"

@@ -45,7 +45,7 @@ export class HomeCalendarComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.currentAccount = account;
 
-            if (this.principal.hasAnyAuthority([ROLE_ADMIN])){
+            if (this.currentAccount.authorities.includes(ROLE_ADMIN)){
                 this.clientsService.getAll().subscribe((res: HttpResponse<Client[]>) => { this.clients = res.body; },
                     (res: HttpErrorResponse) => this.onError(res.message));
             }else{
@@ -127,7 +127,7 @@ export class HomeCalendarComponent implements OnInit {
         e.appointmentData.fieldId = this.homeModel.fieldId;
         e.appointmentData.startHour = 12;
         e.appointmentData.endHour = 13;
-        console.log(this.datePipe.transform(e.appointmentData.startDate, 'yyyy-MM-dd'));
+        console.log(this.datePipe.transform(e.appointmentData.startDate, 'yyyy-MM-dd HH:mm'));
         this.bookingService.create(e.appointmentData).subscribe(
             (res: HttpResponse<Booking>) => {e.appointmentData = res.body;},
             (res: HttpErrorResponse) => {this.onError(res.message); e.cancel = true}
@@ -136,6 +136,19 @@ export class HomeCalendarComponent implements OnInit {
         console.log("List of booking : " + this.bookings);
     }
 
+    onAppointmentUpdating(e){
+        this.bookingService.update(e.appointmentData).subscribe(
+            (res: HttpResponse<Booking>) => {e.appointmentData = res.body;},
+            (res: HttpErrorResponse) => {this.onError(res.message); e.cancel = true}
+        );
+    }
+    onAppointmentDeleting(e){
+        console.log("Eliminando book ID: " + e.appointmentData.id);
+        this.bookingService.delete(e.appointmentData.id).subscribe(
+            (res: HttpResponse<any>) => {this.jhiAlertService.success(res.toString())},
+            (res: HttpErrorResponse) => {this.onError(res.message); e.cancel = true}
+        );
+    }
 
     private listCapmus(clientId: number){
         if (clientId)
