@@ -4,6 +4,7 @@ package com.pichangas.service.dto;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 import com.pichangas.domain.enumeration.TypeField;
@@ -37,6 +38,8 @@ public class FieldDTO implements Serializable {
     private StateField state;
 
     private CampusDTO campusDto;
+
+    private List<BookingDTO> bookingsDTO;
 
     public Long getId() {
         return id;
@@ -108,6 +111,14 @@ public class FieldDTO implements Serializable {
 
     public void setCampusDto(CampusDTO campusDto) {
         this.campusDto = campusDto;
+    }
+
+    public List<BookingDTO> getBookingsDTO() {
+        return bookingsDTO;
+    }
+
+    public void setBookingsDTO(List<BookingDTO> bookingsDTO) {
+        this.bookingsDTO = bookingsDTO;
     }
 
     @Override

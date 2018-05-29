@@ -1,6 +1,7 @@
 package com.pichangas.service;
 
 import com.pichangas.service.dto.FieldDTO;
+import com.pichangas.service.dto.FieldFilterDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -49,4 +50,13 @@ public interface FieldService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the fields by campus and filter.
+     *
+     * @param fieldFilterDTO filters for get the fields
+     * @return the list of entities
+     */
+    List<FieldDTO> findAllByCampus(FieldFilterDTO fieldFilterDTO);
+
 }

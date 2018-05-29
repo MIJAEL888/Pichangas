@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,4 +18,6 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findAllByField_Id(Long idField);
+
+    List<Booking> findAllByField_IdAndStartDateBetween(Long idField, ZonedDateTime date1, ZonedDateTime date2);
 }

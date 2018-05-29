@@ -2,6 +2,7 @@ package com.pichangas.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.pichangas.service.FieldService;
+import com.pichangas.service.dto.FieldFilterDTO;
 import com.pichangas.web.rest.errors.BadRequestAlertException;
 import com.pichangas.web.rest.util.HeaderUtil;
 import com.pichangas.web.rest.util.PaginationUtil;
@@ -108,6 +109,19 @@ public class FieldResource {
     public ResponseEntity<List<FieldDTO>> getAllFields(@PathVariable Long id) {
         log.debug("REST request to get a page of Fields");
         return new ResponseEntity<>(fieldService.findAll(id), HttpStatus.OK);
+    }
+
+    /**
+     * POST  /fields/campus : get all the fields on campus.
+     *
+     * @param fieldFilterDTO filter to the fields
+     * @return the ResponseEntity with status 200 (OK) and the list of fields in body
+     */
+    @PostMapping("/fields/campus")
+    @Timed
+    public ResponseEntity<List<FieldDTO>> postAllFieldsByCampus(@RequestBody FieldFilterDTO fieldFilterDTO) {
+        log.debug("REST request to get a page of Fields");
+        return new ResponseEntity<>(fieldService.findAllByCampus(fieldFilterDTO), HttpStatus.OK);
     }
 
     /**
