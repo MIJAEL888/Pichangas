@@ -5,7 +5,7 @@
         </a>
         <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
             <span class="logo-img"></span>
-            <span class="navbar-title">Pichangas</span> <span class="navbar-version">{{version}}</span>
+            <span class="navbar-title">Pichanga</span> <span class="navbar-version">{{version}}</span>
         </a>
     </div>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
@@ -14,7 +14,7 @@
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <span>
                         <i class="fa fa-home" aria-hidden="true"></i>
-                        <span>Home</span>
+                        <span>Inicio</span>
                     </span>
                 </a>
             </li>
@@ -96,38 +96,38 @@
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>
                         <i class="fa fa-user-plus" aria-hidden="true"></i>
-                        <span>Administration</span>
+                        <span>Administracion</span>
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
                         <a class="dropdown-item" routerLink="user-management" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-user" aria-hidden="true"></i>
-                            <span>User management</span>
+                            <span>Usuarios</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="jhi-metrics" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>
-                            <span>Metrics</span>
+                            <span>Estadisticas</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="jhi-health" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-heart" aria-hidden="true"></i>
-                            <span>Health</span>
+                            <span>Estados</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="jhi-configuration" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-list" aria-hidden="true"></i>
-                            <span>Configuration</span>
+                            <span>Configuracion</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="audits" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-bell" aria-hidden="true"></i>
-                            <span>Audits</span>
+                            <span>Auditoria</span>
                         </a>
                     </li>
                     <li>
@@ -146,7 +146,7 @@
                     <li *ngIf="!inProduction">
                         <a class="dropdown-item" href='./h2-console' target="_tab" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-hdd-o" aria-hidden="true"></i>
-                            <span>Database</span>
+                            <span>Base de datos</span>
                         </a>
                     </li>
                 </ul>
@@ -156,7 +156,7 @@
                   <span *ngIf="!getImageUrl()">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     <span>
-                      Account
+                      Cuenta
                     </span>
                   </span>
                   <span *ngIf="getImageUrl()">
@@ -167,37 +167,37 @@
                     <li *ngSwitchCase="true">
                         <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
-                            <span>Settings</span>
+                            <span>Ajustes</span>
                         </a>
                     </li>
                     <li *ngSwitchCase="true">
                         <a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
-                            <span>Password</span>
+                            <span>Contraseña</span>
                         </a>
                     </li>
                     <li *ngSwitchCase="true">
                         <a class="dropdown-item" routerLink="sessions" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-cloud" aria-hidden="true"></i>
-                            <span>Sessions</span>
+                            <span>Sesiones</span>
                         </a>
                     </li>
                     <li *ngSwitchCase="true">
                         <a class="dropdown-item" (click)="logout()" id="logout">
                             <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
-                            <span>Sign out</span>
+                            <span>Cerrar sesión </span>
                         </a>
                     </li>
                     <li *ngSwitchCase="false">
                         <a class="dropdown-item" (click)="login()" id="login">
                             <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
-                            <span>Sign in</span>
+                            <span>Iniciar sesión </span>
                         </a>
                     </li>
                     <li *ngSwitchCase="false">
                         <a class="dropdown-item" routerLink="register" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i>
-                            <span>Register</span>
+                            <span>Registrar</span>
                         </a>
                     </li>
                 </ul>

@@ -12,6 +12,7 @@ import org.mapstruct.*;
 public interface FieldMapper extends EntityMapper<FieldDTO, Field> {
 
     @Mapping(source = "campus", target = "campusDto")
+    @Mapping(target = "bookingsDTO", ignore = true)
     FieldDTO toDto(Field field);
 
     @Mapping(source = "campusDto", target = "campus")

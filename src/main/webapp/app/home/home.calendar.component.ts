@@ -88,7 +88,7 @@ export class HomeCalendarComponent implements OnInit {
     onAppointmentFormCreated (e) {
         var form = e.form;
         form.itemOption("startDate", {
-            label: {text: "Hora Inicio:"},
+            label: {text: "Hora Inicio"},
             //helpText: "Select a date between May 11 and 27",
             editorOptions: {
                 //min: new Date(),
@@ -97,7 +97,7 @@ export class HomeCalendarComponent implements OnInit {
             }
         });
         form.itemOption("endDate", {
-            label: {text: "Hora Fin:"},
+            label: {text: "Hora Fin"},
             //helpText: "Select a date between May 11 and 27",
             editorOptions: {
                 //min: new Date(),
@@ -113,10 +113,11 @@ export class HomeCalendarComponent implements OnInit {
         //     },
         //     dataField: "startDate"
         // }]);
-        form.itemOption("Text", {  label: {text: "Descripcion:"}});
-        form.itemOption("Description", {  label: {text: "Comentario:"}});
+        form.itemOption("text", {  label: {text: "Descripcion"}});
+        form.itemOption("description", {  label: {text: "Comentario"}});
         form.itemOption("allDay", { visible: false });
         form.itemOption("recurrenceRule", { visible: false });
+        // form.buttonOptions();
     }
 
     onAppointmentAdded(e){
