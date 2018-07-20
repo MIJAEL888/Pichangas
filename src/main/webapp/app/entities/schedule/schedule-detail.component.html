@@ -1,0 +1,76 @@
+
+<div *ngIf="schedule">
+    <h2><span>Schedule</span> {{schedule.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Day Of Week</span></dt>
+        <dd>
+            <span>{{schedule.dayOfWeek}}</span>
+        </dd>
+        <dt><span>Name Day Of Week</span></dt>
+        <dd>
+            <span>{{schedule.nameDayOfWeek}}</span>
+        </dd>
+        <dt><span>Enum Day Of Week</span></dt>
+        <dd>
+            <span>{{schedule.enumDayOfWeek}}</span>
+        </dd>
+        <dt><span>Start Hour</span></dt>
+        <dd>
+            <span>{{schedule.startHour}}</span>
+        </dd>
+        <dt><span>End Hour</span></dt>
+        <dd>
+            <span>{{schedule.endHour}}</span>
+        </dd>
+        <dt><span>Cost</span></dt>
+        <dd>
+            <span>{{schedule.cost}}</span>
+        </dd>
+        <dt><span>Price</span></dt>
+        <dd>
+            <span>{{schedule.price}}</span>
+        </dd>
+        <dt><span>Rate</span></dt>
+        <dd>
+            <span>{{schedule.rate}}</span>
+        </dd>
+        <dt><span>Text</span></dt>
+        <dd>
+            <span>{{schedule.text}}</span>
+        </dd>
+        <dt><span>Start Date</span></dt>
+        <dd>
+            <span>{{schedule.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>End Date</span></dt>
+        <dd>
+            <span>{{schedule.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>All Day</span></dt>
+        <dd>
+            <span>{{schedule.allDay}}</span>
+        </dd>
+        <dt><span>Field</span></dt>
+        <dd>
+            <div *ngIf="schedule.fieldId">
+                <a [routerLink]="['/field', schedule.fieldId]">{{schedule.fieldId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'schedule/'+ schedule.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

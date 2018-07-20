@@ -1,0 +1,121 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myClientLabel">Create or edit a Client</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!client.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="client.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="client.name" required/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_surName">Sur Name</label>
+            <input type="text" class="form-control" name="surName" id="field_surName"
+                [(ngModel)]="client.surName" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_typeId">Type Id</label>
+            <select class="form-control" name="typeId" [(ngModel)]="client.typeId" id="field_typeId"  required>
+                <option value="DNI">DNI</option>
+                <option value="RUC">RUC</option>
+            </select>
+            <div [hidden]="!(editForm.controls.typeId?.dirty && editForm.controls.typeId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.typeId?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_numberId">Number Id</label>
+            <input type="text" class="form-control" name="numberId" id="field_numberId"
+                [(ngModel)]="client.numberId" required minlength="8"/>
+            <div [hidden]="!(editForm.controls.numberId?.dirty && editForm.controls.numberId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.numberId?.errors?.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.numberId?.errors?.minlength">
+                   This field is required to be at least 8 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email"
+                [(ngModel)]="client.email" required/>
+            <div [hidden]="!(editForm.controls.email?.dirty && editForm.controls.email?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.email?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_mobile">Mobile</label>
+            <input type="text" class="form-control" name="mobile" id="field_mobile"
+                [(ngModel)]="client.mobile" required/>
+            <div [hidden]="!(editForm.controls.mobile?.dirty && editForm.controls.mobile?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.mobile?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_address">Address</label>
+            <input type="text" class="form-control" name="address" id="field_address"
+                [(ngModel)]="client.address" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_contactName">Contact Name</label>
+            <input type="text" class="form-control" name="contactName" id="field_contactName"
+                [(ngModel)]="client.contactName" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_status">Status</label>
+            <input type="checkbox" class="form-control" name="status" id="field_status"
+                [(ngModel)]="client.status" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_dateSuscription">Date Suscription</label>
+            <div class="input-group">
+                <input id="field_dateSuscription" type="text" class="form-control" name="dateSuscription" ngbDatepicker  #dateSuscriptionDp="ngbDatepicker" [(ngModel)]="client.dateSuscription"
+                />
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="dateSuscriptionDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_comment">Comment</label>
+            <input type="text" class="form-control" name="comment" id="field_comment"
+                [(ngModel)]="client.comment" />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

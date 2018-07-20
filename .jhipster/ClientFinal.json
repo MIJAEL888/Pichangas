@@ -1,0 +1,59 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "userApp",
+            "otherEntityName": "userApp",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "clientFinal"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "booking",
+            "otherEntityName": "booking",
+            "otherEntityRelationshipName": "clientFinal"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "surName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "mobile",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "numDocument",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180425010840",
+    "entityTableName": "client_final",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

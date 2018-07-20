@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Campus.
+    -->
+    <changeSet id="20180425010832-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="client_id"
+                                 baseTableName="campus"
+                                 constraintName="fk_campus_client_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="client"/>
+
+        <addForeignKeyConstraint baseColumnNames="campuses_id"
+                                 baseTableName="campus_userapp"
+                                 constraintName="fk_campus_userapp_campuses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="campus"/>
+        <addForeignKeyConstraint baseColumnNames="userapps_id"
+                                 baseTableName="campus_userapp"
+                                 constraintName="fk_campus_userapp_userapps_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_app"/>
+        
+        <addForeignKeyConstraint baseColumnNames="district_id"
+                                 baseTableName="campus"
+                                 constraintName="fk_campus_district_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="district"/>
+
+    </changeSet>
+</databaseChangeLog>
