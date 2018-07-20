@@ -47,8 +47,9 @@ export class ClientDialogComponent implements OnInit {
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<Client>>) {
-        result.subscribe((res: HttpResponse<Client>) =>
-            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe(
+            (res: HttpResponse<Client>) => this.onSaveSuccess(res.body),
+            (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: Client) {

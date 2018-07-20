@@ -67,8 +67,9 @@ export class BookingDialogComponent implements OnInit {
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<Booking>>) {
-        result.subscribe((res: HttpResponse<Booking>) =>
-            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
+        result.subscribe(
+            (res: HttpResponse<Booking>) => this.onSaveSuccess(res.body),
+            (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: Booking) {

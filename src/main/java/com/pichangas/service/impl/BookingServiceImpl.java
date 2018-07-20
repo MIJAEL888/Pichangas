@@ -7,11 +7,14 @@ import com.pichangas.service.dto.BookingDTO;
 import com.pichangas.service.mapper.BookingMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -27,9 +30,12 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingMapper bookingMapper;
 
-    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper) {
+    private final MessageSource messageSource;
+
+    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper, MessageSource messageSource) {
         this.bookingRepository = bookingRepository;
         this.bookingMapper = bookingMapper;
+        this.messageSource = messageSource;
     }
 
     /**
@@ -39,13 +45,36 @@ public class BookingServiceImpl implements BookingService {
      * @return the persisted entity
      */
     @Override
-    public BookingDTO save(BookingDTO bookingDTO) {
+    public BookingDTO save(BookingDTO bookingDTO) throws Exception {
         log.debug("Request to save Booking : {}", bookingDTO);
         Booking booking = bookingMapper.toEntity(bookingDTO);
-        booking = bookingRepository.save(booking);
+        if (isAvailable(booking.getStartDate(), booking.getEndDate()))
+            booking = bookingRepository.save(booking);
+        else
+            throw new Exception(messageSource.getMessage("error.booking.available", null, Locale.getDefault()));
+
         return bookingMapper.toDto(booking);
     }
 
+    /**
+     * Validate a booking.
+     *
+     * @param bookingDTO the entity to save
+     * @return the persisted entity
+     */
+    @Override
+    public BookingDTO validate(BookingDTO bookingDTO) throws Exception {
+        log.debug("Request to save Booking : {}", bookingDTO);
+        Booking booking = bookingMapper.toEntity(bookingDTO);
+        if (isAvailable(booking.getStartDate(), booking.getEndDate()))
+           return bookingDTO;
+        else
+            throw new Exception(messageSource.getMessage("error.booking.available", null, Locale.getDefault()));
+    }
+
+    private boolean isAvailable(ZonedDateTime startDate, ZonedDateTime endDate){
+       return bookingRepository.findAllByStartDateBetweenAndEndDateBetween(startDate, endDate, startDate, endDate).isEmpty();
+    }
     /**
      * Get all the bookings.
      *

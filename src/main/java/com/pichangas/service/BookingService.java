@@ -14,7 +14,15 @@ public interface BookingService {
      * @param bookingDTO the entity to save
      * @return the persisted entity
      */
-    BookingDTO save(BookingDTO bookingDTO);
+    BookingDTO save(BookingDTO bookingDTO) throws Exception;
+
+    /**
+     * Save a booking.
+     *
+     * @param bookingDTO the entity to save
+     * @return the persisted entity
+     */
+    BookingDTO validate(BookingDTO bookingDTO) throws Exception;
 
     /**
      * Get all the bookings.

@@ -1,3 +1,4 @@
+///<reference path="../../../../../../node_modules/rxjs/add/operator/map.d.ts"/>
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -25,7 +26,23 @@ export class BookingService {
         return this.http.post<Booking>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
-
+    validate (booking: Booking): Observable<EntityResponseType> {
+        const copy = this.convert(booking);
+        return this.http.post<Booking>(`${this.resourceUrl}/validate`, copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+    async validateSync(booking: Booking, callback?) {
+        const cb = callback || function() {};
+        return await new Promise((resolve, reject) => {
+            this.validate(booking).subscribe((data) => {
+                resolve(data);
+                return cb();
+            }, (err) => {
+                reject(err);
+                return cb(err);
+            });
+        });
+    }
     update(booking: Booking): Observable<EntityResponseType> {
         const copy = this.convert(booking);
         return this.http.put<Booking>(this.resourceUrl, copy, { observe: 'response' })
@@ -94,7 +111,7 @@ export class BookingService {
 
         copy.startDate = this.dateUtils.toDate(this.datePipe.transform(booking.startDate, FORMAT_DATE_TIME));
 
-        copy.endDate = this.dateUtils.toDate(this.datePipe.transform(booking.startDate, FORMAT_DATE_TIME));
+        copy.endDate = this.dateUtils.toDate(this.datePipe.transform(booking.endDate, FORMAT_DATE_TIME));
         return copy;
     }
 }

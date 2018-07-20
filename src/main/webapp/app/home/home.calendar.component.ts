@@ -10,6 +10,7 @@ import {ROLE_ADMIN, ROLE_USER} from "../app.constants";
 import {Booking, BookingService} from "../entities/booking";
 import {DxSchedulerComponent} from "devextreme-angular";
 import {DatePipe} from "@angular/common";
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'jhi-home-calendar',
@@ -86,6 +87,7 @@ export class HomeCalendarComponent implements OnInit {
     }
 
     onAppointmentFormCreated (e) {
+
         var form = e.form;
         form.itemOption("startDate", {
             label: {text: "Hora Inicio"},
@@ -122,19 +124,26 @@ export class HomeCalendarComponent implements OnInit {
 
     onAppointmentAdded(e){
         console.log("Added Data : " +e);
-        console.log("List of booking : " + this.bookings);
+        console.log("List of booking : " + JSON.stringify(this.bookings));
     }
     onAppointmentAdding(e){
         e.appointmentData.fieldId = this.homeModel.fieldId;
-        e.appointmentData.startHour = 12;
-        e.appointmentData.endHour = 13;
-        console.log(this.datePipe.transform(e.appointmentData.startDate, 'yyyy-MM-dd HH:mm'));
+        e.appointmentData.startHour = e.appointmentData.startDate.getHours();
+        e.appointmentData.endHour = e.appointmentData.endDate.getHours();
+        //e.appointmentData.endDate.setMinutes(59, 59, 0);
+        //console.log(this.datePipe.transform(e.appointmentData.startDate, 'yyyy-MM-dd HH:mm'));
+        var creating = true;
         this.bookingService.create(e.appointmentData).subscribe(
-            (res: HttpResponse<Booking>) => {e.appointmentData = res.body;},
-            (res: HttpErrorResponse) => {this.onError(res.message); e.cancel = true}
+            (res: HttpResponse<Booking>) => {
+                e.appointmentData = res.body;
+                creating = false;
+            },
+            (res: HttpErrorResponse) => {
+                this.onError(res.message);
+                e.cancel = true;
+                creating = false;
+            }
         );
-        console.log("Added Data : " +e);
-        console.log("List of booking : " + this.bookings);
     }
 
     onAppointmentUpdating(e){
@@ -144,7 +153,6 @@ export class HomeCalendarComponent implements OnInit {
         );
     }
     onAppointmentDeleting(e){
-        console.log("Eliminando book ID: " + e.appointmentData.id);
         this.bookingService.delete(e.appointmentData.id).subscribe(
             (res: HttpResponse<any>) => {this.jhiAlertService.success(res.toString())},
             (res: HttpErrorResponse) => {this.onError(res.message); e.cancel = true}

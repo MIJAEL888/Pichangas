@@ -35,6 +35,7 @@ public class BookingResource {
         this.bookingService = bookingService;
     }
 
+
     /**
      * POST  /bookings : Create a new booking.
      *
@@ -44,13 +45,30 @@ public class BookingResource {
      */
     @PostMapping("/bookings")
     @Timed
-    public ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingDTO bookingDTO) throws URISyntaxException {
+    public ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingDTO bookingDTO) throws Exception {
         log.debug("REST request to save Booking : {}", bookingDTO);
         if (bookingDTO.getId() != null) {
             throw new BadRequestAlertException("A new booking cannot already have an ID", ENTITY_NAME, "idexists");
         }
         BookingDTO result = bookingService.save(bookingDTO);
         return ResponseEntity.created(new URI("/api/bookings/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * POST  /bookings : Create a new booking.
+     *
+     * @param bookingDTO the bookingDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new bookingDTO, or with status 400 (Bad Request) if the booking has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/bookings/validate")
+    @Timed
+    public ResponseEntity<BookingDTO> validateBooking(@Valid @RequestBody BookingDTO bookingDTO) throws Exception {
+        log.debug("REST request to save Booking : {}", bookingDTO);
+        BookingDTO result = bookingService.save(bookingDTO);
+        return ResponseEntity.accepted()
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -66,7 +84,7 @@ public class BookingResource {
      */
     @PutMapping("/bookings")
     @Timed
-    public ResponseEntity<BookingDTO> updateBooking(@Valid @RequestBody BookingDTO bookingDTO) throws URISyntaxException {
+    public ResponseEntity<BookingDTO> updateBooking(@Valid @RequestBody BookingDTO bookingDTO) throws Exception {
         log.debug("REST request to update Booking : {}", bookingDTO);
         if (bookingDTO.getId() == null) {
             return createBooking(bookingDTO);
