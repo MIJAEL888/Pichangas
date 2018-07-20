@@ -69,7 +69,7 @@ public class CampusResource {
     public ResponseEntity<CampusDTO> updateCampus(@Valid @RequestBody CampusDTO campusDTO) throws URISyntaxException {
         log.debug("REST request to update Campus : {}", campusDTO);
         if (campusDTO.getId() == null) {
-            return createCampus(campusDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         CampusDTO result = campusService.save(campusDTO);
         return ResponseEntity.ok()
@@ -80,14 +80,15 @@ public class CampusResource {
     /**
      * GET  /campuses : get all the campuses.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of campuses in body
      */
     @GetMapping("/campuses")
     @Timed
-    public List<CampusDTO> getAllCampuses() {
+    public List<CampusDTO> getAllCampuses(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Campuses");
         return campusService.findAll();
-        }
+    }
 
     /**
      * GET  /campuses/:id : get the "id" campus.
@@ -99,8 +100,8 @@ public class CampusResource {
     @Timed
     public ResponseEntity<CampusDTO> getCampus(@PathVariable Long id) {
         log.debug("REST request to get Campus : {}", id);
-        CampusDTO campusDTO = campusService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(campusDTO));
+        Optional<CampusDTO> campusDTO = campusService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(campusDTO);
     }
 
     /**

@@ -1,49 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    DepartmentService,
-    DepartmentPopupService,
     DepartmentComponent,
     DepartmentDetailComponent,
-    DepartmentDialogComponent,
-    DepartmentPopupComponent,
+    DepartmentUpdateComponent,
     DepartmentDeletePopupComponent,
     DepartmentDeleteDialogComponent,
     departmentRoute,
-    departmentPopupRoute,
+    departmentPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...departmentRoute,
-    ...departmentPopupRoute,
-];
+const ENTITY_STATES = [...departmentRoute, ...departmentPopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         DepartmentComponent,
         DepartmentDetailComponent,
-        DepartmentDialogComponent,
+        DepartmentUpdateComponent,
         DepartmentDeleteDialogComponent,
-        DepartmentPopupComponent,
-        DepartmentDeletePopupComponent,
+        DepartmentDeletePopupComponent
     ],
-    entryComponents: [
-        DepartmentComponent,
-        DepartmentDialogComponent,
-        DepartmentPopupComponent,
-        DepartmentDeleteDialogComponent,
-        DepartmentDeletePopupComponent,
-    ],
-    providers: [
-        DepartmentService,
-        DepartmentPopupService,
-    ],
+    entryComponents: [DepartmentComponent, DepartmentUpdateComponent, DepartmentDeleteDialogComponent, DepartmentDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasDepartmentModule {}

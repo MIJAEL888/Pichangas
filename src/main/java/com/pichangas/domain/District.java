@@ -1,6 +1,7 @@
 package com.pichangas.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -31,10 +32,10 @@ public class District implements Serializable {
     private String code;
 
     @OneToMany(mappedBy = "district")
-    @JsonIgnore
     private Set<Campus> campuses = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("districts")
     private Province province;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

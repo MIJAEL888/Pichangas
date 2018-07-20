@@ -7,13 +7,16 @@ import com.pichangas.service.dto.CampusDTO;
 import com.pichangas.service.mapper.CampusMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
 /**
  * Service Implementation for managing Campus.
  */
@@ -61,6 +64,16 @@ public class CampusServiceImpl implements CampusService {
     }
 
     /**
+     * Get all the Campus with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<CampusDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return campusRepository.findAllWithEagerRelationships(pageable).map(campusMapper::toDto);
+    }
+    
+
+    /**
      * Get one campus by id.
      *
      * @param id the id of the entity
@@ -68,10 +81,10 @@ public class CampusServiceImpl implements CampusService {
      */
     @Override
     @Transactional(readOnly = true)
-    public CampusDTO findOne(Long id) {
+    public Optional<CampusDTO> findOne(Long id) {
         log.debug("Request to get Campus : {}", id);
-        Campus campus = campusRepository.findOneWithEagerRelationships(id);
-        return campusMapper.toDto(campus);
+        return campusRepository.findOneWithEagerRelationships(id)
+            .map(campusMapper::toDto);
     }
 
     /**
@@ -82,6 +95,6 @@ public class CampusServiceImpl implements CampusService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Campus : {}", id);
-        campusRepository.delete(id);
+        campusRepository.deleteById(id);
     }
 }

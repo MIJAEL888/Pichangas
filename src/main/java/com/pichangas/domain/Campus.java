@@ -1,6 +1,7 @@
 package com.pichangas.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -71,19 +72,20 @@ public class Campus implements Serializable {
     private String rating;
 
     @ManyToOne
+    @JsonIgnoreProperties("campuses")
     private Client client;
 
     @OneToMany(mappedBy = "campus")
-    @JsonIgnore
     private Set<Field> fields = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "campus_userapp",
-               joinColumns = @JoinColumn(name="campuses_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="userapps_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "campuses_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "userapps_id", referencedColumnName = "id"))
     private Set<UserApp> userapps = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("campuses")
     private District district;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

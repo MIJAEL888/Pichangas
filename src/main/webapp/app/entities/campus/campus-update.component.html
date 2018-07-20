@@ -1,0 +1,157 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-campus-heading">Create or edit a Campus</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!campus.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="campus.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                        [(ngModel)]="campus.name" required/>
+                    <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.name?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="campus.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_comment">Comment</label>
+                    <input type="text" class="form-control" name="comment" id="field_comment"
+                        [(ngModel)]="campus.comment" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_openTime">Open Time</label>
+                    <input type="number" class="form-control" name="openTime" id="field_openTime"
+                        [(ngModel)]="campus.openTime" required min="0" jhiMin="0" max="23" jhiMax="23"/>
+                    <div [hidden]="!(editForm.controls.openTime?.dirty && editForm.controls.openTime?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.openTime?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.openTime?.errors?.min">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.openTime?.errors?.max">
+                            This field cannot be more than 23.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.openTime?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_closeTime">Close Time</label>
+                    <input type="number" class="form-control" name="closeTime" id="field_closeTime"
+                        [(ngModel)]="campus.closeTime" required min="0" jhiMin="0" max="23" jhiMax="23"/>
+                    <div [hidden]="!(editForm.controls.closeTime?.dirty && editForm.controls.closeTime?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.closeTime?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.closeTime?.errors?.min">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.closeTime?.errors?.max">
+                            This field cannot be more than 23.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.closeTime?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_aditional">Aditional</label>
+                    <input type="text" class="form-control" name="aditional" id="field_aditional"
+                        [(ngModel)]="campus.aditional" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_addresss">Addresss</label>
+                    <input type="text" class="form-control" name="addresss" id="field_addresss"
+                        [(ngModel)]="campus.addresss" required/>
+                    <div [hidden]="!(editForm.controls.addresss?.dirty && editForm.controls.addresss?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.addresss?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_reference">Reference</label>
+                    <input type="text" class="form-control" name="reference" id="field_reference"
+                        [(ngModel)]="campus.reference" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_latitude">Latitude</label>
+                    <input type="number" class="form-control" name="latitude" id="field_latitude"
+                        [(ngModel)]="campus.latitude" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_longitude">Longitude</label>
+                    <input type="number" class="form-control" name="longitude" id="field_longitude"
+                        [(ngModel)]="campus.longitude" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_codPostal">Cod Postal</label>
+                    <input type="text" class="form-control" name="codPostal" id="field_codPostal"
+                        [(ngModel)]="campus.codPostal" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status">Status</label>
+                    <input type="checkbox" class="form-control" name="status" id="field_status"
+                        [(ngModel)]="campus.status" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_rating">Rating</label>
+                    <input type="text" class="form-control" name="rating" id="field_rating"
+                        [(ngModel)]="campus.rating" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <select class="form-control" id="field_client" name="client" [(ngModel)]="campus.clientId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="clientOption.id" *ngFor="let clientOption of clients; trackBy: trackClientById">{{clientOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="field_userapp">Userapp</label>
+                    <select class="form-control" id="field_userapp" multiple name="userapp" [(ngModel)]="campus.userapps">
+                        <option [ngValue]="getSelected(campus.userapps, userAppOption)" *ngFor="let userAppOption of userapps; trackBy: trackUserAppById">{{userAppOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_district">District</label>
+                    <select class="form-control" id="field_district" name="district" [(ngModel)]="campus.districtId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="districtOption.id" *ngFor="let districtOption of districts; trackBy: trackDistrictById">{{districtOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

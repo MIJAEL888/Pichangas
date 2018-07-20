@@ -1,11 +1,8 @@
 package com.pichangas.service.dto;
 
-
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import com.pichangas.domain.enumeration.TypeId;
 
@@ -150,7 +147,7 @@ public class ClientDTO implements Serializable {
         }
 
         ClientDTO clientDTO = (ClientDTO) o;
-        if(clientDTO.getId() == null || getId() == null) {
+        if (clientDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), clientDTO.getId());

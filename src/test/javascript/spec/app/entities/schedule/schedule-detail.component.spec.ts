@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { PichangasTestModule } from '../../../test.module';
-import { ScheduleDetailComponent } from '../../../../../../main/webapp/app/entities/schedule/schedule-detail.component';
-import { ScheduleService } from '../../../../../../main/webapp/app/entities/schedule/schedule.service';
-import { Schedule } from '../../../../../../main/webapp/app/entities/schedule/schedule.model';
+import { ScheduleDetailComponent } from 'app/entities/schedule/schedule-detail.component';
+import { Schedule } from 'app/shared/model/schedule.model';
 
 describe('Component Tests', () => {
-
     describe('Schedule Management Detail Component', () => {
         let comp: ScheduleDetailComponent;
         let fixture: ComponentFixture<ScheduleDetailComponent>;
-        let service: ScheduleService;
+        const route = ({ data: of({ schedule: new Schedule(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [PichangasTestModule],
                 declarations: [ScheduleDetailComponent],
-                providers: [
-                    ScheduleService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(ScheduleDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(ScheduleDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(ScheduleDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(ScheduleService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new Schedule(123)
-                })));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.schedule).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.schedule).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

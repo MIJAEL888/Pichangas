@@ -7,12 +7,14 @@ import com.pichangas.service.dto.ClientFinalDTO;
 import com.pichangas.service.mapper.ClientFinalMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing ClientFinal.
  */
@@ -59,6 +61,7 @@ public class ClientFinalServiceImpl implements ClientFinalService {
             .map(clientFinalMapper::toDto);
     }
 
+
     /**
      * Get one clientFinal by id.
      *
@@ -67,10 +70,10 @@ public class ClientFinalServiceImpl implements ClientFinalService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ClientFinalDTO findOne(Long id) {
+    public Optional<ClientFinalDTO> findOne(Long id) {
         log.debug("Request to get ClientFinal : {}", id);
-        ClientFinal clientFinal = clientFinalRepository.findOne(id);
-        return clientFinalMapper.toDto(clientFinal);
+        return clientFinalRepository.findById(id)
+            .map(clientFinalMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class ClientFinalServiceImpl implements ClientFinalService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ClientFinal : {}", id);
-        clientFinalRepository.delete(id);
+        clientFinalRepository.deleteById(id);
     }
 }

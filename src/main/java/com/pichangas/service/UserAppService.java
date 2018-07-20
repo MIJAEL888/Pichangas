@@ -1,9 +1,12 @@
 package com.pichangas.service;
 
 import com.pichangas.service.dto.UserAppDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing UserApp.
@@ -32,13 +35,14 @@ public interface UserAppService {
      */
     List<UserAppDTO> findAllWhereClientFinalIsNull();
 
+
     /**
      * Get the "id" userApp.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    UserAppDTO findOne(Long id);
+    Optional<UserAppDTO> findOne(Long id);
 
     /**
      * Delete the "id" userApp.

@@ -7,12 +7,14 @@ import com.pichangas.service.dto.DistrictDTO;
 import com.pichangas.service.mapper.DistrictMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing District.
  */
@@ -59,6 +61,7 @@ public class DistrictServiceImpl implements DistrictService {
             .map(districtMapper::toDto);
     }
 
+
     /**
      * Get one district by id.
      *
@@ -67,10 +70,10 @@ public class DistrictServiceImpl implements DistrictService {
      */
     @Override
     @Transactional(readOnly = true)
-    public DistrictDTO findOne(Long id) {
+    public Optional<DistrictDTO> findOne(Long id) {
         log.debug("Request to get District : {}", id);
-        District district = districtRepository.findOne(id);
-        return districtMapper.toDto(district);
+        return districtRepository.findById(id)
+            .map(districtMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class DistrictServiceImpl implements DistrictService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete District : {}", id);
-        districtRepository.delete(id);
+        districtRepository.deleteById(id);
     }
 }

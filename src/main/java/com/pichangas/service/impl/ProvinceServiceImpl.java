@@ -7,12 +7,14 @@ import com.pichangas.service.dto.ProvinceDTO;
 import com.pichangas.service.mapper.ProvinceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing Province.
  */
@@ -59,6 +61,7 @@ public class ProvinceServiceImpl implements ProvinceService {
             .map(provinceMapper::toDto);
     }
 
+
     /**
      * Get one province by id.
      *
@@ -67,10 +70,10 @@ public class ProvinceServiceImpl implements ProvinceService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ProvinceDTO findOne(Long id) {
+    public Optional<ProvinceDTO> findOne(Long id) {
         log.debug("Request to get Province : {}", id);
-        Province province = provinceRepository.findOne(id);
-        return provinceMapper.toDto(province);
+        return provinceRepository.findById(id)
+            .map(provinceMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class ProvinceServiceImpl implements ProvinceService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Province : {}", id);
-        provinceRepository.delete(id);
+        provinceRepository.deleteById(id);
     }
 }

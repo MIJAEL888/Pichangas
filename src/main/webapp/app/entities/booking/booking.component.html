@@ -1,16 +1,14 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Bookings</span>
-        <button class="btn btn-primary float-right jh-create-entity create-booking" [routerLink]="['/', { outlets: { popup: ['booking-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-booking" [routerLink]="['/booking/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Booking
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="bookings">
         <table class="table table-striped">
@@ -35,7 +33,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let booking of bookings ;trackBy: trackId">
-                <td><a [routerLink]="['../booking', booking.id ]">{{booking.id}}</a></td>
+                <td><a [routerLink]="['/booking', booking.id, 'view' ]">{{booking.id}}</a></td>
                 <td>{{booking.state}}</td>
                 <td>{{booking.dateReg | date:'mediumDate'}}</td>
                 <td>{{booking.date | date:'mediumDate'}}</td>
@@ -48,33 +46,31 @@
                 <td>{{booking.description}}</td>
                 <td>
                     <div *ngIf="booking.fieldId">
-                        <a [routerLink]="['../field', booking.fieldId  ]" >{{booking.fieldId}}</a>
+                        <a [routerLink]="['../field', booking.fieldId , 'view' ]" >{{booking.fieldId}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="booking.scheduleId">
-                        <a [routerLink]="['../schedule', booking.scheduleId  ]" >{{booking.scheduleId}}</a>
+                        <a [routerLink]="['../schedule', booking.scheduleId , 'view' ]" >{{booking.scheduleId}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="booking.clientFinalId">
-                        <a [routerLink]="['../client-final', booking.clientFinalId  ]" >{{booking.clientFinalId}}</a>
+                        <a [routerLink]="['../client-final', booking.clientFinalId , 'view' ]" >{{booking.clientFinalId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../booking', booking.id ]"
+                                [routerLink]="['/booking', booking.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'booking/'+ booking.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/booking', booking.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -82,7 +78,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

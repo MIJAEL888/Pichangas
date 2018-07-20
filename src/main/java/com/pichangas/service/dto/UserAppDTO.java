@@ -1,11 +1,8 @@
 package com.pichangas.service.dto;
 
-
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -85,7 +82,7 @@ public class UserAppDTO implements Serializable {
         }
 
         UserAppDTO userAppDTO = (UserAppDTO) o;
-        if(userAppDTO.getId() == null || getId() == null) {
+        if (userAppDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), userAppDTO.getId());

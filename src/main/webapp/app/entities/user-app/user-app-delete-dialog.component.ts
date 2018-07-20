@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { UserApp } from './user-app.model';
-import { UserAppPopupService } from './user-app-popup.service';
+import { IUserApp } from 'app/shared/model/user-app.model';
 import { UserAppService } from './user-app.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { UserAppService } from './user-app.service';
     templateUrl: './user-app-delete-dialog.component.html'
 })
 export class UserAppDeleteDialogComponent {
+    userApp: IUserApp;
 
-    userApp: UserApp;
-
-    constructor(
-        private userAppService: UserAppService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private userAppService: UserAppService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.userAppService.delete(id).subscribe((response) => {
+        this.userAppService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'userAppListModification',
                 content: 'Deleted an userApp'
@@ -43,22 +36,30 @@ export class UserAppDeleteDialogComponent {
     template: ''
 })
 export class UserAppDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private userAppPopupService: UserAppPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.userAppPopupService
-                .open(UserAppDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ userApp }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(UserAppDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.userApp = userApp;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

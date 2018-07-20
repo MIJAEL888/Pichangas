@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { PichangasTestModule } from '../../../test.module';
-import { DistrictDetailComponent } from '../../../../../../main/webapp/app/entities/district/district-detail.component';
-import { DistrictService } from '../../../../../../main/webapp/app/entities/district/district.service';
-import { District } from '../../../../../../main/webapp/app/entities/district/district.model';
+import { DistrictDetailComponent } from 'app/entities/district/district-detail.component';
+import { District } from 'app/shared/model/district.model';
 
 describe('Component Tests', () => {
-
     describe('District Management Detail Component', () => {
         let comp: DistrictDetailComponent;
         let fixture: ComponentFixture<DistrictDetailComponent>;
-        let service: DistrictService;
+        const route = ({ data: of({ district: new District(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [PichangasTestModule],
                 declarations: [DistrictDetailComponent],
-                providers: [
-                    DistrictService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(DistrictDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(DistrictDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(DistrictDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(DistrictService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new District(123)
-                })));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.district).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.district).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

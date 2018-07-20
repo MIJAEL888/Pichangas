@@ -1,8 +1,11 @@
 package com.pichangas.service;
 
 import com.pichangas.service.dto.ClientDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Client.
@@ -25,13 +28,14 @@ public interface ClientService {
      */
     Page<ClientDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" client.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    ClientDTO findOne(Long id);
+    Optional<ClientDTO> findOne(Long id);
 
     /**
      * Delete the "id" client.

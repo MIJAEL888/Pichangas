@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -61,8 +62,10 @@ public class UserAppResourceIntTest {
     @Autowired
     private UserAppRepository userAppRepository;
 
+
     @Autowired
     private UserAppMapper userAppMapper;
+    
 
     @Autowired
     private UserAppService userAppService;
@@ -213,6 +216,7 @@ public class UserAppResourceIntTest {
             .andExpect(jsonPath("$.[*].faccebookId").value(hasItem(DEFAULT_FACCEBOOK_ID.toString())))
             .andExpect(jsonPath("$.[*].googleId").value(hasItem(DEFAULT_GOOGLE_ID.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -231,7 +235,6 @@ public class UserAppResourceIntTest {
             .andExpect(jsonPath("$.faccebookId").value(DEFAULT_FACCEBOOK_ID.toString()))
             .andExpect(jsonPath("$.googleId").value(DEFAULT_GOOGLE_ID.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingUserApp() throws Exception {
@@ -245,10 +248,11 @@ public class UserAppResourceIntTest {
     public void updateUserApp() throws Exception {
         // Initialize the database
         userAppRepository.saveAndFlush(userApp);
+
         int databaseSizeBeforeUpdate = userAppRepository.findAll().size();
 
         // Update the userApp
-        UserApp updatedUserApp = userAppRepository.findOne(userApp.getId());
+        UserApp updatedUserApp = userAppRepository.findById(userApp.getId()).get();
         // Disconnect from session so that the updates on updatedUserApp are not directly saved in db
         em.detach(updatedUserApp);
         updatedUserApp
@@ -287,11 +291,11 @@ public class UserAppResourceIntTest {
         restUserAppMockMvc.perform(put("/api/user-apps")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(userAppDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the UserApp in the database
         List<UserApp> userAppList = userAppRepository.findAll();
-        assertThat(userAppList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(userAppList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -299,6 +303,7 @@ public class UserAppResourceIntTest {
     public void deleteUserApp() throws Exception {
         // Initialize the database
         userAppRepository.saveAndFlush(userApp);
+
         int databaseSizeBeforeDelete = userAppRepository.findAll().size();
 
         // Get the userApp

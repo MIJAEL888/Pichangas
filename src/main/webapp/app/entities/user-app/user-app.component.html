@@ -1,33 +1,31 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>User Apps</span>
-        <button class="btn btn-primary float-right jh-create-entity create-user-app" [routerLink]="['/', { outlets: { popup: ['user-app-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-app" [routerLink]="['/user-app/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new User App
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="userApps">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="username"><span>Username</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="password"><span>Password</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="dateReg"><span>Date Reg</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="faccebookId"><span>Faccebook Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="googleId"><span>Google Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="username"><span>Username</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="password"><span>Password</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dateReg"><span>Date Reg</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="faccebookId"><span>Faccebook Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="googleId"><span>Google Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let userApp of userApps ;trackBy: trackId">
-                <td><a [routerLink]="['../user-app', userApp.id ]">{{userApp.id}}</a></td>
+                <td><a [routerLink]="['/user-app', userApp.id, 'view' ]">{{userApp.id}}</a></td>
                 <td>{{userApp.username}}</td>
                 <td>{{userApp.password}}</td>
                 <td>{{userApp.dateReg | date:'mediumDate'}}</td>
@@ -36,17 +34,15 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../user-app', userApp.id ]"
+                                [routerLink]="['/user-app', userApp.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'user-app/'+ userApp.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/user-app', userApp.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -54,7 +50,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

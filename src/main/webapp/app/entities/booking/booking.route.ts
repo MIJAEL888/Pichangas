@@ -1,10 +1,29 @@
-import { Routes } from '@angular/router';
-
-import { UserRouteAccessService } from '../../shared';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Booking } from 'app/shared/model/booking.model';
+import { BookingService } from './booking.service';
 import { BookingComponent } from './booking.component';
 import { BookingDetailComponent } from './booking-detail.component';
-import { BookingPopupComponent } from './booking-dialog.component';
+import { BookingUpdateComponent } from './booking-update.component';
 import { BookingDeletePopupComponent } from './booking-delete-dialog.component';
+import { IBooking } from 'app/shared/model/booking.model';
+
+@Injectable({ providedIn: 'root' })
+export class BookingResolve implements Resolve<IBooking> {
+    constructor(private service: BookingService) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((booking: HttpResponse<Booking>) => booking.body));
+        }
+        return of(new Booking());
+    }
+}
 
 export const bookingRoute: Routes = [
     {
@@ -15,9 +34,37 @@ export const bookingRoute: Routes = [
             pageTitle: 'Bookings'
         },
         canActivate: [UserRouteAccessService]
-    }, {
-        path: 'booking/:id',
+    },
+    {
+        path: 'booking/:id/view',
         component: BookingDetailComponent,
+        resolve: {
+            booking: BookingResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Bookings'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'booking/new',
+        component: BookingUpdateComponent,
+        resolve: {
+            booking: BookingResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Bookings'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'booking/:id/edit',
+        component: BookingUpdateComponent,
+        resolve: {
+            booking: BookingResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Bookings'
@@ -28,28 +75,11 @@ export const bookingRoute: Routes = [
 
 export const bookingPopupRoute: Routes = [
     {
-        path: 'booking-new',
-        component: BookingPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Bookings'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
-        path: 'booking/:id/edit',
-        component: BookingPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Bookings'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
         path: 'booking/:id/delete',
         component: BookingDeletePopupComponent,
+        resolve: {
+            booking: BookingResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Bookings'

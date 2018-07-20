@@ -31,7 +31,6 @@ public class Department implements Serializable {
     private String code;
 
     @OneToMany(mappedBy = "department")
-    @JsonIgnore
     private Set<Province> provinces = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

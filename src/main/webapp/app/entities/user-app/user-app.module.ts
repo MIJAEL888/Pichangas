@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    UserAppService,
-    UserAppPopupService,
     UserAppComponent,
     UserAppDetailComponent,
-    UserAppDialogComponent,
-    UserAppPopupComponent,
+    UserAppUpdateComponent,
     UserAppDeletePopupComponent,
     UserAppDeleteDialogComponent,
     userAppRoute,
-    userAppPopupRoute,
-    UserAppResolvePagingParams,
+    userAppPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...userAppRoute,
-    ...userAppPopupRoute,
-];
+const ENTITY_STATES = [...userAppRoute, ...userAppPopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         UserAppComponent,
         UserAppDetailComponent,
-        UserAppDialogComponent,
+        UserAppUpdateComponent,
         UserAppDeleteDialogComponent,
-        UserAppPopupComponent,
-        UserAppDeletePopupComponent,
+        UserAppDeletePopupComponent
     ],
-    entryComponents: [
-        UserAppComponent,
-        UserAppDialogComponent,
-        UserAppPopupComponent,
-        UserAppDeleteDialogComponent,
-        UserAppDeletePopupComponent,
-    ],
-    providers: [
-        UserAppService,
-        UserAppPopupService,
-        UserAppResolvePagingParams,
-    ],
+    entryComponents: [UserAppComponent, UserAppUpdateComponent, UserAppDeleteDialogComponent, UserAppDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasUserAppModule {}

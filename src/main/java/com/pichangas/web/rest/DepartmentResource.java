@@ -74,7 +74,7 @@ public class DepartmentResource {
     public ResponseEntity<DepartmentDTO> updateDepartment(@Valid @RequestBody DepartmentDTO departmentDTO) throws URISyntaxException {
         log.debug("REST request to update Department : {}", departmentDTO);
         if (departmentDTO.getId() == null) {
-            return createDepartment(departmentDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         DepartmentDTO result = departmentService.save(departmentDTO);
         return ResponseEntity.ok()
@@ -107,8 +107,8 @@ public class DepartmentResource {
     @Timed
     public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable Long id) {
         log.debug("REST request to get Department : {}", id);
-        DepartmentDTO departmentDTO = departmentService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(departmentDTO));
+        Optional<DepartmentDTO> departmentDTO = departmentService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(departmentDTO);
     }
 
     /**

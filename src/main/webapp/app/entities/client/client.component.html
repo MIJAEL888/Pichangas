@@ -1,39 +1,37 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Clients</span>
-        <button class="btn btn-primary float-right jh-create-entity create-client" [routerLink]="['/', { outlets: { popup: ['client-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-client" [routerLink]="['/client/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Client
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="clients">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="surName"><span>Sur Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="typeId"><span>Type Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="numberId"><span>Number Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="email"><span>Email</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="mobile"><span>Mobile</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="address"><span>Address</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="contactName"><span>Contact Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="dateSuscription"><span>Date Suscription</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="comment"><span>Comment</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="surName"><span>Sur Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="typeId"><span>Type Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="numberId"><span>Number Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="email"><span>Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mobile"><span>Mobile</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="address"><span>Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="contactName"><span>Contact Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="status"><span>Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dateSuscription"><span>Date Suscription</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="comment"><span>Comment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let client of clients ;trackBy: trackId">
-                <td><a [routerLink]="['../client', client.id ]">{{client.id}}</a></td>
+                <td><a [routerLink]="['/client', client.id, 'view' ]">{{client.id}}</a></td>
                 <td>{{client.name}}</td>
                 <td>{{client.surName}}</td>
                 <td>{{client.typeId}}</td>
@@ -48,17 +46,15 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../client', client.id ]"
+                                [routerLink]="['/client', client.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'client/'+ client.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/client', client.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -66,7 +62,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

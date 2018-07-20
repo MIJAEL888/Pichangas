@@ -1,51 +1,23 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    ClientService,
-    ClientPopupService,
     ClientComponent,
     ClientDetailComponent,
-    ClientDialogComponent,
-    ClientPopupComponent,
+    ClientUpdateComponent,
     ClientDeletePopupComponent,
     ClientDeleteDialogComponent,
     clientRoute,
-    clientPopupRoute,
-    ClientResolvePagingParams,
+    clientPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...clientRoute,
-    ...clientPopupRoute,
-];
+const ENTITY_STATES = [...clientRoute, ...clientPopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        ClientComponent,
-        ClientDetailComponent,
-        ClientDialogComponent,
-        ClientDeleteDialogComponent,
-        ClientPopupComponent,
-        ClientDeletePopupComponent,
-    ],
-    entryComponents: [
-        ClientComponent,
-        ClientDialogComponent,
-        ClientPopupComponent,
-        ClientDeleteDialogComponent,
-        ClientDeletePopupComponent,
-    ],
-    providers: [
-        ClientService,
-        ClientPopupService,
-        ClientResolvePagingParams,
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [ClientComponent, ClientDetailComponent, ClientUpdateComponent, ClientDeleteDialogComponent, ClientDeletePopupComponent],
+    entryComponents: [ClientComponent, ClientUpdateComponent, ClientDeleteDialogComponent, ClientDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasClientModule {}

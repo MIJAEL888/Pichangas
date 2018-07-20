@@ -1,7 +1,6 @@
 package com.pichangas.web.rest;
 
 import com.pichangas.PichangasApp;
-import com.pichangas.config.CacheConfiguration;
 import com.pichangas.domain.Authority;
 import com.pichangas.domain.User;
 import com.pichangas.repository.UserRepository;
@@ -32,10 +31,9 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.util.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -107,7 +105,7 @@ public class UserResourceIntTest {
         MockitoAnnotations.initMocks(this);
         cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
         cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
-        UserResource userResource = new UserResource(userRepository, userService, mailService);
+        UserResource userResource = new UserResource(userService, userRepository, mailService);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -317,7 +315,7 @@ public class UserResourceIntTest {
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.findById(user.getId()).get();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());
@@ -359,7 +357,7 @@ public class UserResourceIntTest {
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.findById(user.getId()).get();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());
@@ -412,7 +410,7 @@ public class UserResourceIntTest {
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.findById(user.getId()).get();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());
@@ -454,7 +452,7 @@ public class UserResourceIntTest {
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.findById(user.getId()).get();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());

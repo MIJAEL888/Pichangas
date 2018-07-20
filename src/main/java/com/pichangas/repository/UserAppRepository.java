@@ -1,13 +1,12 @@
 package com.pichangas.repository;
 
 import com.pichangas.domain.UserApp;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the UserApp entity.
+ * Spring Data  repository for the UserApp entity.
  */
 @SuppressWarnings("unused")
 @Repository

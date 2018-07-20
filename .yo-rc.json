@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "com.pichangas"
     },
-    "jhipsterVersion": "4.14.3",
+    "jhipsterVersion": "5.1.0",
     "baseName": "Pichangas",
     "packageName": "com.pichangas",
     "packageFolder": "com/pichangas",

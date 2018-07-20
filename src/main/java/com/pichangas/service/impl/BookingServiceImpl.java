@@ -7,13 +7,14 @@ import com.pichangas.service.dto.BookingDTO;
 import com.pichangas.service.mapper.BookingMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
 /**
  * Service Implementation for managing Booking.
  */
@@ -60,6 +61,7 @@ public class BookingServiceImpl implements BookingService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
     /**
      * Get one booking by id.
      *
@@ -68,10 +70,10 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     @Transactional(readOnly = true)
-    public BookingDTO findOne(Long id) {
+    public Optional<BookingDTO> findOne(Long id) {
         log.debug("Request to get Booking : {}", id);
-        Booking booking = bookingRepository.findOne(id);
-        return bookingMapper.toDto(booking);
+        return bookingRepository.findById(id)
+            .map(bookingMapper::toDto);
     }
 
     /**
@@ -82,6 +84,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Booking : {}", id);
-        bookingRepository.delete(id);
+        bookingRepository.deleteById(id);
     }
 }

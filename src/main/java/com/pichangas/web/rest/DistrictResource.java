@@ -74,7 +74,7 @@ public class DistrictResource {
     public ResponseEntity<DistrictDTO> updateDistrict(@Valid @RequestBody DistrictDTO districtDTO) throws URISyntaxException {
         log.debug("REST request to update District : {}", districtDTO);
         if (districtDTO.getId() == null) {
-            return createDistrict(districtDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         DistrictDTO result = districtService.save(districtDTO);
         return ResponseEntity.ok()
@@ -107,8 +107,8 @@ public class DistrictResource {
     @Timed
     public ResponseEntity<DistrictDTO> getDistrict(@PathVariable Long id) {
         log.debug("REST request to get District : {}", id);
-        DistrictDTO districtDTO = districtService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(districtDTO));
+        Optional<DistrictDTO> districtDTO = districtService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(districtDTO);
     }
 
     /**

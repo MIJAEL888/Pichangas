@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { Campus } from './campus.model';
+import { ICampus } from 'app/shared/model/campus.model';
+import { Principal } from 'app/core';
 import { CampusService } from './campus.service';
-import { Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-campus',
     templateUrl: './campus.component.html'
 })
 export class CampusComponent implements OnInit, OnDestroy {
-campuses: Campus[];
+    campuses: ICampus[];
     currentAccount: any;
     eventSubscriber: Subscription;
 
@@ -21,20 +21,20 @@ campuses: Campus[];
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal
-    ) {
-    }
+    ) {}
 
     loadAll() {
         this.campusService.query().subscribe(
-            (res: HttpResponse<Campus[]>) => {
+            (res: HttpResponse<ICampus[]>) => {
                 this.campuses = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
+
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInCampuses();
@@ -44,14 +44,15 @@ campuses: Campus[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: Campus) {
+    trackId(index: number, item: ICampus) {
         return item.id;
     }
+
     registerChangeInCampuses() {
-        this.eventSubscriber = this.eventManager.subscribe('campusListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('campusListModification', response => this.loadAll());
     }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 }

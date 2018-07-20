@@ -7,6 +7,7 @@ import com.pichangas.service.dto.UserAppDTO;
 import com.pichangas.service.mapper.UserAppMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 /**
  * Service Implementation for managing UserApp.
  */
@@ -64,6 +65,7 @@ public class UserAppServiceImpl implements UserAppService {
     }
 
 
+
     /**
      *  get all the userApps where ClientFinal is null.
      *  @return the list of entities
@@ -86,10 +88,10 @@ public class UserAppServiceImpl implements UserAppService {
      */
     @Override
     @Transactional(readOnly = true)
-    public UserAppDTO findOne(Long id) {
+    public Optional<UserAppDTO> findOne(Long id) {
         log.debug("Request to get UserApp : {}", id);
-        UserApp userApp = userAppRepository.findOne(id);
-        return userAppMapper.toDto(userApp);
+        return userAppRepository.findById(id)
+            .map(userAppMapper::toDto);
     }
 
     /**
@@ -100,6 +102,6 @@ public class UserAppServiceImpl implements UserAppService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete UserApp : {}", id);
-        userAppRepository.delete(id);
+        userAppRepository.deleteById(id);
     }
 }

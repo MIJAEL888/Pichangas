@@ -1,5 +1,6 @@
 package com.pichangas.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -60,12 +61,15 @@ public class Booking implements Serializable {
     private String description;
 
     @ManyToOne
+    @JsonIgnoreProperties("bookings")
     private Field field;
 
     @ManyToOne
+    @JsonIgnoreProperties("bookings")
     private Schedule schedule;
 
     @ManyToOne
+    @JsonIgnoreProperties("bookings")
     private ClientFinal clientFinal;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

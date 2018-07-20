@@ -9,73 +9,49 @@ import { JhiEventManager } from 'ng-jhipster';
 import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
-import { PichangasSharedModule, UserRouteAccessService } from './shared';
-import { PichangasAppRoutingModule} from './app-routing.module';
+import { PichangasSharedModule } from 'app/shared';
+import { PichangasCoreModule } from 'app/core';
+import { PichangasAppRoutingModule } from './app-routing.module';
 import { PichangasHomeModule } from './home/home.module';
-import { PichangasAdminModule } from './admin/admin.module';
 import { PichangasAccountModule } from './account/account.module';
 import { PichangasEntityModule } from './entities/entity.module';
-import { PaginationConfig } from './blocks/config/uib-pagination.config';
-import { StateStorageService } from './shared/auth/state-storage.service';
+import { StateStorageService } from 'app/core/auth/state-storage.service';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import {
-    JhiMainComponent,
-    NavbarComponent,
-    FooterComponent,
-    ProfileService,
-    PageRibbonComponent,
-    ErrorComponent
-} from './layouts';
+import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 
 @NgModule({
     imports: [
         BrowserModule,
         PichangasAppRoutingModule,
-        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
+        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-' }),
         PichangasSharedModule,
+        PichangasCoreModule,
         PichangasHomeModule,
-        PichangasAdminModule,
         PichangasAccountModule,
-        PichangasEntityModule,
+        PichangasEntityModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
-    declarations: [
-        JhiMainComponent,
-        NavbarComponent,
-        ErrorComponent,
-        PageRibbonComponent,
-        FooterComponent
-    ],
+    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
     providers: [
-        ProfileService,
-        PaginationConfig,
-        UserRouteAccessService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthExpiredInterceptor,
             multi: true,
-            deps: [
-                StateStorageService,
-                Injector
-            ]
+            deps: [StateStorageService, Injector]
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorHandlerInterceptor,
             multi: true,
-            deps: [
-                JhiEventManager
-            ]
+            deps: [JhiEventManager]
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: NotificationInterceptor,
             multi: true,
-            deps: [
-                Injector
-            ]
+            deps: [Injector]
         }
     ],
-    bootstrap: [ JhiMainComponent ]
+    bootstrap: [JhiMainComponent]
 })
 export class PichangasAppModule {}

@@ -1,8 +1,11 @@
 package com.pichangas.service;
 
 import com.pichangas.service.dto.DistrictDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing District.
@@ -25,13 +28,14 @@ public interface DistrictService {
      */
     Page<DistrictDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" district.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    DistrictDTO findOne(Long id);
+    Optional<DistrictDTO> findOne(Long id);
 
     /**
      * Delete the "id" district.

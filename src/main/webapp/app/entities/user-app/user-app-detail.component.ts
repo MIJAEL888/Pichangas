@@ -1,55 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { UserApp } from './user-app.model';
-import { UserAppService } from './user-app.service';
+import { IUserApp } from 'app/shared/model/user-app.model';
 
 @Component({
     selector: 'jhi-user-app-detail',
     templateUrl: './user-app-detail.component.html'
 })
-export class UserAppDetailComponent implements OnInit, OnDestroy {
+export class UserAppDetailComponent implements OnInit {
+    userApp: IUserApp;
 
-    userApp: UserApp;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor(
-        private eventManager: JhiEventManager,
-        private userAppService: UserAppService,
-        private route: ActivatedRoute
-    ) {
-    }
+    constructor(private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+        this.activatedRoute.data.subscribe(({ userApp }) => {
+            this.userApp = userApp;
         });
-        this.registerChangeInUserApps();
     }
 
-    load(id) {
-        this.userAppService.find(id)
-            .subscribe((userAppResponse: HttpResponse<UserApp>) => {
-                this.userApp = userAppResponse.body;
-            });
-    }
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInUserApps() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'userAppListModification',
-            (response) => this.load(this.userApp.id)
-        );
     }
 }

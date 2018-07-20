@@ -1,10 +1,7 @@
 package com.pichangas.service.dto;
 
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -96,7 +93,7 @@ public class ClientFinalDTO implements Serializable {
         }
 
         ClientFinalDTO clientFinalDTO = (ClientFinalDTO) o;
-        if(clientFinalDTO.getId() == null || getId() == null) {
+        if (clientFinalDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), clientFinalDTO.getId());
@@ -116,6 +113,7 @@ public class ClientFinalDTO implements Serializable {
             ", mobile='" + getMobile() + "'" +
             ", email='" + getEmail() + "'" +
             ", numDocument='" + getNumDocument() + "'" +
+            ", userApp=" + getUserAppId() +
             "}";
     }
 }

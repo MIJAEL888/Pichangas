@@ -1,10 +1,7 @@
 package com.pichangas.service.dto;
 
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -63,7 +60,7 @@ public class DistrictDTO implements Serializable {
         }
 
         DistrictDTO districtDTO = (DistrictDTO) o;
-        if(districtDTO.getId() == null || getId() == null) {
+        if (districtDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), districtDTO.getId());
@@ -80,6 +77,7 @@ public class DistrictDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", code='" + getCode() + "'" +
+            ", province=" + getProvinceId() +
             "}";
     }
 }

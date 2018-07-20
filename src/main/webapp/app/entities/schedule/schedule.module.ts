@@ -1,49 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    ScheduleService,
-    SchedulePopupService,
     ScheduleComponent,
     ScheduleDetailComponent,
-    ScheduleDialogComponent,
-    SchedulePopupComponent,
+    ScheduleUpdateComponent,
     ScheduleDeletePopupComponent,
     ScheduleDeleteDialogComponent,
     scheduleRoute,
-    schedulePopupRoute,
+    schedulePopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...scheduleRoute,
-    ...schedulePopupRoute,
-];
+const ENTITY_STATES = [...scheduleRoute, ...schedulePopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         ScheduleComponent,
         ScheduleDetailComponent,
-        ScheduleDialogComponent,
+        ScheduleUpdateComponent,
         ScheduleDeleteDialogComponent,
-        SchedulePopupComponent,
-        ScheduleDeletePopupComponent,
+        ScheduleDeletePopupComponent
     ],
-    entryComponents: [
-        ScheduleComponent,
-        ScheduleDialogComponent,
-        SchedulePopupComponent,
-        ScheduleDeleteDialogComponent,
-        ScheduleDeletePopupComponent,
-    ],
-    providers: [
-        ScheduleService,
-        SchedulePopupService,
-    ],
+    entryComponents: [ScheduleComponent, ScheduleUpdateComponent, ScheduleDeleteDialogComponent, ScheduleDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasScheduleModule {}

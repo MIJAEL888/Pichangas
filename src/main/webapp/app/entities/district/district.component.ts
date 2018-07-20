@@ -1,19 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { District } from './district.model';
+import { IDistrict } from 'app/shared/model/district.model';
+import { Principal } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { DistrictService } from './district.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-district',
     templateUrl: './district.component.html'
 })
 export class DistrictComponent implements OnInit, OnDestroy {
-
-    districts: District[];
+    districts: IDistrict[];
     currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
@@ -42,14 +43,16 @@ export class DistrictComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.districtService.query({
-            page: this.page,
-            size: this.itemsPerPage,
-            sort: this.sort()
-        }).subscribe(
-            (res: HttpResponse<District[]>) => this.onSuccess(res.body, res.headers),
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.districtService
+            .query({
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            })
+            .subscribe(
+                (res: HttpResponse<IDistrict[]>) => this.paginateDistricts(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     reset() {
@@ -62,9 +65,10 @@ export class DistrictComponent implements OnInit, OnDestroy {
         this.page = page;
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInDistricts();
@@ -74,11 +78,12 @@ export class DistrictComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: District) {
+    trackId(index: number, item: IDistrict) {
         return item.id;
     }
+
     registerChangeInDistricts() {
-        this.eventSubscriber = this.eventManager.subscribe('districtListModification', (response) => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('districtListModification', response => this.reset());
     }
 
     sort() {
@@ -89,15 +94,15 @@ export class DistrictComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    private onSuccess(data, headers) {
+    private paginateDistricts(data: IDistrict[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
+        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         for (let i = 0; i < data.length; i++) {
             this.districts.push(data[i]);
         }
     }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 }

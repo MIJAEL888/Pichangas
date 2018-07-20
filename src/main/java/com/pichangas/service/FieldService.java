@@ -1,8 +1,11 @@
 package com.pichangas.service;
 
 import com.pichangas.service.dto.FieldDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Field.
@@ -25,13 +28,14 @@ public interface FieldService {
      */
     Page<FieldDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" field.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    FieldDTO findOne(Long id);
+    Optional<FieldDTO> findOne(Long id);
 
     /**
      * Delete the "id" field.

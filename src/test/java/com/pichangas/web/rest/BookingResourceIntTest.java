@@ -31,6 +31,7 @@ import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.sameInstant;
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -81,8 +82,10 @@ public class BookingResourceIntTest {
     @Autowired
     private BookingRepository bookingRepository;
 
+
     @Autowired
     private BookingMapper bookingMapper;
+    
 
     @Autowired
     private BookingService bookingService;
@@ -210,6 +213,7 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].allDay").value(hasItem(DEFAULT_ALL_DAY.booleanValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -233,7 +237,6 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.allDay").value(DEFAULT_ALL_DAY.booleanValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingBooking() throws Exception {
@@ -247,10 +250,11 @@ public class BookingResourceIntTest {
     public void updateBooking() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
+
         int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
 
         // Update the booking
-        Booking updatedBooking = bookingRepository.findOne(booking.getId());
+        Booking updatedBooking = bookingRepository.findById(booking.getId()).get();
         // Disconnect from session so that the updates on updatedBooking are not directly saved in db
         em.detach(updatedBooking);
         updatedBooking
@@ -299,11 +303,11 @@ public class BookingResourceIntTest {
         restBookingMockMvc.perform(put("/api/bookings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(bookingDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Booking in the database
         List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -311,6 +315,7 @@ public class BookingResourceIntTest {
     public void deleteBooking() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
+
         int databaseSizeBeforeDelete = bookingRepository.findAll().size();
 
         // Get the booking

@@ -1,10 +1,7 @@
 package com.pichangas.service.dto;
 
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import com.pichangas.domain.enumeration.TypeField;
 import com.pichangas.domain.enumeration.TypeSport;
@@ -120,7 +117,7 @@ public class FieldDTO implements Serializable {
         }
 
         FieldDTO fieldDTO = (FieldDTO) o;
-        if(fieldDTO.getId() == null || getId() == null) {
+        if (fieldDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), fieldDTO.getId());
@@ -142,6 +139,7 @@ public class FieldDTO implements Serializable {
             ", typeField='" + getTypeField() + "'" +
             ", typeSport='" + getTypeSport() + "'" +
             ", state='" + getState() + "'" +
+            ", campus=" + getCampusId() +
             "}";
     }
 }

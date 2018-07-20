@@ -1,52 +1,48 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Provinces</span>
-        <button class="btn btn-primary float-right jh-create-entity create-province" [routerLink]="['/', { outlets: { popup: ['province-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-province" [routerLink]="['/province/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Province
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="provinces">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="code"><span>Code</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="departmentId"><span>Department</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="code"><span>Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="departmentId"><span>Department</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let province of provinces ;trackBy: trackId">
-                <td><a [routerLink]="['../province', province.id ]">{{province.id}}</a></td>
+                <td><a [routerLink]="['/province', province.id, 'view' ]">{{province.id}}</a></td>
                 <td>{{province.name}}</td>
                 <td>{{province.code}}</td>
                 <td>
                     <div *ngIf="province.departmentId">
-                        <a [routerLink]="['../department', province.departmentId  ]" >{{province.departmentId}}</a>
+                        <a [routerLink]="['../department', province.departmentId , 'view' ]" >{{province.departmentId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../province', province.id ]"
+                                [routerLink]="['/province', province.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'province/'+ province.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/province', province.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -54,7 +50,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

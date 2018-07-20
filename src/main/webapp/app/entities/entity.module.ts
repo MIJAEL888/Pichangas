@@ -13,6 +13,7 @@ import { PichangasUserAppModule } from './user-app/user-app.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
+    // prettier-ignore
     imports: [
         PichangasClientModule,
         PichangasCampusModule,

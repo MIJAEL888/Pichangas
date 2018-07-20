@@ -1,55 +1,51 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable, of } from 'rxjs';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { PichangasTestModule } from '../../../test.module';
-import { ScheduleComponent } from '../../../../../../main/webapp/app/entities/schedule/schedule.component';
-import { ScheduleService } from '../../../../../../main/webapp/app/entities/schedule/schedule.service';
-import { Schedule } from '../../../../../../main/webapp/app/entities/schedule/schedule.model';
+import { ScheduleComponent } from 'app/entities/schedule/schedule.component';
+import { ScheduleService } from 'app/entities/schedule/schedule.service';
+import { Schedule } from 'app/shared/model/schedule.model';
 
 describe('Component Tests', () => {
-
     describe('Schedule Management Component', () => {
         let comp: ScheduleComponent;
         let fixture: ComponentFixture<ScheduleComponent>;
         let service: ScheduleService;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [PichangasTestModule],
                 declarations: [ScheduleComponent],
-                providers: [
-                    ScheduleService
-                ]
+                providers: []
             })
-            .overrideTemplate(ScheduleComponent, '')
-            .compileComponents();
-        }));
+                .overrideTemplate(ScheduleComponent, '')
+                .compileComponents();
 
-        beforeEach(() => {
             fixture = TestBed.createComponent(ScheduleComponent);
             comp = fixture.componentInstance;
             service = fixture.debugElement.injector.get(ScheduleService);
         });
 
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-                const headers = new HttpHeaders().append('link', 'link;link');
-                spyOn(service, 'query').and.returnValue(Observable.of(new HttpResponse({
-                    body: [new Schedule(123)],
-                    headers
-                })));
+        it('Should call load all on init', () => {
+            // GIVEN
+            const headers = new HttpHeaders().append('link', 'link;link');
+            spyOn(service, 'query').and.returnValue(
+                of(
+                    new HttpResponse({
+                        body: [new Schedule(123)],
+                        headers
+                    })
+                )
+            );
 
-                // WHEN
-                comp.ngOnInit();
+            // WHEN
+            comp.ngOnInit();
 
-                // THEN
-                expect(service.query).toHaveBeenCalled();
-                expect(comp.schedules[0]).toEqual(jasmine.objectContaining({id: 123}));
-            });
+            // THEN
+            expect(service.query).toHaveBeenCalled();
+            expect(comp.schedules[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         });
     });
-
 });

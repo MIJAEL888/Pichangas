@@ -74,7 +74,7 @@ public class ClientResource {
     public ResponseEntity<ClientDTO> updateClient(@Valid @RequestBody ClientDTO clientDTO) throws URISyntaxException {
         log.debug("REST request to update Client : {}", clientDTO);
         if (clientDTO.getId() == null) {
-            return createClient(clientDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ClientDTO result = clientService.save(clientDTO);
         return ResponseEntity.ok()
@@ -107,8 +107,8 @@ public class ClientResource {
     @Timed
     public ResponseEntity<ClientDTO> getClient(@PathVariable Long id) {
         log.debug("REST request to get Client : {}", id);
-        ClientDTO clientDTO = clientService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(clientDTO));
+        Optional<ClientDTO> clientDTO = clientService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(clientDTO);
     }
 
     /**

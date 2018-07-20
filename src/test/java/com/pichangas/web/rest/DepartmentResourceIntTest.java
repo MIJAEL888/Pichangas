@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -50,8 +51,10 @@ public class DepartmentResourceIntTest {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+
     @Autowired
     private DepartmentMapper departmentMapper;
+    
 
     @Autowired
     private DepartmentService departmentService;
@@ -174,6 +177,7 @@ public class DepartmentResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -189,7 +193,6 @@ public class DepartmentResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingDepartment() throws Exception {
@@ -203,10 +206,11 @@ public class DepartmentResourceIntTest {
     public void updateDepartment() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
+
         int databaseSizeBeforeUpdate = departmentRepository.findAll().size();
 
         // Update the department
-        Department updatedDepartment = departmentRepository.findOne(department.getId());
+        Department updatedDepartment = departmentRepository.findById(department.getId()).get();
         // Disconnect from session so that the updates on updatedDepartment are not directly saved in db
         em.detach(updatedDepartment);
         updatedDepartment
@@ -239,11 +243,11 @@ public class DepartmentResourceIntTest {
         restDepartmentMockMvc.perform(put("/api/departments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(departmentDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Department in the database
         List<Department> departmentList = departmentRepository.findAll();
-        assertThat(departmentList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(departmentList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -251,6 +255,7 @@ public class DepartmentResourceIntTest {
     public void deleteDepartment() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
+
         int databaseSizeBeforeDelete = departmentRepository.findAll().size();
 
         // Get the department
