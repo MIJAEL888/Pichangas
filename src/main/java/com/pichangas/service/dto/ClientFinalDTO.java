@@ -113,7 +113,6 @@ public class ClientFinalDTO implements Serializable {
             ", mobile='" + getMobile() + "'" +
             ", email='" + getEmail() + "'" +
             ", numDocument='" + getNumDocument() + "'" +
-            ", userApp=" + getUserAppId() +
             "}";
     }
 }

@@ -227,8 +227,6 @@ public class CampusDTO implements Serializable {
             ", codPostal='" + getCodPostal() + "'" +
             ", status='" + isStatus() + "'" +
             ", rating='" + getRating() + "'" +
-            ", client=" + getClientId() +
-            ", district=" + getDistrictId() +
             "}";
     }
 }

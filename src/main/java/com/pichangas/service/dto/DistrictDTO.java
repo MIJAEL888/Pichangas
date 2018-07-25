@@ -77,7 +77,6 @@ public class DistrictDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", code='" + getCode() + "'" +
-            ", province=" + getProvinceId() +
             "}";
     }
 }
