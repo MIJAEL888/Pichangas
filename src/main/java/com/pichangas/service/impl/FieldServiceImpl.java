@@ -11,6 +11,7 @@ import com.pichangas.service.mapper.FieldMapper;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing Field.
  */
@@ -76,6 +78,7 @@ public class FieldServiceImpl implements FieldService {
             .map(fieldMapper::toDto);
     }
 
+
     /**
      * Get all the fields.
      *
@@ -98,10 +101,10 @@ public class FieldServiceImpl implements FieldService {
      */
     @Override
     @Transactional(readOnly = true)
-    public FieldDTO findOne(Long id) {
+    public Optional<FieldDTO> findOne(Long id) {
         log.debug("Request to get Field : {}", id);
-        Field field = fieldRepository.findOne(id);
-        return fieldMapper.toDto(field);
+        return fieldRepository.findById(id)
+            .map(fieldMapper::toDto);
     }
 
     /**
@@ -112,7 +115,7 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Field : {}", id);
-        fieldRepository.delete(id);
+        fieldRepository.deleteById(id);
     }
 
     /**

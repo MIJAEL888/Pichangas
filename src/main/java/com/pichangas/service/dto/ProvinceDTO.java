@@ -1,6 +1,5 @@
 package com.pichangas.service.dto;
 
-
 import com.pichangas.domain.Department;
 
 import javax.validation.constraints.*;
@@ -65,7 +64,7 @@ public class ProvinceDTO implements Serializable {
         }
 
         ProvinceDTO provinceDTO = (ProvinceDTO) o;
-        if(provinceDTO.getId() == null || getId() == null) {
+        if (provinceDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), provinceDTO.getId());

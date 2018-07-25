@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -68,8 +69,10 @@ public class FieldResourceIntTest {
     @Autowired
     private FieldRepository fieldRepository;
 
+
     @Autowired
     private FieldMapper fieldMapper;
+    
 
     @Autowired
     private FieldService fieldService;
@@ -283,6 +286,7 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.[*].typeSport").value(hasItem(DEFAULT_TYPE_SPORT.toString())))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -303,7 +307,6 @@ public class FieldResourceIntTest {
             .andExpect(jsonPath("$.typeSport").value(DEFAULT_TYPE_SPORT.toString()))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingField() throws Exception {
@@ -317,10 +320,11 @@ public class FieldResourceIntTest {
     public void updateField() throws Exception {
         // Initialize the database
         fieldRepository.saveAndFlush(field);
+
         int databaseSizeBeforeUpdate = fieldRepository.findAll().size();
 
         // Update the field
-        Field updatedField = fieldRepository.findOne(field.getId());
+        Field updatedField = fieldRepository.findById(field.getId()).get();
         // Disconnect from session so that the updates on updatedField are not directly saved in db
         em.detach(updatedField);
         updatedField
@@ -363,11 +367,11 @@ public class FieldResourceIntTest {
         restFieldMockMvc.perform(put("/api/fields")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(fieldDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Field in the database
         List<Field> fieldList = fieldRepository.findAll();
-        assertThat(fieldList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(fieldList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -375,6 +379,7 @@ public class FieldResourceIntTest {
     public void deleteField() throws Exception {
         // Initialize the database
         fieldRepository.saveAndFlush(field);
+
         int databaseSizeBeforeDelete = fieldRepository.findAll().size();
 
         // Get the field

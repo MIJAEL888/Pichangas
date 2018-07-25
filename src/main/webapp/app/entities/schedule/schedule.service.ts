@@ -1,84 +1,73 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { ISchedule } from 'app/shared/model/schedule.model';
 
-import { Schedule } from './schedule.model';
-import { createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<ISchedule>;
+type EntityArrayResponseType = HttpResponse<ISchedule[]>;
 
-export type EntityResponseType = HttpResponse<Schedule>;
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ScheduleService {
+    private resourceUrl = SERVER_API_URL + 'api/schedules';
 
-    private resourceUrl =  SERVER_API_URL + 'api/schedules';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
-
-    create(schedule: Schedule): Observable<EntityResponseType> {
-        const copy = this.convert(schedule);
-        return this.http.post<Schedule>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    create(schedule: ISchedule): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(schedule);
+        return this.http
+            .post<ISchedule>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(schedule: Schedule): Observable<EntityResponseType> {
-        const copy = this.convert(schedule);
-        return this.http.put<Schedule>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    update(schedule: ISchedule): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(schedule);
+        return this.http
+            .put<ISchedule>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Schedule>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http
+            .get<ISchedule>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<HttpResponse<Schedule[]>> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<Schedule[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Schedule[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<ISchedule[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Schedule = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Schedule[]>): HttpResponse<Schedule[]> {
-        const jsonResponse: Schedule[] = res.body;
-        const body: Schedule[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Schedule.
-     */
-    private convertItemFromServer(schedule: Schedule): Schedule {
-        const copy: Schedule = Object.assign({}, schedule);
-        copy.startDate = this.dateUtils
-            .convertDateTimeFromServer(schedule.startDate);
-        copy.endDate = this.dateUtils
-            .convertDateTimeFromServer(schedule.endDate);
+    private convertDateFromClient(schedule: ISchedule): ISchedule {
+        const copy: ISchedule = Object.assign({}, schedule, {
+            startDate: schedule.startDate != null && schedule.startDate.isValid() ? schedule.startDate.toJSON() : null,
+            endDate: schedule.endDate != null && schedule.endDate.isValid() ? schedule.endDate.toJSON() : null
+        });
         return copy;
     }
 
-    /**
-     * Convert a Schedule to a JSON which can be sent to the server.
-     */
-    private convert(schedule: Schedule): Schedule {
-        const copy: Schedule = Object.assign({}, schedule);
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.startDate = res.body.startDate != null ? moment(res.body.startDate) : null;
+        res.body.endDate = res.body.endDate != null ? moment(res.body.endDate) : null;
+        return res;
+    }
 
-        copy.startDate = this.dateUtils.toDate(schedule.startDate);
-
-        copy.endDate = this.dateUtils.toDate(schedule.endDate);
-        return copy;
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((schedule: ISchedule) => {
+            schedule.startDate = schedule.startDate != null ? moment(schedule.startDate) : null;
+            schedule.endDate = schedule.endDate != null ? moment(schedule.endDate) : null;
+        });
+        return res;
     }
 }

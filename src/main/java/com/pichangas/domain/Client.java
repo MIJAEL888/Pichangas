@@ -67,7 +67,6 @@ public class Client implements Serializable {
     private String comment;
 
     @OneToMany(mappedBy = "client")
-    @JsonIgnore
     private Set<Campus> campuses = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

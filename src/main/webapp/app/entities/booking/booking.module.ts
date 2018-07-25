@@ -1,49 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    BookingService,
-    BookingPopupService,
     BookingComponent,
     BookingDetailComponent,
-    BookingDialogComponent,
-    BookingPopupComponent,
+    BookingUpdateComponent,
     BookingDeletePopupComponent,
     BookingDeleteDialogComponent,
     bookingRoute,
-    bookingPopupRoute,
+    bookingPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...bookingRoute,
-    ...bookingPopupRoute,
-];
+const ENTITY_STATES = [...bookingRoute, ...bookingPopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         BookingComponent,
         BookingDetailComponent,
-        BookingDialogComponent,
+        BookingUpdateComponent,
         BookingDeleteDialogComponent,
-        BookingPopupComponent,
-        BookingDeletePopupComponent,
+        BookingDeletePopupComponent
     ],
-    entryComponents: [
-        BookingComponent,
-        BookingDialogComponent,
-        BookingPopupComponent,
-        BookingDeleteDialogComponent,
-        BookingDeletePopupComponent,
-    ],
-    providers: [
-        BookingService,
-        BookingPopupService,
-    ],
+    entryComponents: [BookingComponent, BookingUpdateComponent, BookingDeleteDialogComponent, BookingDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasBookingModule {}

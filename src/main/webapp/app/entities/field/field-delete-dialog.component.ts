@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Field } from './field.model';
-import { FieldPopupService } from './field-popup.service';
+import { IField } from 'app/shared/model/field.model';
 import { FieldService } from './field.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { FieldService } from './field.service';
     templateUrl: './field-delete-dialog.component.html'
 })
 export class FieldDeleteDialogComponent {
+    field: IField;
 
-    field: Field;
-
-    constructor(
-        private fieldService: FieldService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private fieldService: FieldService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.fieldService.delete(id).subscribe((response) => {
+        this.fieldService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'fieldListModification',
                 content: 'Deleted an field'
@@ -43,22 +36,30 @@ export class FieldDeleteDialogComponent {
     template: ''
 })
 export class FieldDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private fieldPopupService: FieldPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.fieldPopupService
-                .open(FieldDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ field }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(FieldDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.field = field;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

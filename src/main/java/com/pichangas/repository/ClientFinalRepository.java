@@ -1,13 +1,12 @@
 package com.pichangas.repository;
 
 import com.pichangas.domain.ClientFinal;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the ClientFinal entity.
+ * Spring Data  repository for the ClientFinal entity.
  */
 @SuppressWarnings("unused")
 @Repository

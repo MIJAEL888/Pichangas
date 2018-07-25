@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -80,8 +81,10 @@ public class ClientResourceIntTest {
     @Autowired
     private ClientRepository clientRepository;
 
+
     @Autowired
     private ClientMapper clientMapper;
+    
 
     @Autowired
     private ClientService clientService;
@@ -307,6 +310,7 @@ public class ClientResourceIntTest {
             .andExpect(jsonPath("$.[*].dateSuscription").value(hasItem(DEFAULT_DATE_SUSCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -331,7 +335,6 @@ public class ClientResourceIntTest {
             .andExpect(jsonPath("$.dateSuscription").value(DEFAULT_DATE_SUSCRIPTION.toString()))
             .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingClient() throws Exception {
@@ -345,10 +348,11 @@ public class ClientResourceIntTest {
     public void updateClient() throws Exception {
         // Initialize the database
         clientRepository.saveAndFlush(client);
+
         int databaseSizeBeforeUpdate = clientRepository.findAll().size();
 
         // Update the client
-        Client updatedClient = clientRepository.findOne(client.getId());
+        Client updatedClient = clientRepository.findById(client.getId()).get();
         // Disconnect from session so that the updates on updatedClient are not directly saved in db
         em.detach(updatedClient);
         updatedClient
@@ -399,11 +403,11 @@ public class ClientResourceIntTest {
         restClientMockMvc.perform(put("/api/clients")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(clientDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Client in the database
         List<Client> clientList = clientRepository.findAll();
-        assertThat(clientList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(clientList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -411,6 +415,7 @@ public class ClientResourceIntTest {
     public void deleteClient() throws Exception {
         // Initialize the database
         clientRepository.saveAndFlush(client);
+
         int databaseSizeBeforeDelete = clientRepository.findAll().size();
 
         // Get the client

@@ -1,19 +1,18 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { PichangasSharedModule } from "../shared";
-import { HOME_ROUTE, HomeComponent } from "./";
-import { HomeCalendarComponent } from "./home.calendar.component";
+import { PichangasSharedModule } from 'app/shared';
 import {HomeService} from "./home.service";
 import {BrowserModule} from "@angular/platform-browser";
 import {DxSchedulerModule} from "devextreme-angular";
+import { HOME_ROUTE, HomeComponent } from './';
 
 @NgModule({
     imports: [
-        PichangasSharedModule,
-        RouterModule.forChild([ HOME_ROUTE ]),
-        BrowserModule,
-        DxSchedulerModule
-    ],
+    	PichangasSharedModule, 
+    	RouterModule.forChild([HOME_ROUTE])],
+    	BrowserModule,
+        DxSchedulerModule	
+	],
     declarations: [
         HomeComponent,
         HomeCalendarComponent,

@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    ClientFinalService,
-    ClientFinalPopupService,
     ClientFinalComponent,
     ClientFinalDetailComponent,
-    ClientFinalDialogComponent,
-    ClientFinalPopupComponent,
+    ClientFinalUpdateComponent,
     ClientFinalDeletePopupComponent,
     ClientFinalDeleteDialogComponent,
     clientFinalRoute,
-    clientFinalPopupRoute,
-    ClientFinalResolvePagingParams,
+    clientFinalPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...clientFinalRoute,
-    ...clientFinalPopupRoute,
-];
+const ENTITY_STATES = [...clientFinalRoute, ...clientFinalPopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         ClientFinalComponent,
         ClientFinalDetailComponent,
-        ClientFinalDialogComponent,
+        ClientFinalUpdateComponent,
         ClientFinalDeleteDialogComponent,
-        ClientFinalPopupComponent,
-        ClientFinalDeletePopupComponent,
+        ClientFinalDeletePopupComponent
     ],
-    entryComponents: [
-        ClientFinalComponent,
-        ClientFinalDialogComponent,
-        ClientFinalPopupComponent,
-        ClientFinalDeleteDialogComponent,
-        ClientFinalDeletePopupComponent,
-    ],
-    providers: [
-        ClientFinalService,
-        ClientFinalPopupService,
-        ClientFinalResolvePagingParams,
-    ],
+    entryComponents: [ClientFinalComponent, ClientFinalUpdateComponent, ClientFinalDeleteDialogComponent, ClientFinalDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasClientFinalModule {}

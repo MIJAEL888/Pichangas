@@ -69,7 +69,7 @@ public class ScheduleResource {
     public ResponseEntity<ScheduleDTO> updateSchedule(@Valid @RequestBody ScheduleDTO scheduleDTO) throws URISyntaxException {
         log.debug("REST request to update Schedule : {}", scheduleDTO);
         if (scheduleDTO.getId() == null) {
-            return createSchedule(scheduleDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ScheduleDTO result = scheduleService.save(scheduleDTO);
         return ResponseEntity.ok()
@@ -87,7 +87,7 @@ public class ScheduleResource {
     public List<ScheduleDTO> getAllSchedules() {
         log.debug("REST request to get all Schedules");
         return scheduleService.findAll();
-        }
+    }
 
     /**
      * GET  /schedules/:id : get the "id" schedule.
@@ -99,8 +99,8 @@ public class ScheduleResource {
     @Timed
     public ResponseEntity<ScheduleDTO> getSchedule(@PathVariable Long id) {
         log.debug("REST request to get Schedule : {}", id);
-        ScheduleDTO scheduleDTO = scheduleService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(scheduleDTO));
+        Optional<ScheduleDTO> scheduleDTO = scheduleService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(scheduleDTO);
     }
 
     /**

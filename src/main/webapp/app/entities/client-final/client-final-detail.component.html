@@ -1,48 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="clientFinal">
+            <h2><span>Client Final</span> {{clientFinal.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Name</span></dt>
+                <dd>
+                    <span>{{clientFinal.name}}</span>
+                </dd>
+                <dt><span>Sur Name</span></dt>
+                <dd>
+                    <span>{{clientFinal.surName}}</span>
+                </dd>
+                <dt><span>Mobile</span></dt>
+                <dd>
+                    <span>{{clientFinal.mobile}}</span>
+                </dd>
+                <dt><span>Email</span></dt>
+                <dd>
+                    <span>{{clientFinal.email}}</span>
+                </dd>
+                <dt><span>Num Document</span></dt>
+                <dd>
+                    <span>{{clientFinal.numDocument}}</span>
+                </dd>
+                <dt><span>User App</span></dt>
+                <dd>
+                    <div *ngIf="clientFinal.userAppId">
+                        <a [routerLink]="['/user-app', clientFinal.userAppId, 'view']">{{clientFinal.userAppId}}</a>
+                    </div>
+                </dd>
+            </dl>
 
-<div *ngIf="clientFinal">
-    <h2><span>Client Final</span> {{clientFinal.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span>Name</span></dt>
-        <dd>
-            <span>{{clientFinal.name}}</span>
-        </dd>
-        <dt><span>Sur Name</span></dt>
-        <dd>
-            <span>{{clientFinal.surName}}</span>
-        </dd>
-        <dt><span>Mobile</span></dt>
-        <dd>
-            <span>{{clientFinal.mobile}}</span>
-        </dd>
-        <dt><span>Email</span></dt>
-        <dd>
-            <span>{{clientFinal.email}}</span>
-        </dd>
-        <dt><span>Num Document</span></dt>
-        <dd>
-            <span>{{clientFinal.numDocument}}</span>
-        </dd>
-        <dt><span>User App</span></dt>
-        <dd>
-            <div *ngIf="clientFinal.userAppId">
-                <a [routerLink]="['/user-app', clientFinal.userAppId]">{{clientFinal.userAppId}}</a>
-            </div>
-        </dd>
-    </dl>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'client-final/'+ clientFinal.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/client-final', clientFinal.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

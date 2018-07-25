@@ -1,15 +1,9 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../shared';
+import { PichangasSharedModule } from 'app/shared';
 
 import {
-    Register,
-    ActivateService,
-    PasswordService,
-    PasswordResetInitService,
-    PasswordResetFinishService,
-    SessionsService,
     SessionsComponent,
     PasswordStrengthBarComponent,
     RegisterComponent,
@@ -18,17 +12,12 @@ import {
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
     SettingsComponent,
-    SocialRegisterComponent,
     accountState
 } from './';
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(accountState)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(accountState)],
     declarations: [
-        SocialRegisterComponent,
         ActivateComponent,
         RegisterComponent,
         PasswordComponent,
@@ -37,14 +26,6 @@ import {
         PasswordResetFinishComponent,
         SessionsComponent,
         SettingsComponent
-    ],
-    providers: [
-        SessionsService,
-        Register,
-        ActivateService,
-        PasswordService,
-        PasswordResetInitService,
-        PasswordResetFinishService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

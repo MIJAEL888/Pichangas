@@ -47,7 +47,6 @@ public class ClientFinal implements Serializable {
     private UserApp userApp;
 
     @OneToMany(mappedBy = "clientFinal")
-    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

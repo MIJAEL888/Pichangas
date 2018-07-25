@@ -1,12 +1,9 @@
 package com.pichangas.service.dto;
 
-
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import com.pichangas.domain.enumeration.StateBook;
 
@@ -169,7 +166,7 @@ public class BookingDTO implements Serializable {
         }
 
         BookingDTO bookingDTO = (BookingDTO) o;
-        if(bookingDTO.getId() == null || getId() == null) {
+        if (bookingDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), bookingDTO.getId());
@@ -194,6 +191,9 @@ public class BookingDTO implements Serializable {
             ", endDate='" + getEndDate() + "'" +
             ", allDay='" + isAllDay() + "'" +
             ", description='" + getDescription() + "'" +
+            ", field=" + getFieldId() +
+            ", schedule=" + getScheduleId() +
+            ", clientFinal=" + getClientFinalId() +
             "}";
     }
 }

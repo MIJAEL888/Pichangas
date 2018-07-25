@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -59,8 +60,10 @@ public class ClientFinalResourceIntTest {
     @Autowired
     private ClientFinalRepository clientFinalRepository;
 
+
     @Autowired
     private ClientFinalMapper clientFinalMapper;
+    
 
     @Autowired
     private ClientFinalService clientFinalService;
@@ -249,6 +252,7 @@ public class ClientFinalResourceIntTest {
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].numDocument").value(hasItem(DEFAULT_NUM_DOCUMENT.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -267,7 +271,6 @@ public class ClientFinalResourceIntTest {
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.numDocument").value(DEFAULT_NUM_DOCUMENT.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingClientFinal() throws Exception {
@@ -281,10 +284,11 @@ public class ClientFinalResourceIntTest {
     public void updateClientFinal() throws Exception {
         // Initialize the database
         clientFinalRepository.saveAndFlush(clientFinal);
+
         int databaseSizeBeforeUpdate = clientFinalRepository.findAll().size();
 
         // Update the clientFinal
-        ClientFinal updatedClientFinal = clientFinalRepository.findOne(clientFinal.getId());
+        ClientFinal updatedClientFinal = clientFinalRepository.findById(clientFinal.getId()).get();
         // Disconnect from session so that the updates on updatedClientFinal are not directly saved in db
         em.detach(updatedClientFinal);
         updatedClientFinal
@@ -323,11 +327,11 @@ public class ClientFinalResourceIntTest {
         restClientFinalMockMvc.perform(put("/api/client-finals")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(clientFinalDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the ClientFinal in the database
         List<ClientFinal> clientFinalList = clientFinalRepository.findAll();
-        assertThat(clientFinalList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(clientFinalList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -335,6 +339,7 @@ public class ClientFinalResourceIntTest {
     public void deleteClientFinal() throws Exception {
         // Initialize the database
         clientFinalRepository.saveAndFlush(clientFinal);
+
         int databaseSizeBeforeDelete = clientFinalRepository.findAll().size();
 
         // Get the clientFinal

@@ -5,6 +5,7 @@ import com.pichangas.service.dto.FieldFilterDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public interface FieldService {
      */
     Page<FieldDTO> findAll(Pageable pageable);
 
+
     /**
      * Get all the fields.
      *
@@ -42,7 +44,7 @@ public interface FieldService {
      * @param id the id of the entity
      * @return the entity
      */
-    FieldDTO findOne(Long id);
+    Optional<FieldDTO> findOne(Long id);
 
     /**
      * Delete the "id" field.

@@ -74,7 +74,7 @@ public class ClientFinalResource {
     public ResponseEntity<ClientFinalDTO> updateClientFinal(@Valid @RequestBody ClientFinalDTO clientFinalDTO) throws URISyntaxException {
         log.debug("REST request to update ClientFinal : {}", clientFinalDTO);
         if (clientFinalDTO.getId() == null) {
-            return createClientFinal(clientFinalDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ClientFinalDTO result = clientFinalService.save(clientFinalDTO);
         return ResponseEntity.ok()
@@ -107,8 +107,8 @@ public class ClientFinalResource {
     @Timed
     public ResponseEntity<ClientFinalDTO> getClientFinal(@PathVariable Long id) {
         log.debug("REST request to get ClientFinal : {}", id);
-        ClientFinalDTO clientFinalDTO = clientFinalService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(clientFinalDTO));
+        Optional<ClientFinalDTO> clientFinalDTO = clientFinalService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(clientFinalDTO);
     }
 
     /**

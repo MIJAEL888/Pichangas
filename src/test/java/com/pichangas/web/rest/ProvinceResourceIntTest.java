@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -50,8 +51,10 @@ public class ProvinceResourceIntTest {
     @Autowired
     private ProvinceRepository provinceRepository;
 
+
     @Autowired
     private ProvinceMapper provinceMapper;
+    
 
     @Autowired
     private ProvinceService provinceService;
@@ -174,6 +177,7 @@ public class ProvinceResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -189,7 +193,6 @@ public class ProvinceResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingProvince() throws Exception {
@@ -203,10 +206,11 @@ public class ProvinceResourceIntTest {
     public void updateProvince() throws Exception {
         // Initialize the database
         provinceRepository.saveAndFlush(province);
+
         int databaseSizeBeforeUpdate = provinceRepository.findAll().size();
 
         // Update the province
-        Province updatedProvince = provinceRepository.findOne(province.getId());
+        Province updatedProvince = provinceRepository.findById(province.getId()).get();
         // Disconnect from session so that the updates on updatedProvince are not directly saved in db
         em.detach(updatedProvince);
         updatedProvince
@@ -239,11 +243,11 @@ public class ProvinceResourceIntTest {
         restProvinceMockMvc.perform(put("/api/provinces")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(provinceDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Province in the database
         List<Province> provinceList = provinceRepository.findAll();
-        assertThat(provinceList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(provinceList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -251,6 +255,7 @@ public class ProvinceResourceIntTest {
     public void deleteProvince() throws Exception {
         // Initialize the database
         provinceRepository.saveAndFlush(province);
+
         int databaseSizeBeforeDelete = provinceRepository.findAll().size();
 
         // Get the province

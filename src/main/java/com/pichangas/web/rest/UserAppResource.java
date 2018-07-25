@@ -75,7 +75,7 @@ public class UserAppResource {
     public ResponseEntity<UserAppDTO> updateUserApp(@Valid @RequestBody UserAppDTO userAppDTO) throws URISyntaxException {
         log.debug("REST request to update UserApp : {}", userAppDTO);
         if (userAppDTO.getId() == null) {
-            return createUserApp(userAppDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         UserAppDTO result = userAppService.save(userAppDTO);
         return ResponseEntity.ok()
@@ -114,8 +114,8 @@ public class UserAppResource {
     @Timed
     public ResponseEntity<UserAppDTO> getUserApp(@PathVariable Long id) {
         log.debug("REST request to get UserApp : {}", id);
-        UserAppDTO userAppDTO = userAppService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userAppDTO));
+        Optional<UserAppDTO> userAppDTO = userAppService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(userAppDTO);
     }
 
     /**

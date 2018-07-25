@@ -1,11 +1,8 @@
 package com.pichangas.service.dto;
 
-
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import com.pichangas.domain.enumeration.DaysOfWeek;
 
@@ -170,7 +167,7 @@ public class ScheduleDTO implements Serializable {
         }
 
         ScheduleDTO scheduleDTO = (ScheduleDTO) o;
-        if(scheduleDTO.getId() == null || getId() == null) {
+        if (scheduleDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), scheduleDTO.getId());
@@ -197,6 +194,7 @@ public class ScheduleDTO implements Serializable {
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", allDay='" + isAllDay() + "'" +
+            ", field=" + getFieldId() +
             "}";
     }
 }

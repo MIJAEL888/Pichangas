@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { District } from './district.model';
-import { DistrictPopupService } from './district-popup.service';
+import { IDistrict } from 'app/shared/model/district.model';
 import { DistrictService } from './district.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { DistrictService } from './district.service';
     templateUrl: './district-delete-dialog.component.html'
 })
 export class DistrictDeleteDialogComponent {
+    district: IDistrict;
 
-    district: District;
-
-    constructor(
-        private districtService: DistrictService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private districtService: DistrictService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.districtService.delete(id).subscribe((response) => {
+        this.districtService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'districtListModification',
                 content: 'Deleted an district'
@@ -43,22 +36,30 @@ export class DistrictDeleteDialogComponent {
     template: ''
 })
 export class DistrictDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private districtPopupService: DistrictPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.districtPopupService
-                .open(DistrictDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ district }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(DistrictDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.district = district;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

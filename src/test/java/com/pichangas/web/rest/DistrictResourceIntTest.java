@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -50,8 +51,10 @@ public class DistrictResourceIntTest {
     @Autowired
     private DistrictRepository districtRepository;
 
+
     @Autowired
     private DistrictMapper districtMapper;
+    
 
     @Autowired
     private DistrictService districtService;
@@ -174,6 +177,7 @@ public class DistrictResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -189,7 +193,6 @@ public class DistrictResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingDistrict() throws Exception {
@@ -203,10 +206,11 @@ public class DistrictResourceIntTest {
     public void updateDistrict() throws Exception {
         // Initialize the database
         districtRepository.saveAndFlush(district);
+
         int databaseSizeBeforeUpdate = districtRepository.findAll().size();
 
         // Update the district
-        District updatedDistrict = districtRepository.findOne(district.getId());
+        District updatedDistrict = districtRepository.findById(district.getId()).get();
         // Disconnect from session so that the updates on updatedDistrict are not directly saved in db
         em.detach(updatedDistrict);
         updatedDistrict
@@ -239,11 +243,11 @@ public class DistrictResourceIntTest {
         restDistrictMockMvc.perform(put("/api/districts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(districtDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the District in the database
         List<District> districtList = districtRepository.findAll();
-        assertThat(districtList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(districtList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -251,6 +255,7 @@ public class DistrictResourceIntTest {
     public void deleteDistrict() throws Exception {
         // Initialize the database
         districtRepository.saveAndFlush(district);
+
         int databaseSizeBeforeDelete = districtRepository.findAll().size();
 
         // Get the district

@@ -1,6 +1,5 @@
 package com.pichangas.service.dto;
 
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -200,7 +199,7 @@ public class CampusDTO implements Serializable {
         }
 
         CampusDTO campusDTO = (CampusDTO) o;
-        if(campusDTO.getId() == null || getId() == null) {
+        if (campusDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), campusDTO.getId());
@@ -228,6 +227,8 @@ public class CampusDTO implements Serializable {
             ", codPostal='" + getCodPostal() + "'" +
             ", status='" + isStatus() + "'" +
             ", rating='" + getRating() + "'" +
+            ", client=" + getClientId() +
+            ", district=" + getDistrictId() +
             "}";
     }
 }

@@ -1,7 +1,9 @@
 package com.pichangas.service;
 
 import com.pichangas.service.dto.ScheduleDTO;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing Schedule.
@@ -23,13 +25,14 @@ public interface ScheduleService {
      */
     List<ScheduleDTO> findAll();
 
+
     /**
      * Get the "id" schedule.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    ScheduleDTO findOne(Long id);
+    Optional<ScheduleDTO> findOne(Long id);
 
     /**
      * Delete the "id" schedule.

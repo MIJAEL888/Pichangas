@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Schedule } from './schedule.model';
-import { SchedulePopupService } from './schedule-popup.service';
+import { ISchedule } from 'app/shared/model/schedule.model';
 import { ScheduleService } from './schedule.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { ScheduleService } from './schedule.service';
     templateUrl: './schedule-delete-dialog.component.html'
 })
 export class ScheduleDeleteDialogComponent {
+    schedule: ISchedule;
 
-    schedule: Schedule;
-
-    constructor(
-        private scheduleService: ScheduleService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private scheduleService: ScheduleService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.scheduleService.delete(id).subscribe((response) => {
+        this.scheduleService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'scheduleListModification',
                 content: 'Deleted an schedule'
@@ -43,22 +36,30 @@ export class ScheduleDeleteDialogComponent {
     template: ''
 })
 export class ScheduleDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private schedulePopupService: SchedulePopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.schedulePopupService
-                .open(ScheduleDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ schedule }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(ScheduleDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.schedule = schedule;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

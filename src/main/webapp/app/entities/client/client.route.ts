@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Client } from 'app/shared/model/client.model';
+import { ClientService } from './client.service';
 import { ClientComponent } from './client.component';
 import { ClientDetailComponent } from './client-detail.component';
-import { ClientPopupComponent } from './client-dialog.component';
+import { ClientUpdateComponent } from './client-update.component';
 import { ClientDeletePopupComponent } from './client-delete-dialog.component';
+import { IClient } from 'app/shared/model/client.model';
 
-@Injectable()
-export class ClientResolvePagingParams implements Resolve<any> {
-
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+@Injectable({ providedIn: 'root' })
+export class ClientResolve implements Resolve<IClient> {
+    constructor(private service: ClientService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((client: HttpResponse<Client>) => client.body));
+        }
+        return of(new Client());
     }
 }
 
@@ -29,16 +31,45 @@ export const clientRoute: Routes = [
         path: 'client',
         component: ClientComponent,
         resolve: {
-            'pagingParams': ClientResolvePagingParams
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'Clients'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'client/:id/view',
+        component: ClientDetailComponent,
+        resolve: {
+            client: ClientResolve
         },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Clients'
         },
         canActivate: [UserRouteAccessService]
-    }, {
-        path: 'client/:id',
-        component: ClientDetailComponent,
+    },
+    {
+        path: 'client/new',
+        component: ClientUpdateComponent,
+        resolve: {
+            client: ClientResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Clients'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'client/:id/edit',
+        component: ClientUpdateComponent,
+        resolve: {
+            client: ClientResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Clients'
@@ -49,28 +80,11 @@ export const clientRoute: Routes = [
 
 export const clientPopupRoute: Routes = [
     {
-        path: 'client-new',
-        component: ClientPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Clients'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
-        path: 'client/:id/edit',
-        component: ClientPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Clients'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
         path: 'client/:id/delete',
         component: ClientDeletePopupComponent,
+        resolve: {
+            client: ClientResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Clients'

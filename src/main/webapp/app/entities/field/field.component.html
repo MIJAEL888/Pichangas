@@ -1,36 +1,34 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Fields</span>
-        <button class="btn btn-primary float-right jh-create-entity create-field" [routerLink]="['/', { outlets: { popup: ['field-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-field" [routerLink]="['/field/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Field
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="fields">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="comment"><span>Comment</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="numPlayers"><span>Num Players</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="typeField"><span>Type Field</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="typeSport"><span>Type Sport</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="state"><span>State</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="campusId"><span>Campus</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="comment"><span>Comment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="numPlayers"><span>Num Players</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="typeField"><span>Type Field</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="typeSport"><span>Type Sport</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="state"><span>State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="campusId"><span>Campus</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let field of fields ;trackBy: trackId">
-                <td><a [routerLink]="['../field', field.id ]">{{field.id}}</a></td>
+                <td><a [routerLink]="['/field', field.id, 'view' ]">{{field.id}}</a></td>
                 <td>{{field.name}}</td>
                 <td>{{field.description}}</td>
                 <td>{{field.comment}}</td>
@@ -40,23 +38,21 @@
                 <td>{{field.state}}</td>
                 <td>
                     <div *ngIf="field.campusId">
-                        <a [routerLink]="['../campus', field.campusId  ]" >{{field.campusId}}</a>
+                        <a [routerLink]="['../campus', field.campusId , 'view' ]" >{{field.campusId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../field', field.id ]"
+                                [routerLink]="['/field', field.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'field/'+ field.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/field', field.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -64,7 +60,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

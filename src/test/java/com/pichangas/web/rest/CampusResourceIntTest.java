@@ -12,9 +12,12 @@ import com.pichangas.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -24,11 +27,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
+
 
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -82,9 +88,14 @@ public class CampusResourceIntTest {
 
     @Autowired
     private CampusRepository campusRepository;
+    @Mock
+    private CampusRepository campusRepositoryMock;
 
     @Autowired
     private CampusMapper campusMapper;
+    
+    @Mock
+    private CampusService campusServiceMock;
 
     @Autowired
     private CampusService campusService;
@@ -297,6 +308,37 @@ public class CampusResourceIntTest {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.booleanValue())))
             .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING.toString())));
     }
+    
+    public void getAllCampusesWithEagerRelationshipsIsEnabled() throws Exception {
+        CampusResource campusResource = new CampusResource(campusServiceMock);
+        when(campusServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restCampusMockMvc = MockMvcBuilders.standaloneSetup(campusResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restCampusMockMvc.perform(get("/api/campuses?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(campusServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    public void getAllCampusesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        CampusResource campusResource = new CampusResource(campusServiceMock);
+            when(campusServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restCampusMockMvc = MockMvcBuilders.standaloneSetup(campusResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restCampusMockMvc.perform(get("/api/campuses?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(campusServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
 
     @Test
     @Transactional
@@ -323,7 +365,6 @@ public class CampusResourceIntTest {
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.booleanValue()))
             .andExpect(jsonPath("$.rating").value(DEFAULT_RATING.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingCampus() throws Exception {
@@ -337,10 +378,11 @@ public class CampusResourceIntTest {
     public void updateCampus() throws Exception {
         // Initialize the database
         campusRepository.saveAndFlush(campus);
+
         int databaseSizeBeforeUpdate = campusRepository.findAll().size();
 
         // Update the campus
-        Campus updatedCampus = campusRepository.findOne(campus.getId());
+        Campus updatedCampus = campusRepository.findById(campus.getId()).get();
         // Disconnect from session so that the updates on updatedCampus are not directly saved in db
         em.detach(updatedCampus);
         updatedCampus
@@ -395,11 +437,11 @@ public class CampusResourceIntTest {
         restCampusMockMvc.perform(put("/api/campuses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(campusDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Campus in the database
         List<Campus> campusList = campusRepository.findAll();
-        assertThat(campusList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(campusList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -407,6 +449,7 @@ public class CampusResourceIntTest {
     public void deleteCampus() throws Exception {
         // Initialize the database
         campusRepository.saveAndFlush(campus);
+
         int databaseSizeBeforeDelete = campusRepository.findAll().size();
 
         // Get the campus

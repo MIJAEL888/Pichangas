@@ -1,30 +1,33 @@
 ///<reference path="../../../../../../node_modules/rxjs/add/operator/map.d.ts"/>
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import {FORMAT_DATE_TIME, SERVER_API_URL} from '../../app.constants';
-
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 import { JhiDateUtils } from 'ng-jhipster';
 
-import { Booking } from './booking.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IBooking } from 'app/shared/model/booking.model';
 import {DatePipe} from "@angular/common";
 
-export type EntityResponseType = HttpResponse<Booking>;
+type EntityResponseType = HttpResponse<IBooking>;
+type EntityArrayResponseType = HttpResponse<IBooking[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BookingService {
-
-    private resourceUrl =  SERVER_API_URL + 'api/bookings';
+    private resourceUrl = SERVER_API_URL + 'api/bookings';
 
     constructor(private http: HttpClient,
                 private dateUtils: JhiDateUtils,
                 private datePipe: DatePipe) { }
 
-    create(booking: Booking): Observable<EntityResponseType> {
-        const copy = this.convert(booking);
-        return this.http.post<Booking>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    create(booking: IBooking): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(booking);
+        return this.http
+            .post<IBooking>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
     validate (booking: Booking): Observable<EntityResponseType> {
         const copy = this.convert(booking);
@@ -43,75 +46,56 @@ export class BookingService {
             });
         });
     }
-    update(booking: Booking): Observable<EntityResponseType> {
-        const copy = this.convert(booking);
-        return this.http.put<Booking>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    
+    update(booking: IBooking): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(booking);
+        return this.http
+            .put<IBooking>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Booking>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http
+            .get<IBooking>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<HttpResponse<Booking[]>> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<Booking[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Booking[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<IBooking[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    getByField(id: number): Observable<HttpResponse<Booking[]>> {
-        return this.http.get<Booking[]>(`${this.resourceUrl}/field/${id}`, { observe: 'response' })
-            .map((res: HttpResponse<Booking[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Booking = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Booking[]>): HttpResponse<Booking[]> {
-        const jsonResponse: Booking[] = res.body;
-        const body: Booking[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Booking.
-     */
-    private convertItemFromServer(booking: Booking): Booking {
-        const copy: Booking = Object.assign({}, booking);
-        copy.dateReg = this.dateUtils
-            .convertLocalDateFromServer(booking.dateReg);
-        copy.date = this.dateUtils
-            .convertLocalDateFromServer(booking.date);
-        copy.startDate = this.dateUtils
-            .convertDateTimeFromServer(booking.startDate);
-        copy.endDate = this.dateUtils
-            .convertDateTimeFromServer(booking.endDate);
+    private convertDateFromClient(booking: IBooking): IBooking {
+        const copy: IBooking = Object.assign({}, booking, {
+            dateReg: booking.dateReg != null && booking.dateReg.isValid() ? booking.dateReg.format(DATE_FORMAT) : null,
+            date: booking.date != null && booking.date.isValid() ? booking.date.format(DATE_FORMAT) : null,
+            startDate: booking.startDate != null && booking.startDate.isValid() ? booking.startDate.toJSON() : null,
+            endDate: booking.endDate != null && booking.endDate.isValid() ? booking.endDate.toJSON() : null
+        });
         return copy;
     }
 
-    /**
-     * Convert a Booking to a JSON which can be sent to the server.
-     */
-    private convert(booking: Booking): Booking {
-        const copy: Booking = Object.assign({}, booking);
-        copy.dateReg = this.dateUtils
-            .convertLocalDateToServer(booking.dateReg);
-        copy.date = this.dateUtils
-            .convertLocalDateToServer(booking.date);
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.dateReg = res.body.dateReg != null ? moment(res.body.dateReg) : null;
+        res.body.date = res.body.date != null ? moment(res.body.date) : null;
+        res.body.startDate = res.body.startDate != null ? moment(res.body.startDate) : null;
+        res.body.endDate = res.body.endDate != null ? moment(res.body.endDate) : null;
+        return res;
+    }
 
-        copy.startDate = this.dateUtils.toDate(this.datePipe.transform(booking.startDate, FORMAT_DATE_TIME));
-
-        copy.endDate = this.dateUtils.toDate(this.datePipe.transform(booking.endDate, FORMAT_DATE_TIME));
-        return copy;
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((booking: IBooking) => {
+            booking.dateReg = booking.dateReg != null ? moment(booking.dateReg) : null;
+            booking.date = booking.date != null ? moment(booking.date) : null;
+            booking.startDate = booking.startDate != null ? moment(booking.startDate) : null;
+            booking.endDate = booking.endDate != null ? moment(booking.endDate) : null;
+        });
+        return res;
     }
 }

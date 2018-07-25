@@ -1,74 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
 
-import { Province } from './province.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IProvince } from 'app/shared/model/province.model';
 
-export type EntityResponseType = HttpResponse<Province>;
+type EntityResponseType = HttpResponse<IProvince>;
+type EntityArrayResponseType = HttpResponse<IProvince[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProvinceService {
+    private resourceUrl = SERVER_API_URL + 'api/provinces';
 
-    private resourceUrl =  SERVER_API_URL + 'api/provinces';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
-
-    create(province: Province): Observable<EntityResponseType> {
-        const copy = this.convert(province);
-        return this.http.post<Province>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    create(province: IProvince): Observable<EntityResponseType> {
+        return this.http.post<IProvince>(this.resourceUrl, province, { observe: 'response' });
     }
 
-    update(province: Province): Observable<EntityResponseType> {
-        const copy = this.convert(province);
-        return this.http.put<Province>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    update(province: IProvince): Observable<EntityResponseType> {
+        return this.http.put<IProvince>(this.resourceUrl, province, { observe: 'response' });
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Province>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http.get<IProvince>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    query(req?: any): Observable<HttpResponse<Province[]>> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<Province[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Province[]>) => this.convertArrayResponse(res));
+        return this.http.get<IProvince[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Province = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Province[]>): HttpResponse<Province[]> {
-        const jsonResponse: Province[] = res.body;
-        const body: Province[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Province.
-     */
-    private convertItemFromServer(province: Province): Province {
-        const copy: Province = Object.assign({}, province);
-        return copy;
-    }
-
-    /**
-     * Convert a Province to a JSON which can be sent to the server.
-     */
-    private convert(province: Province): Province {
-        const copy: Province = Object.assign({}, province);
-        return copy;
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

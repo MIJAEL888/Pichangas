@@ -74,7 +74,7 @@ public class ProvinceResource {
     public ResponseEntity<ProvinceDTO> updateProvince(@Valid @RequestBody ProvinceDTO provinceDTO) throws URISyntaxException {
         log.debug("REST request to update Province : {}", provinceDTO);
         if (provinceDTO.getId() == null) {
-            return createProvince(provinceDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ProvinceDTO result = provinceService.save(provinceDTO);
         return ResponseEntity.ok()
@@ -107,8 +107,8 @@ public class ProvinceResource {
     @Timed
     public ResponseEntity<ProvinceDTO> getProvince(@PathVariable Long id) {
         log.debug("REST request to get Province : {}", id);
-        ProvinceDTO provinceDTO = provinceService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(provinceDTO));
+        Optional<ProvinceDTO> provinceDTO = provinceService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(provinceDTO);
     }
 
     /**

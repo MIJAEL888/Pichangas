@@ -7,13 +7,14 @@ import com.pichangas.service.dto.ScheduleDTO;
 import com.pichangas.service.mapper.ScheduleMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
 /**
  * Service Implementation for managing Schedule.
  */
@@ -60,6 +61,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
     /**
      * Get one schedule by id.
      *
@@ -68,10 +70,10 @@ public class ScheduleServiceImpl implements ScheduleService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ScheduleDTO findOne(Long id) {
+    public Optional<ScheduleDTO> findOne(Long id) {
         log.debug("Request to get Schedule : {}", id);
-        Schedule schedule = scheduleRepository.findOne(id);
-        return scheduleMapper.toDto(schedule);
+        return scheduleRepository.findById(id)
+            .map(scheduleMapper::toDto);
     }
 
     /**
@@ -82,6 +84,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Schedule : {}", id);
-        scheduleRepository.delete(id);
+        scheduleRepository.deleteById(id);
     }
 }

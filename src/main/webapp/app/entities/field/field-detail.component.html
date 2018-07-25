@@ -1,56 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="field">
+            <h2><span>Field</span> {{field.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Name</span></dt>
+                <dd>
+                    <span>{{field.name}}</span>
+                </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{field.description}}</span>
+                </dd>
+                <dt><span>Comment</span></dt>
+                <dd>
+                    <span>{{field.comment}}</span>
+                </dd>
+                <dt><span>Num Players</span></dt>
+                <dd>
+                    <span>{{field.numPlayers}}</span>
+                </dd>
+                <dt><span>Type Field</span></dt>
+                <dd>
+                    <span>{{field.typeField}}</span>
+                </dd>
+                <dt><span>Type Sport</span></dt>
+                <dd>
+                    <span>{{field.typeSport}}</span>
+                </dd>
+                <dt><span>State</span></dt>
+                <dd>
+                    <span>{{field.state}}</span>
+                </dd>
+                <dt><span>Campus</span></dt>
+                <dd>
+                    <div *ngIf="field.campusId">
+                        <a [routerLink]="['/campus', field.campusId, 'view']">{{field.campusId}}</a>
+                    </div>
+                </dd>
+            </dl>
 
-<div *ngIf="field">
-    <h2><span>Field</span> {{field.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span>Name</span></dt>
-        <dd>
-            <span>{{field.name}}</span>
-        </dd>
-        <dt><span>Description</span></dt>
-        <dd>
-            <span>{{field.description}}</span>
-        </dd>
-        <dt><span>Comment</span></dt>
-        <dd>
-            <span>{{field.comment}}</span>
-        </dd>
-        <dt><span>Num Players</span></dt>
-        <dd>
-            <span>{{field.numPlayers}}</span>
-        </dd>
-        <dt><span>Type Field</span></dt>
-        <dd>
-            <span>{{field.typeField}}</span>
-        </dd>
-        <dt><span>Type Sport</span></dt>
-        <dd>
-            <span>{{field.typeSport}}</span>
-        </dd>
-        <dt><span>State</span></dt>
-        <dd>
-            <span>{{field.state}}</span>
-        </dd>
-        <dt><span>Campus</span></dt>
-        <dd>
-            <div *ngIf="field.campusId">
-                <a [routerLink]="['/campus', field.campusId]">{{field.campusId}}</a>
-            </div>
-        </dd>
-    </dl>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'field/'+ field.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/field', field.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

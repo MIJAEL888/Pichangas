@@ -1,16 +1,14 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Campuses</span>
-        <button class="btn btn-primary float-right jh-create-entity create-campus" [routerLink]="['/', { outlets: { popup: ['campus-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-campus" [routerLink]="['/campus/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Campus
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="campuses">
         <table class="table table-striped">
@@ -38,7 +36,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let campus of campuses ;trackBy: trackId">
-                <td><a [routerLink]="['../campus', campus.id ]">{{campus.id}}</a></td>
+                <td><a [routerLink]="['/campus', campus.id, 'view' ]">{{campus.id}}</a></td>
                 <td>{{campus.name}}</td>
                 <!--<td>{{campus.description}}</td>-->
                 <!--<td>{{campus.comment}}</td>-->
@@ -54,33 +52,31 @@
                 <!--<td>{{campus.rating}}</td>-->
                 <td>
                     <div *ngIf="campus.clientDto">
-                        <a [routerLink]="['../client', campus.clientDto.id  ]" >{{campus.clientDto.name}}</a>
+                        <a [routerLink]="['../client', campus.clientDto.id, 'view'  ]" >{{campus.clientDto.name}}</a>
                     </div>
                 </td>
                 <!--<td>-->
                     <!--<span *ngFor="let userapp of campus.userapps; let last = last">-->
-                            <!--<a class="form-control-static" [routerLink]="['../user-app', userapp?.id ]">{{userapp.id}}</a>{{last ? '' : ', '}}-->
+                            <!--<a class="form-control-static" [routerLink]="['../user-app', userapp?.id, 'view' ]">{{userapp.id}}</a>{{last ? '' : ', '}}-->
                         <!--</span>-->
                 <!--</td>-->
                 <td>
                     <div *ngIf="campus.districtId">
-                        <a [routerLink]="['../district', campus.districtId  ]" >{{campus.districtId}}</a>
+                        <a [routerLink]="['../district', campus.districtId , 'view' ]" >{{campus.districtId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../campus', campus.id ]"
+                                [routerLink]="['/campus', campus.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'campus/'+ campus.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/campus', campus.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -88,7 +84,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

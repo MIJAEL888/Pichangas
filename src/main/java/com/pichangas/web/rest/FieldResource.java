@@ -75,7 +75,7 @@ public class FieldResource {
     public ResponseEntity<FieldDTO> updateField(@Valid @RequestBody FieldDTO fieldDTO) throws URISyntaxException {
         log.debug("REST request to update Field : {}", fieldDTO);
         if (fieldDTO.getId() == null) {
-            return createField(fieldDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         FieldDTO result = fieldService.save(fieldDTO);
         return ResponseEntity.ok()
@@ -134,8 +134,8 @@ public class FieldResource {
     @Timed
     public ResponseEntity<FieldDTO> getField(@PathVariable Long id) {
         log.debug("REST request to get Field : {}", id);
-        FieldDTO fieldDTO = fieldService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(fieldDTO));
+        Optional<FieldDTO> fieldDTO = fieldService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(fieldDTO);
     }
 
     /**

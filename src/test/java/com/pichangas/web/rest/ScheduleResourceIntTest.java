@@ -30,6 +30,7 @@ import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
+
 import static com.pichangas.web.rest.TestUtil.sameInstant;
 import static com.pichangas.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,8 +87,10 @@ public class ScheduleResourceIntTest {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+
     @Autowired
     private ScheduleMapper scheduleMapper;
+    
 
     @Autowired
     private ScheduleService scheduleService;
@@ -221,6 +224,7 @@ public class ScheduleResourceIntTest {
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_DATE))))
             .andExpect(jsonPath("$.[*].allDay").value(hasItem(DEFAULT_ALL_DAY.booleanValue())));
     }
+    
 
     @Test
     @Transactional
@@ -246,7 +250,6 @@ public class ScheduleResourceIntTest {
             .andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_DATE)))
             .andExpect(jsonPath("$.allDay").value(DEFAULT_ALL_DAY.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingSchedule() throws Exception {
@@ -260,10 +263,11 @@ public class ScheduleResourceIntTest {
     public void updateSchedule() throws Exception {
         // Initialize the database
         scheduleRepository.saveAndFlush(schedule);
+
         int databaseSizeBeforeUpdate = scheduleRepository.findAll().size();
 
         // Update the schedule
-        Schedule updatedSchedule = scheduleRepository.findOne(schedule.getId());
+        Schedule updatedSchedule = scheduleRepository.findById(schedule.getId()).get();
         // Disconnect from session so that the updates on updatedSchedule are not directly saved in db
         em.detach(updatedSchedule);
         updatedSchedule
@@ -316,11 +320,11 @@ public class ScheduleResourceIntTest {
         restScheduleMockMvc.perform(put("/api/schedules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(scheduleDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Schedule in the database
         List<Schedule> scheduleList = scheduleRepository.findAll();
-        assertThat(scheduleList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(scheduleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -328,6 +332,7 @@ public class ScheduleResourceIntTest {
     public void deleteSchedule() throws Exception {
         // Initialize the database
         scheduleRepository.saveAndFlush(schedule);
+
         int databaseSizeBeforeDelete = scheduleRepository.findAll().size();
 
         // Get the schedule

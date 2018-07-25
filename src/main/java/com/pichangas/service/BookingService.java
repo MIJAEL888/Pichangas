@@ -1,7 +1,9 @@
 package com.pichangas.service;
 
 import com.pichangas.service.dto.BookingDTO;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing Booking.
@@ -31,13 +33,14 @@ public interface BookingService {
      */
     List<BookingDTO> findAll();
 
+
     /**
      * Get the "id" booking.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    BookingDTO findOne(Long id);
+    Optional<BookingDTO> findOne(Long id);
 
     /**
      * Get the "id" booking.

@@ -87,7 +87,7 @@ public class BookingResource {
     public ResponseEntity<BookingDTO> updateBooking(@Valid @RequestBody BookingDTO bookingDTO) throws Exception {
         log.debug("REST request to update Booking : {}", bookingDTO);
         if (bookingDTO.getId() == null) {
-            return createBooking(bookingDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         BookingDTO result = bookingService.save(bookingDTO);
         return ResponseEntity.ok()
@@ -105,7 +105,7 @@ public class BookingResource {
     public List<BookingDTO> getAllBookings() {
         log.debug("REST request to get all Bookings");
         return bookingService.findAll();
-        }
+    }
 
     /**
      * GET  /bookings/:id : get the "id" booking.
@@ -117,8 +117,8 @@ public class BookingResource {
     @Timed
     public ResponseEntity<BookingDTO> getBooking(@PathVariable Long id) {
         log.debug("REST request to get Booking : {}", id);
-        BookingDTO bookingDTO = bookingService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bookingDTO));
+        Optional<BookingDTO> bookingDTO = bookingService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(bookingDTO);
     }
 
     /**

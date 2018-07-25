@@ -7,6 +7,7 @@ import com.pichangas.service.dto.ClientDTO;
 import com.pichangas.service.mapper.ClientMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing Client.
  */
@@ -74,6 +76,7 @@ public class ClientServiceImpl implements ClientService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
     /**
      * Get one client by id.
      *
@@ -82,10 +85,10 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ClientDTO findOne(Long id) {
+    public Optional<ClientDTO> findOne(Long id) {
         log.debug("Request to get Client : {}", id);
-        Client client = clientRepository.findOne(id);
-        return clientMapper.toDto(client);
+        return clientRepository.findById(id)
+            .map(clientMapper::toDto);
     }
 
     /**
@@ -96,6 +99,6 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Client : {}", id);
-        clientRepository.delete(id);
+        clientRepository.deleteById(id);
     }
 }

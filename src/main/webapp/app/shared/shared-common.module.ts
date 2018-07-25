@@ -1,37 +1,10 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { registerLocaleData } from '@angular/common';
-import locale from '@angular/common/locales/en';
+import { NgModule } from '@angular/core';
 
-import {
-    PichangasSharedLibsModule,
-    JhiAlertComponent,
-    JhiAlertErrorComponent
-} from './';
+import { PichangasSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent } from './';
 
 @NgModule({
-    imports: [
-        PichangasSharedLibsModule
-    ],
-    declarations: [
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ],
-    providers: [
-        Title,
-        {
-            provide: LOCALE_ID,
-            useValue: 'en'
-        },
-    ],
-    exports: [
-        PichangasSharedLibsModule,
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ]
+    imports: [PichangasSharedLibsModule],
+    declarations: [JhiAlertComponent, JhiAlertErrorComponent],
+    exports: [PichangasSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent]
 })
-export class PichangasSharedCommonModule {
-    constructor() {
-        registerLocaleData(locale);
-    }
-}
+export class PichangasSharedCommonModule {}

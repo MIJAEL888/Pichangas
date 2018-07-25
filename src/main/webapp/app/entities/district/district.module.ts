@@ -1,49 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    DistrictService,
-    DistrictPopupService,
     DistrictComponent,
     DistrictDetailComponent,
-    DistrictDialogComponent,
-    DistrictPopupComponent,
+    DistrictUpdateComponent,
     DistrictDeletePopupComponent,
     DistrictDeleteDialogComponent,
     districtRoute,
-    districtPopupRoute,
+    districtPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...districtRoute,
-    ...districtPopupRoute,
-];
+const ENTITY_STATES = [...districtRoute, ...districtPopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         DistrictComponent,
         DistrictDetailComponent,
-        DistrictDialogComponent,
+        DistrictUpdateComponent,
         DistrictDeleteDialogComponent,
-        DistrictPopupComponent,
-        DistrictDeletePopupComponent,
+        DistrictDeletePopupComponent
     ],
-    entryComponents: [
-        DistrictComponent,
-        DistrictDialogComponent,
-        DistrictPopupComponent,
-        DistrictDeleteDialogComponent,
-        DistrictDeletePopupComponent,
-    ],
-    providers: [
-        DistrictService,
-        DistrictPopupService,
-    ],
+    entryComponents: [DistrictComponent, DistrictUpdateComponent, DistrictDeleteDialogComponent, DistrictDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasDistrictModule {}

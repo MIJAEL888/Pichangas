@@ -1,49 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { PichangasSharedModule } from '../../shared';
+import { PichangasSharedModule } from 'app/shared';
 import {
-    ProvinceService,
-    ProvincePopupService,
     ProvinceComponent,
     ProvinceDetailComponent,
-    ProvinceDialogComponent,
-    ProvincePopupComponent,
+    ProvinceUpdateComponent,
     ProvinceDeletePopupComponent,
     ProvinceDeleteDialogComponent,
     provinceRoute,
-    provincePopupRoute,
+    provincePopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...provinceRoute,
-    ...provincePopupRoute,
-];
+const ENTITY_STATES = [...provinceRoute, ...provincePopupRoute];
 
 @NgModule({
-    imports: [
-        PichangasSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [PichangasSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         ProvinceComponent,
         ProvinceDetailComponent,
-        ProvinceDialogComponent,
+        ProvinceUpdateComponent,
         ProvinceDeleteDialogComponent,
-        ProvincePopupComponent,
-        ProvinceDeletePopupComponent,
+        ProvinceDeletePopupComponent
     ],
-    entryComponents: [
-        ProvinceComponent,
-        ProvinceDialogComponent,
-        ProvincePopupComponent,
-        ProvinceDeleteDialogComponent,
-        ProvinceDeletePopupComponent,
-    ],
-    providers: [
-        ProvinceService,
-        ProvincePopupService,
-    ],
+    entryComponents: [ProvinceComponent, ProvinceUpdateComponent, ProvinceDeleteDialogComponent, ProvinceDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PichangasProvinceModule {}
