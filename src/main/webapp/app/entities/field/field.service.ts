@@ -35,38 +35,7 @@ export class FieldService {
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
-    getByCampus(id: number): Observable<HttpResponse<Field[]>>{
-        return this.http.get<Field[]>(`${this.resourceUrl}/campus/${id}`, { observe: 'response' })
-            .map((res: HttpResponse<Field[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Field = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Field[]>): HttpResponse<Field[]> {
-        const jsonResponse: Field[] = res.body;
-        const body: Field[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Field.
-     */
-    private convertItemFromServer(field: Field): Field {
-        const copy: Field = Object.assign({}, field);
-        return copy;
-    }
-
-    /**
-     * Convert a Field to a JSON which can be sent to the server.
-     */
-    private convert(field: Field): Field {
-        const copy: Field = Object.assign({}, field);
-        return copy;
+    getByCampus(id: number): Observable<EntityArrayResponseType> {
+        return this.http.get<IField[]>(`${this.resourceUrl}/campus/${id}`, { observe: 'response' });
     }
 }

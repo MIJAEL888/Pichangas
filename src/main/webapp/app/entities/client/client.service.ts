@@ -68,43 +68,10 @@ export class ClientService {
         });
         return res;
     }
-    
-    getAll(): Observable<HttpResponse<Client[]>> {
-        return this.http.get<Client[]>(this.resourceUrl + "/all", { observe: 'response' })
-            .map((res: HttpResponse<Client[]>) => this.convertArrayResponse(res));
-    }
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Client = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
 
-    private convertArrayResponse(res: HttpResponse<Client[]>): HttpResponse<Client[]> {
-        const jsonResponse: Client[] = res.body;
-        const body: Client[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
+    getAll(): Observable<EntityArrayResponseType> {
+        return this.http
+            .get<IClient[]>(this.resourceUrl + '/all', { observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
-
-    /**
-     * Convert a returned JSON object to Client.
-     */
-    private convertItemFromServer(client: Client): Client {
-        const copy: Client = Object.assign({}, client);
-        copy.dateSuscription = this.dateUtils
-            .convertLocalDateFromServer(client.dateSuscription);
-        return copy;
-    }
-
-    /**
-     * Convert a Client to a JSON which can be sent to the server.
-     */
-    private convert(client: Client): Client {
-        const copy: Client = Object.assign({}, client);
-        copy.dateSuscription = this.dateUtils
-            .convertLocalDateToServer(client.dateSuscription);
-        return copy;
-    }
-
 }

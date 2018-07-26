@@ -1,16 +1,13 @@
-///<reference path="../../../../../../node_modules/rxjs/add/operator/map.d.ts"/>
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
-import { JhiDateUtils } from 'ng-jhipster';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IBooking } from 'app/shared/model/booking.model';
-import {DatePipe} from "@angular/common";
 
 type EntityResponseType = HttpResponse<IBooking>;
 type EntityArrayResponseType = HttpResponse<IBooking[]>;
@@ -19,9 +16,7 @@ type EntityArrayResponseType = HttpResponse<IBooking[]>;
 export class BookingService {
     private resourceUrl = SERVER_API_URL + 'api/bookings';
 
-    constructor(private http: HttpClient,
-                private dateUtils: JhiDateUtils,
-                private datePipe: DatePipe) { }
+    constructor(private http: HttpClient) {}
 
     create(booking: IBooking): Observable<EntityResponseType> {
         const copy = this.convertDateFromClient(booking);
@@ -29,24 +24,7 @@ export class BookingService {
             .post<IBooking>(this.resourceUrl, copy, { observe: 'response' })
             .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
-    validate (booking: Booking): Observable<EntityResponseType> {
-        const copy = this.convert(booking);
-        return this.http.post<Booking>(`${this.resourceUrl}/validate`, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-    async validateSync(booking: Booking, callback?) {
-        const cb = callback || function() {};
-        return await new Promise((resolve, reject) => {
-            this.validate(booking).subscribe((data) => {
-                resolve(data);
-                return cb();
-            }, (err) => {
-                reject(err);
-                return cb(err);
-            });
-        });
-    }
-    
+
     update(booking: IBooking): Observable<EntityResponseType> {
         const copy = this.convertDateFromClient(booking);
         return this.http

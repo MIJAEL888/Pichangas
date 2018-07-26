@@ -1,5 +1,4 @@
-import {Client} from "../../entities/client";
-
+import { IClient } from 'app/shared/model/client.model';
 export class Account {
     constructor(
         public activated: boolean,
@@ -10,6 +9,6 @@ export class Account {
         public lastName: string,
         public login: string,
         public imageUrl: string,
-        public clientDto: Client
+        public clientDto: IClient
     ) {}
 }
