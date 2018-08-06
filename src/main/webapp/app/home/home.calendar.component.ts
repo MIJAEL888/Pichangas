@@ -1,9 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
-
-import { LoginModalService, Principal, Account } from 'app/core';
-
+import { Principal, Account } from 'app/core';
+import * as moment from 'moment';
 import { ClientService } from '../entities/client';
 import { CampusService } from '../entities/campus';
 import { HomeModel } from './home.model';
@@ -18,8 +15,7 @@ import { IBooking } from 'app/shared/model/booking.model';
 import { IClient } from 'app/shared/model/client.model';
 import { ICampus } from 'app/shared/model/campus.model';
 import { IField } from 'app/shared/model/field.model';
-
-import { Observable } from 'rxjs/Observable';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 @Component({
     selector: 'jhi-home-calendar',
@@ -88,18 +84,32 @@ export class HomeCalendarComponent implements OnInit {
     onChangeField(fieldId?: number) {
         console.log('field id : ' + fieldId);
         if (fieldId) {
-            // this.bookingService.getByField(fieldId).subscribe(
-            //     (res: HttpResponse<IBooking[]>) => {
-            //         this.bookings = res.body;
-            //         this.scheduler.instance.repaint();
-            //         //this.scheduler.instance.addAppointment()
-            //     },
-            //     (res: HttpErrorResponse) => this.onError(res.message));
+            this.bookingService.getByField(fieldId).subscribe(
+                (res: HttpResponse<IBooking[]>) => {
+                    this.bookings = res.body;
+                    this.scheduler.instance.repaint();
+                    //this.scheduler.instance.addAppointment()
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        }
+    }
+
+    onCellClick(e) {
+        console.log('CellClicked : ' + e);
+        let startDate = moment(e.cellData.startDate, DATE_TIME_FORMAT);
+
+        let endDate = moment(e.cellData.endDate, DATE_TIME_FORMAT);
+        for (let book of this.bookings) {
+            if (book.startDate.isSame(startDate) && book.endDate.isSame(endDate)) {
+                this.jhiAlertService.error('Este horario no esta disponible.', null, null);
+                e.cancel = true;
+            }
         }
     }
 
     onAppointmentFormCreated(e) {
-        var form = e.form;
+        let form = e.form;
         form.itemOption('startDate', {
             label: { text: 'Hora Inicio' },
             //helpText: "Select a date between May 11 and 27",
@@ -141,18 +151,17 @@ export class HomeCalendarComponent implements OnInit {
         e.appointmentData.fieldId = this.homeModel.fieldId;
         e.appointmentData.startHour = e.appointmentData.startDate.getHours();
         e.appointmentData.endHour = e.appointmentData.endDate.getHours();
+        e.appointmentData.startDate = moment(e.appointmentData.startDate, DATE_TIME_FORMAT);
+        e.appointmentData.endDate = moment(e.appointmentData.endDate, DATE_TIME_FORMAT);
         //e.appointmentData.endDate.setMinutes(59, 59, 0);
         //console.log(this.datePipe.transform(e.appointmentData.startDate, 'yyyy-MM-dd HH:mm'));
-        var creating = true;
         this.bookingService.create(e.appointmentData).subscribe(
             (res: HttpResponse<IBooking>) => {
                 e.appointmentData = res.body;
-                creating = false;
             },
             (res: HttpErrorResponse) => {
                 this.onError(res.message);
                 e.cancel = true;
-                creating = false;
             }
         );
     }

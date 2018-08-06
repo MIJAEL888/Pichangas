@@ -48,6 +48,11 @@ export class BookingService {
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
+    getByField(id: number): Observable<EntityArrayResponseType> {
+        return this.http
+            .get<IBooking[]>(`${this.resourceUrl}/field/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
 
     private convertDateFromClient(booking: IBooking): IBooking {
         const copy: IBooking = Object.assign({}, booking, {
