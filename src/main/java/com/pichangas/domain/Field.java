@@ -78,6 +78,12 @@ public class Field implements Serializable {
         this.id = id;
     }
 
+    public Field id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+
     public String getName() {
         return name;
     }

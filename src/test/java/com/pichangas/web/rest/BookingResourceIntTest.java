@@ -3,6 +3,7 @@ package com.pichangas.web.rest;
 import com.pichangas.PichangasApp;
 
 import com.pichangas.domain.Booking;
+import com.pichangas.domain.Field;
 import com.pichangas.repository.BookingRepository;
 import com.pichangas.service.BookingService;
 import com.pichangas.service.dto.BookingDTO;
@@ -79,13 +80,15 @@ public class BookingResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Long ID_FIELD = 1L;
+
     @Autowired
     private BookingRepository bookingRepository;
 
 
     @Autowired
     private BookingMapper bookingMapper;
-    
+
 
     @Autowired
     private BookingService bookingService;
@@ -124,6 +127,9 @@ public class BookingResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Booking createEntity(EntityManager em) {
+        Field field = new Field()
+            .id(ID_FIELD);
+
         Booking booking = new Booking()
             .state(DEFAULT_STATE)
             .dateReg(DEFAULT_DATE_REG)
@@ -134,7 +140,9 @@ public class BookingResourceIntTest {
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
             .allDay(DEFAULT_ALL_DAY)
-            .description(DEFAULT_DESCRIPTION);
+            .description(DEFAULT_DESCRIPTION)
+            .field(field);
+
         return booking;
     }
 
@@ -213,7 +221,7 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].allDay").value(hasItem(DEFAULT_ALL_DAY.booleanValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
-    
+
 
     @Test
     @Transactional

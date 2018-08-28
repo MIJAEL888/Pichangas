@@ -62,6 +62,7 @@ local.properties
 classes/
 out/
 out/**
+/out/**
 
 ######################
 # Visual Studio Code
