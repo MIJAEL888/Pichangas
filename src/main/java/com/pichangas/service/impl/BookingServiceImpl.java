@@ -48,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDTO save(BookingDTO bookingDTO) throws Exception {
         log.debug("Request to save Booking : {}", bookingDTO);
         Booking booking = bookingMapper.toEntity(bookingDTO);
-        if (isAvailable(booking.getStartDate(), booking.getEndDate()))
+        if (isAvailable(booking.getField().getId(), booking.getStartDate(), booking.getEndDate()))
             booking = bookingRepository.save(booking);
         else
             throw new Exception(messageSource.getMessage("error.booking.available", null, Locale.getDefault()));
@@ -66,14 +66,14 @@ public class BookingServiceImpl implements BookingService {
     public BookingDTO validate(BookingDTO bookingDTO) throws Exception {
         log.debug("Request to save Booking : {}", bookingDTO);
         Booking booking = bookingMapper.toEntity(bookingDTO);
-        if (isAvailable(booking.getStartDate(), booking.getEndDate()))
+        if (isAvailable(booking.getField().getId(), booking.getStartDate(), booking.getEndDate()))
            return bookingDTO;
         else
             throw new Exception(messageSource.getMessage("error.booking.available", null, Locale.getDefault()));
     }
 
-    private boolean isAvailable(ZonedDateTime startDate, ZonedDateTime endDate){
-       return bookingRepository.findAllByStartDateBetweenAndEndDateBetween(startDate, endDate, startDate, endDate).isEmpty();
+    private boolean isAvailable(Long idField, ZonedDateTime startDate, ZonedDateTime endDate){
+       return bookingRepository.findAllByField_IdAndStartDateBetweenAndEndDateBetween(idField, startDate, endDate, startDate, endDate).isEmpty();
     }
     /**
      * Get all the bookings.

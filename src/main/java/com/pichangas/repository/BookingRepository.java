@@ -20,5 +20,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findAllByField_IdAndStartDateBetween(Long idField, ZonedDateTime startDate1, ZonedDateTime startDate2);
 
-    List<Booking> findAllByStartDateBetweenAndEndDateBetween(ZonedDateTime startDate, ZonedDateTime endDate, ZonedDateTime startDate1, ZonedDateTime endDate1);
+    List<Booking> findAllByField_IdAndStartDateBetweenAndEndDateBetween(Long idField, ZonedDateTime startDate, ZonedDateTime endDate, ZonedDateTime startDate1, ZonedDateTime endDate1);
 }
